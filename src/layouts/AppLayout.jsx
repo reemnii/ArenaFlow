@@ -1,17 +1,13 @@
-export default function AppLayout({ children }) {
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
+
+export default function AppLayout() {
   return (
-    <div>
-      <header>
-        <h2>Navbar Placeholder</h2>
-      </header>
-
-      <main>
-        {children}
+    <>
+      <Navbar />
+      <main className="p-6">
+        <Outlet />
       </main>
-
-      <footer>
-        <p>Footer Placeholder</p>
-      </footer>
-    </div>
+    </>
   );
 }
