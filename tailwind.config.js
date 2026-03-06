@@ -5,14 +5,14 @@ export default {
       fontFamily: {
         sans: ["'Google Sans Flex'", "sans-serif"],
       },
-    },
-  },
-  plugins: [],
-  colors: {
+      colors: {
         brand: "#913075",
         brand2: "#841D75",
         brandDeep: "#6B124B",
         brandDark: "#682078",
         accent: "#780E55",
   }
+    },
+  },
+  plugins: [],
 };

@@ -1,0 +1,20 @@
+export const men_players=[
+    {id:1, name:"John Doe", position:"Setter", teamId:1},
+    {id:2, name:"Jack Smith", position:"Outside Hitter", teamId:1},
+    {id:3, name:"Mike Brown", position:"Middle Blocker", teamId:1},
+    {id:4, name:"Alice Green", position:"Libero", teamId:1},
+    {id:5, name:"Bob White", position:"Opposite Hitter", teamId:1},
+    {id:6, name:"Charlie Black", position:"Defensive Specialist", teamId:1},
+    {id:7, name:"David Blue", position:"Setter", teamId:2},
+    {id:8, name:"Pedro Yellow", position:"Outside Hitter", teamId:2},
+    {id:9, name:"Frank Red", position:"Middle Blocker", teamId:2},
+    {id:10, name:"Simon Nikolov", position:"Libero", teamId:2},
+    {id:11, name:"Henry Hill", position:"Opposite Hitter", teamId:2},
+    {id:12, name:"Sam Ivy", position:"Defensive Specialist", teamId:2},
+    {id:13, name:"Jack Orange", position:"Setter", teamId:3},
+    {id:14, name:"David Purple", position:"Outside Hitter", teamId:3},
+    {id:15, name:"Leo Pink", position:"Middle Blocker", teamId:3},
+    {id:16, name:"Micheal Cyan", position:"Libero", teamId:3},
+    {id:17, name:"John Magenta", position:"Opposite Hitter", teamId:3},
+    {id:18, name:"Oscar Lime", position:"Defensive Specialist", teamId:3}
+];
