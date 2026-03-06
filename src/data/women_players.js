@@ -1,0 +1,20 @@
+export const women_players=[
+    {id:1, name:"Anna Blue", position:"Setter", teamId:4},
+    {id:2, name:"Bella Green", position:"Outside Hitter", teamId:4},
+    {id:3, name:"Cathy Red", position:"Middle Blocker", teamId:4},
+    {id:4, name:"Diana Yellow", position:"Libero", teamId:4},
+    {id:5, name:"Ella Purple", position:"Opposite Hitter", teamId:4},
+    {id:6, name:"Fiona Orange", position:"Defensive Specialist", teamId:4},
+    {id:7, name:"Gina Pink", position:"Setter", teamId:5},
+    {id:8, name:"Hannah Cyan", position:"Outside Hitter", teamId:5},
+    {id:9, name:"Irene Magenta", position:"Middle Blocker", teamId:5},
+    {id:10, name:"Julia Lime", position:"Libero", teamId:5},
+    {id:11, name:"Karen Gray", position:"Opposite Hitter", teamId:5},
+    {id:12, name:"Laura Brown", position:"Defensive Specialist", teamId:5},
+    {id:13, name:"Megan White", position:"Setter", teamId:6},
+    {id:14, name:"Nina Black", position:"Outside Hitter", teamId:6},
+    {id:15, name:"Olivia Blue", position:"Middle Blocker", teamId:6},
+    {id:16, name:"Pamela Green", position:"Libero", teamId:6},
+    {id:17, name:"Quinn Red", position:"Opposite Hitter", teamId:6},
+    {id:18, name:"Rachel Yellow", position:"Defensive Specialist", teamId:6}
+];
