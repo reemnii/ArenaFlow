@@ -1,4 +1,6 @@
-export default function AppLayout({ children }) {
+import { Outlet } from "react-router-dom";
+
+export default function AppLayout() {
   return (
     <div>
       <header>
@@ -6,7 +8,7 @@ export default function AppLayout({ children }) {
       </header>
 
       <main>
-        {children}
+        <Outlet />
       </main>
 
       <footer>
