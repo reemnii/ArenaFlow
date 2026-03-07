@@ -10,7 +10,9 @@ import Dashboard from "./pages/Dashboard";
 import ManageTeams from "./pages/ManageTeams";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Contact from "./pages/ContactUs";
 import NotFound from "./pages/NotFound";
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="edit/:id" element={<EditTournaments />} />
         <Route path="participants" element={<ManageTeams />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="contact" element={<Contact />} />
       </Route>
 
       <Route path="login" element={<Login />} />

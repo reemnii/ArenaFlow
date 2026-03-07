@@ -17,14 +17,27 @@
      animation: backgroundPulse 14s ease-in-out infinite;
   }
 }
-@keyframes backgroundPulse {
-     0%, 100% {
-         filter: brightness(0.9) saturate(1.4) hue-rotate(0deg);
-    }
-     33% {
-         filter: brightness(1.5) saturate(1.7) hue-rotate(15deg);
-    }
-     66% {
-         filter: brightness(1.0) saturate(1.5) hue-rotate(-10deg);
-    }
+
+.footer-link {
+  @apply text-gray-300 text-sm relative py-2 transition-all duration-300;
+}
+
+.footer-link:hover {
+  color: #e0a3ff;
+  text-shadow: 0 0 10px rgba(224, 163, 255, 0.5);
+}
+
+.footer-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #e0a3ff, #ff69b4);
+  transition: width 0.3s ease;
+}
+
+.footer-link:hover::after {
+  width: 100%;
 }
