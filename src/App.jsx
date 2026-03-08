@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import ManageTeams from "./pages/ManageTeams";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 import Contact from "./pages/ContactUs";
 import Terms from "./pages/TermsOfService"
 import Privacy from "./pages/PrivacyPolicy"
@@ -33,6 +34,7 @@ function App() {
 
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="forgot-password" element={<ForgotPassword />}/>
       <Route path="*" element={<NotFound />} />
       <Route path="dashboard" element={<Dashboard />} />
     </Routes>
