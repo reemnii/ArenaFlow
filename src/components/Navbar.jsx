@@ -26,7 +26,7 @@ export default function Navbar() {
       {/* Desktop Navbar */}
       <nav className={"fixed top-0 w-full z-30 transition-all bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.3)] p-6 text-white " +(scrollActive ? "shadow-md py-3" : "py-4")}>
         <div className="max-w-7xl mx-auto pl-2 pr-6 sm:pr-8 lg:pr-16 flex items-center justify-between">
-          <Link to="/"><img src={logo} alt="Logo" className="h-35 w-70" /></Link>
+          <Link to="/"><img src={logo} alt="Logo" className="h-25 w-auto" /></Link>
           <ul className="hidden lg:flex items-center gap-8 text-white font-medium">
             <li><Link to="/" className={navLinkClass}>Home</Link></li>
             <li><Link to="/tournaments" className={navLinkClass}>Tournaments</Link></li>
