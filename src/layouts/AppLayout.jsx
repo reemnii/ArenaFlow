@@ -7,7 +7,7 @@ export default function AppLayout() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="grow p-6">
+      <main className="grow p-6 pt-28">
         <Outlet />
       </main>
 
