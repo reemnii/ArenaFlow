@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import ManageTeams from "./pages/ManageTeams";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -22,12 +23,13 @@ function App() {
         <Route path="create" element={<CreateTournaments />} />
         <Route path="edit/:id" element={<EditTournaments />} />
         <Route path="participants" element={<ManageTeams />} />
-        <Route path="dashboard" element={<Dashboard />} />
       </Route>
 
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="forgot-password" element={<ForgotPassword />}/>
       <Route path="*" element={<NotFound />} />
+      <Route path="dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
