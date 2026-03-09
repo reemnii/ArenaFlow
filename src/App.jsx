@@ -14,7 +14,6 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Contact from "./pages/ContactUs";
 import NotFound from "./pages/NotFound";
 
-
 function App() {
   return (
     <Routes>
@@ -29,11 +28,10 @@ function App() {
         <Route path="contact" element={<Contact />} />
       </Route>
 
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route path="forgot-password" element={<ForgotPassword />}/>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="*" element={<NotFound />} />
-      <Route path="dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
