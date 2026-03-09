@@ -31,10 +31,11 @@ function App() {
         <Route path="privacy" element={<Privacy />} />
       </Route>
 
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+      <Route path="forgot-password" element={<ForgotPassword />}/>
       <Route path="*" element={<NotFound />} />
+      <Route path="dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
