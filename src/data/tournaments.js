@@ -1,4 +1,47 @@
-export const tournaments=[
-    {id:1, name:"Summer Volleyball Cup", location:"Athens", date:"2026-06-15"},
-    {id:2,name:"Spike Arena Cup", location:"Thessaloniki", date:"2026-07-10"}
+export const tournaments = [
+  {
+    id: 1,
+    name: "Spring Volleyball Cup",
+    location: "Beirut",
+    date: "May 12, 2026",
+    status: "upcoming",
+    team1Id: 1,
+    team2Id: 2,
+  },
+  {
+    id: 2,
+    name: "Champions Clash",
+    location: "Byblos",
+    date: "May 18, 2026",
+    status: "ongoing",
+    team1Id: 4,
+    team2Id: 6,
+  },
+  {
+    id: 3,
+    name: "National Volleyball Final",
+    location: "Tripoli",
+    date: "June 2, 2026",
+    status: "upcoming",
+    team1Id: 3,
+    team2Id: 1,
+  },
+  {
+    id: 4,
+    name: "Coastal Volleyball Showdown",
+    location: "Jounieh",
+    date: "June 10, 2026",
+    status: "upcoming",
+    team1Id: 5,
+    team2Id: 4,
+  },
+  {
+    id: 5,
+    name: "Winter Volleyball Championship",
+    location: "Zahle",
+    date: "February 15, 2026",
+    status: "completed",
+    team1Id: 2,
+    team2Id: 3,
+  },
 ];
