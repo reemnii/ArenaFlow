@@ -13,22 +13,8 @@
     font-family: "Google Sans Flex", sans-serif;
     margin: 0;
     min-height: 100vh;
-    background:
-      radial-gradient(circle at 80% 30%, #913075 0%, transparent 60%),
-      radial-gradient(circle at 100% 60%, rgba(145, 48, 117, 0.18) 10%, transparent 40%),
-      linear-gradient(50deg, #1a0f1f 0%, #2d1b3d 55%, #160c1b 100%);
-    
-  }
-  @media (min-width: 768px) {
-    body {
-      background: 
-        radial-gradient(circle at 15% 85%, #913075 0%, transparent 50%), 
-        radial-gradient(circle at 85% 15%, rgba(139, 37, 99, 0.8) 0%, transparent 50%), 
-        radial-gradient(circle at 45% 60%, rgba(128, 0, 128, 0.6) 0%, transparent 50%), 
-        radial-gradient(circle at 10% 10%, rgba(4, 17, 4, 0.4) 0%, transparent 10%), 
-        linear-gradient(100deg, #0a0a0a 0%, #2d1b3d 100%, #000000 100%);        
-    }
-
+    background: radial-gradient(circle at 15% 85%, #913075 0%, transparent 50%), radial-gradient(circle at 85% 15%, rgba(139, 37, 99, 0.8) 0%, transparent 50%), radial-gradient(circle at 45% 60%, rgba(128, 0, 128, 0.6) 0%, transparent 50%), radial-gradient(circle at 10% 10%, rgba(4, 17, 4, 0.4) 0%, transparent 10%), linear-gradient(100deg, #0a0a0a 0%, #2d1b3d 100%, #000000 100%);
+     animation: backgroundPulse 14s ease-in-out infinite;
   }
 }
 

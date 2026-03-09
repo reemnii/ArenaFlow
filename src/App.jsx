@@ -12,6 +12,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Contact from "./pages/ContactUs";
+import Terms from "./pages/TermsOfService"
+import Privacy from "./pages/PrivacyPolicy"
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -24,8 +26,9 @@ function App() {
         <Route path="create" element={<CreateTournaments />} />
         <Route path="edit/:id" element={<EditTournaments />} />
         <Route path="participants" element={<ManageTeams />} />
-        <Route path="dashboard" element={<Dashboard />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="terms" element={<Terms />} />
+        <Route path="privacy" element={<Privacy />} />
       </Route>
 
       <Route path="/login" element={<Login />} />
