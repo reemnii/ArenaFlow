@@ -13,12 +13,12 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isLoggedIn =
-      localStorage.getItem("isLoggedIn") ||
-      sessionStorage.getItem("isLoggedIn");
+    const storedUser =
+      JSON.parse(localStorage.getItem("currentUser")) ||
+      JSON.parse(sessionStorage.getItem("currentUser"));
 
-    if (isLoggedIn) {
-      navigate("/dashboard");
+    if (storedUser) {
+      navigate("/dashboard", { replace: true });
     }
   }, [navigate]);
 
@@ -58,6 +58,7 @@ export default function Login() {
       id: user.id,
       username: user.username,
       email: user.email,
+      role: user.role || "player",
     };
 
     if (remember) {
@@ -73,7 +74,7 @@ export default function Login() {
     }
 
     setError("");
-    navigate("/dashboard");
+    navigate("/dashboard", { replace: true });
   }
 
   return (
@@ -120,7 +121,7 @@ export default function Login() {
             id="login-password"
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
-            className="w-full border border-white/20 bg-white/10 text-white rounded p-3 mb-3 outline-none pr-10 placeholder:text-white/50"
+            className="w-full border border-white/20 bg-white/10 text-white rounded p-3 outline-none pr-10 placeholder:text-white/50"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -135,7 +136,7 @@ export default function Login() {
           </button>
         </div>
 
-        <label className="flex items-center text-sm text-white mb-4">
+        <label className="flex items-center text-sm text-white mb-4 mt-4">
           <input
             type="checkbox"
             className="mr-2"
