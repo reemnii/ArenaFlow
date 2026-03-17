@@ -10,7 +10,6 @@ export default function AppLayout() {
       <main className="grow p-6 pt-28">
         <Outlet />
       </main>
-
       <Footer />
     </div>
   );
