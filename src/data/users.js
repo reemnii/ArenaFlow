@@ -4,7 +4,7 @@ export const users = [
     username: "admin",
     email: "admin@arenaflow.com",
     password: "123456",
-    role: "organizer"
+    role: "admin"
   },
   {
     id: 2,

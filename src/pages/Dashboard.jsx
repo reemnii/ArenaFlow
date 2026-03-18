@@ -31,15 +31,12 @@ import { standings } from "../data/standings";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-
-  let storedUser = null;
   let savedUsers = [];
-
+  let storedUser=null;
   try {
-    storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    storedUser = JSON.parse(localStorage.getItem("currentUser")) || JSON.parse(sessionStorage.getItem("currentUser"));
     savedUsers = JSON.parse(localStorage.getItem("users")) || defaultUsers;
   } catch (error) {
-    storedUser = null;
     savedUsers = defaultUsers;
   }
 
@@ -311,7 +308,7 @@ export default function Dashboard() {
                   </div>
 
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand/20 border border-white/10 flex items-center justify-center">
-                    <Icon size={20} className="sm:w-[22px] sm:h-[22px]" />
+                    <Icon size={20} className="sm:w-5.5 sm:h-5.5" />
                   </div>
                 </div>
               </motion.div>

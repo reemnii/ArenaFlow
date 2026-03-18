@@ -19,8 +19,9 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    let currentUser = null;
     try {
-      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      currentUser = JSON.parse(localStorage.getItem("currentUser"))|| JSON.parse(sessionStorage.getItem("currentUser"));
       setIsLoggedIn(!!currentUser);
     } catch (error) {
       setIsLoggedIn(false);
@@ -70,6 +71,7 @@ export default function Navbar() {
               Create Tournament
             </Link>
           </li>
+          
         </ul>
 
         <div className="hidden lg:flex items-center gap-4">
