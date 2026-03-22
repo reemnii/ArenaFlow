@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function CreateTournament() {
+  const [visibility, setVisibility] = useState("Public");
+
   return (
     <div className="min-h-screen bg-slate-50 py-10 px-4">
       <div className="mx-auto max-w-6xl">
@@ -126,6 +130,25 @@ export default function CreateTournament() {
                       <option>Mixed</option>
                     </select>
                   </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Tournament Visibility
+                    </label>
+                    <select
+                      value={visibility}
+                      onChange={(e) => setVisibility(e.target.value)}
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                    >
+                      <option value="Public">Public</option>
+                      <option value="Private">Private</option>
+                    </select>
+                    <p className="mt-2 text-sm text-slate-500">
+                      {visibility === "Public"
+                        ? "Anyone can view and join this tournament."
+                        : "This tournament is invite-only. Only approved teams can join."}
+                    </p>
+                  </div>
                 </div>
               </section>
 
@@ -230,13 +253,22 @@ export default function CreateTournament() {
             <div className="bg-slate-900 text-white rounded-2xl shadow-sm p-6">
               <h3 className="text-lg font-semibold mb-3">Preview</h3>
               <div className="space-y-2 text-sm text-slate-200">
-                <p><span className="text-white font-medium">Status:</span> Draft</p>
-                <p><span className="text-white font-medium">Visibility:</span> Public</p>
-                <p><span className="text-white font-medium">Registration:</span> Open</p>
+                <p>
+                  <span className="text-white font-medium">Status:</span> Draft
+                </p>
+                <p>
+                  <span className="text-white font-medium">Visibility:</span>{" "}
+                  {visibility}
+                </p>
+                <p>
+                  <span className="text-white font-medium">Registration:</span>{" "}
+                  {visibility === "Public" ? "Open to everyone" : "Invite only"}
+                </p>
               </div>
               <div className="mt-4 rounded-xl bg-white/10 p-4 text-sm text-slate-200">
-                Once published, teams will be able to view the tournament page,
-                register, and follow matches and stats.
+                {visibility === "Public"
+                  ? "Once published, any team will be able to view the tournament page, register, and follow matches and stats."
+                  : "Once published, only invited teams will be able to access registration and participate in the tournament."}
               </div>
             </div>
           </div>
