@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const defaultTournament = {
+  id: "",
   name: "",
   location: "",
   venue: "",
@@ -15,39 +16,86 @@ const defaultTournament = {
   pointsPerSet: "25",
   finalSetPoints: "15",
   description: "",
-  additionalRules: ""
+  additionalRules: "",
 };
 
 export default function EditTournament() {
   const [tournament, setTournament] = useState(defaultTournament);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    const savedTournament = localStorage.getItem("createdTournament");
-    if (savedTournament) {
-      const parsedTournament = JSON.parse(savedTournament);
+    const selectedTournamentId = localStorage.getItem("selectedTournamentId");
+    const savedTournaments = JSON.parse(localStorage.getItem("tournaments")) || [];
+
+    if (!selectedTournamentId) {
+      setNotFound(true);
+      return;
+    }
+
+    const foundTournament = savedTournaments.find(
+      (t) => String(t.id) === String(selectedTournamentId)
+    );
+
+    if (foundTournament) {
       setTournament({
         ...defaultTournament,
-        ...parsedTournament
+        ...foundTournament,
       });
+    } else {
+      setNotFound(true);
     }
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTournament((prev) => ({ ...prev, [name]: value }));
+    setTournament((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    localStorage.setItem("createdTournament", JSON.stringify(tournament));
+
+    const savedTournaments = JSON.parse(localStorage.getItem("tournaments")) || [];
+
+    const updatedTournaments = savedTournaments.map((t) =>
+      String(t.id) === String(tournament.id) ? tournament : t
+    );
+
+    localStorage.setItem("tournaments", JSON.stringify(updatedTournaments));
     alert("Tournament updated successfully.");
   };
 
   const handleDelete = () => {
-    localStorage.removeItem("createdTournament");
+    const savedTournaments = JSON.parse(localStorage.getItem("tournaments")) || [];
+
+    const filteredTournaments = savedTournaments.filter(
+      (t) => String(t.id) !== String(tournament.id)
+    );
+
+    localStorage.setItem("tournaments", JSON.stringify(filteredTournaments));
+    localStorage.removeItem("selectedTournamentId");
+
     alert("Tournament deleted.");
     setTournament(defaultTournament);
+    setNotFound(true);
   };
+
+  if (notFound) {
+    return (
+      <div className="min-h-screen bg-slate-50 py-10 px-4">
+        <div className="mx-auto max-w-3xl bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+          <h1 className="text-2xl font-bold text-slate-900 mb-3">
+            Tournament Not Found
+          </h1>
+          <p className="text-slate-600">
+            No tournament was selected for editing, or the tournament no longer exists.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 py-10 px-4">
@@ -58,7 +106,7 @@ export default function EditTournament() {
           </h1>
           <p className="mt-2 text-slate-600">
             Edit the tournament you created earlier. This page automatically
-            loads the saved tournament data.
+            loads the selected tournament data.
           </p>
         </div>
 
