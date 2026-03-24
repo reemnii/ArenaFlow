@@ -176,7 +176,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-10 text-white">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-10 text-inherit">
       <div className="max-w-7xl mx-auto space-y-8">
         <motion.section
           variants={smoothDrop}
@@ -189,16 +189,16 @@ export default function Dashboard() {
 
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
             <div className="max-w-2xl">
-              <p className="text-sm uppercase tracking-[0.25em] text-white/60 mb-3">
+              <p className="text-sm uppercase tracking-[0.25em] text-inherit/60 mb-3">
                 ArenaFlow Dashboard
               </p>
 
               <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-3">
                 Welcome back,{" "}
-                <span className="text-[#e7b5db]">{fallbackUser.username}</span>
+                <span className="text-inherit">{fallbackUser.username}</span>
               </h1>
 
-              <p className="text-white/75 text-sm sm:text-base leading-7">
+              <p className="text-inherit/75 text-sm sm:text-base leading-7">
                 {canManage
                   ? "Manage tournaments, review registered teams, and control platform activity from one place."
                   : "View tournaments, check teams, and track your activity from one place."}
@@ -231,7 +231,7 @@ export default function Dashboard() {
                   <h3 className="font-semibold text-sm sm:text-lg">
                     Create Tournament
                   </h3>
-                  <p className="text-xs sm:text-sm text-white/75 mt-2">
+                  <p className="text-xs sm:text-sm text-inherit/75 mt-2">
                     Add a new event to the platform.
                   </p>
                 </Link>
@@ -250,7 +250,7 @@ export default function Dashboard() {
                   <h3 className="font-semibold text-sm sm:text-lg">
                     Browse Tournaments
                   </h3>
-                  <p className="text-xs sm:text-sm text-white/75 mt-2">
+                  <p className="text-xs sm:text-sm text-inherit/75 mt-2">
                     Explore available tournaments and event details.
                   </p>
                 </Link>
@@ -270,7 +270,7 @@ export default function Dashboard() {
                 <h3 className="font-semibold text-sm sm:text-lg">
                   {canManage ? "Manage Teams" : "View Teams"}
                 </h3>
-                <p className="text-xs sm:text-sm text-white/75 mt-2">
+                <p className="text-xs sm:text-sm text-inherit/75 mt-2">
                   {canManage
                     ? "View and organize participating teams."
                     : "See the participating teams and divisions."}
@@ -298,11 +298,11 @@ export default function Dashboard() {
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-white/60 text-xs sm:text-sm mb-1 sm:mb-2">
+                    <p className="text-inherit/60 text-xs sm:text-sm mb-1 sm:mb-2">
                       {item.title}
                     </p>
                     <h2 className="text-2xl sm:text-3xl font-bold">{item.value}</h2>
-                    <p className="text-xs sm:text-sm text-white/70 mt-1 sm:mt-2">
+                    <p className="text-xs sm:text-sm text-inherit/70 mt-1 sm:mt-2">
                       {item.subtitle}
                     </p>
                   </div>
@@ -329,7 +329,7 @@ export default function Dashboard() {
           >
             <div className="mb-6">
               <h2 className="text-2xl font-bold">Team Performance</h2>
-              <p className="text-sm text-white/65 mt-1">
+              <p className="text-sm text-inherit/65 mt-1">
                 Wins overview for top teams
               </p>
             </div>
@@ -342,7 +342,7 @@ export default function Dashboard() {
                 >
                   <XAxis
                     dataKey="name"
-                    tick={{ fill: "#d9d9d9", fontSize: 12 }}
+                    tick={{ fill: "currentColor", fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -350,7 +350,7 @@ export default function Dashboard() {
                     allowDecimals={false}
                     domain={[0, "dataMax + 1"]}
                     tickCount={5}
-                    tick={{ fill: "#d9d9d9", fontSize: 12 }}
+                    tick={{ fill: "currentColor", fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -367,7 +367,7 @@ export default function Dashboard() {
           <motion.div variants={smoothDrop} className="bg-white/10 backdrop-blur-[20px] border border-white/10 rounded-3xl p-6 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
             <div className="mb-6">
               <h2 className="text-2xl font-bold">Tournament Status</h2>
-              <p className="text-sm text-white/65 mt-1">
+              <p className="text-sm text-inherit/65 mt-1">
                 Distribution of current tournament phases
               </p>
             </div>
@@ -406,7 +406,7 @@ export default function Dashboard() {
                       style={{ backgroundColor: item.color }}
                     ></span>
                     <div className="flex-1">
-                      <p className="text-sm text-white/75">{item.name}</p>
+                      <p className="text-sm text-inherit/75">{item.name}</p>
                     </div>
                     <span className="font-semibold">{item.value}</span>
                   </div>
@@ -431,14 +431,14 @@ export default function Dashboard() {
             <div className="flex items-center justify-between gap-4 mb-6 ">
               <div>
                 <h2 className="text-2xl font-bold">Upcoming Tournaments</h2>
-                <p className="text-sm text-white/65 mt-1">
+                <p className="text-sm text-inherit/65 mt-1">
                   Quick overview of upcoming events
                 </p>
               </div>
 
               <Link
                 to="/tournaments"
-                className="text-sm text-[#e7b5db] hover:text-white transition-colors"
+                className="text-sm text-inherit hover:text-inherit transition-colors"
               >
                 View all
               </Link>
@@ -470,7 +470,7 @@ export default function Dashboard() {
                           <span>{getTeamName(tournament.team2Id)}</span>
                         </div>
 
-                        <div className="flex flex-wrap gap-4 text-sm text-white/70">
+                        <div className="flex flex-wrap gap-4 text-sm text-inherit/70">
                           <span className="flex items-center gap-2">
                             <MapPin size={16} />
                             {tournament.location}
@@ -514,17 +514,17 @@ export default function Dashboard() {
 
             <div className="space-y-4">
               <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p className="text-sm text-white/60 mb-1">Username</p>
+                <p className="text-sm text-inherit/60 mb-1">Username</p>
                 <p className="font-medium">{fallbackUser.username}</p>
               </div>
 
               <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p className="text-sm text-white/60 mb-1">Email</p>
+                <p className="text-sm text-inherit/60 mb-1">Email</p>
                 <p className="font-medium break-all">{fallbackUser.email}</p>
               </div>
 
               <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p className="text-sm text-white/60 mb-1">Role</p>
+                <p className="text-sm text-inherit/60 mb-1">Role</p>
                 <p className="font-medium capitalize">{fallbackUser.role}</p>
               </div>
             </div>
@@ -556,7 +556,7 @@ export default function Dashboard() {
               <h2 className="text-2xl font-bold">Men’s Teams</h2>
               <Link
                 to="/participants"
-                className="text-sm text-[#e7b5db] hover:text-white transition-colors"
+                className="text-sm text-[#e7b5db] hover:text-inherit transition-colors"
               >
                 View all
               </Link>
@@ -591,7 +591,7 @@ export default function Dashboard() {
               <h2 className="text-2xl font-bold">Women’s Teams</h2>
               <Link
                 to="/participants"
-                className="text-sm text-[#e7b5db] hover:text-white transition-colors"
+                className="text-sm text-[#e7b5db] hover:text-inherit transition-colors"
               >
                 View all
               </Link>

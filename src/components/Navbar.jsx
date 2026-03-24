@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { User, Menu, X } from "lucide-react";
+import { User, Menu, X, Sun, Moon } from "lucide-react";
 import ButtonOutline from "../layouts/ButtonOutline.jsx";
 import logo from "/logo-removebg-preview.png";
 
@@ -8,6 +8,9 @@ export default function Navbar() {
   const [scrollActive, setScrollActive] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "dark"
+  );
 
   const location = useLocation();
 
@@ -19,14 +22,25 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.classList.toggle("light", theme === "light");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
     let currentUser = null;
     try {
-      currentUser = JSON.parse(localStorage.getItem("currentUser"))|| JSON.parse(sessionStorage.getItem("currentUser"));
+      currentUser =
+        JSON.parse(localStorage.getItem("currentUser")) ||
+        JSON.parse(sessionStorage.getItem("currentUser"));
       setIsLoggedIn(!!currentUser);
     } catch (error) {
       setIsLoggedIn(false);
     }
   }, [location]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
   const navLinkClass =
     "relative transition-all hover:text-brand-deep after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-full after:bg-brand-deep after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100";
@@ -37,7 +51,7 @@ export default function Navbar() {
   return (
     <nav
       className={
-        "fixed top-0 w-full z-30 transition-all bg-white/5 backdrop-blur-[20px] border border-white/10 lg:rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.3)] px-6 text-white " +
+        "fixed top-0 w-full z-30 transition-all bg-white/5 backdrop-blur-[20px] border border-white/10 lg:rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.3)] px-6 text-main " +
         (scrollActive ? "py-3" : "py-4")
       }
     >
@@ -50,7 +64,7 @@ export default function Navbar() {
           <img src={logo} alt="Logo" className="h-20 w-auto" />
         </Link>
 
-        <ul className="hidden lg:flex items-center gap-8 text-white font-medium">
+        <ul className="hidden lg:flex items-center gap-8 text-main font-medium">
           <li>
             <Link to="/" className={navLinkClass}>
               Home
@@ -71,10 +85,17 @@ export default function Navbar() {
               Create Tournament
             </Link>
           </li>
-          
         </ul>
 
         <div className="hidden lg:flex items-center gap-4">
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="p-2 rounded-full hover:bg-white/10 transition-all"
+          >
+            {theme === "dark" ? <Sun size={22} /> : <Moon size={22} />}
+          </button>
+
           {isLoggedIn ? (
             <Link
               to="/dashboard"
@@ -97,7 +118,9 @@ export default function Navbar() {
         <button
           className="lg:hidden relative w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle Menu"
+          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           <Menu
             size={28}
@@ -115,12 +138,23 @@ export default function Navbar() {
       </div>
 
       <div
+        id="mobile-menu"
         className={`lg:hidden overflow-hidden transition-all duration-300 ${
           menuOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
         }`}
       >
         <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-xl p-4">
-          <ul className="flex flex-col text-white font-medium">
+          <ul className="flex flex-col text-main font-medium">
+            <li>
+              <button
+                onClick={toggleTheme}
+                className={`${mobileLinkClass} w-full text-left`}
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? "Light Mode ☀️" : "Dark Mode 🌙"}
+              </button>
+            </li>
+
             <li>
               <Link
                 to="/"
