@@ -87,7 +87,7 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm sm:max-w-md bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.25)] p-4 sm:p-5"
       >
-        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-white">
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-inherit">
           Register
         </h2>
 
@@ -99,7 +99,7 @@ export default function Register() {
 
         <label
           htmlFor="register-username"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Username
         </label>
@@ -114,7 +114,7 @@ export default function Register() {
 
         <label
           htmlFor="register-email"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Email
         </label>
@@ -129,7 +129,7 @@ export default function Register() {
 
         <label
           htmlFor="register-password"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Password
         </label>
@@ -146,19 +146,19 @@ export default function Register() {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-white/70 hover:text-white"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-inherit/70 hover:text-inherit"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
 
-        <p className="text-xs text-white/70 mb-3 leading-relaxed">
+        <p className="text-xs text-inherit/70 mb-3 leading-relaxed">
           Use at least 8 characters with uppercase, lowercase, a number, and a special character.
         </p>
 
         <label
           htmlFor="register-role"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Role
         </label>

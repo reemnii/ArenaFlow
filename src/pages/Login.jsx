@@ -83,7 +83,7 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-[20px] shadow-[0_40px_120px_rgba(0,0,0,0.3)] p-6 sm:p-8 md:p-10 w-full max-w-md sm:max-w-lg"
       >
-        <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center text-white">
+        <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center text-inherit">
           Login
         </h2>
 
@@ -95,7 +95,7 @@ export default function Login() {
 
         <label
           htmlFor="identifier"
-          className="block mb-2 text-sm font-medium text-white"
+          className="block mb-2 text-sm font-medium text-inherit"
         >
           Email / Username
         </label>
@@ -111,7 +111,7 @@ export default function Login() {
 
         <label
           htmlFor="login-password"
-          className="block mb-2 text-sm font-medium text-white"
+          className="block mb-2 text-sm font-medium text-inherit"
         >
           Password
         </label>
@@ -130,13 +130,13 @@ export default function Login() {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-inherit/70 hover:text-inherit"
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
 
-        <label className="flex items-center text-sm text-white mb-4 mt-4">
+        <label className="flex items-center text-sm text-inherit mb-4 mt-4">
           <input
             type="checkbox"
             className="mr-2"
@@ -148,7 +148,7 @@ export default function Login() {
 
         <Link
           to="/forgot-password"
-          className="text-left text-sm text-white mb-4 mt-1 cursor-pointer hover:underline block"
+          className="text-left text-sm text-inherit mb-4 mt-1 cursor-pointer hover:underline block"
         >
           Forgot Password?
         </Link>

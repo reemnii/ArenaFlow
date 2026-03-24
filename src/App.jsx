@@ -17,6 +17,7 @@ import Privacy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/UserProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TeamDetails from "./pages/TeamDetails";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="create" element={<CreateTournaments />} />
           <Route path="edit/:id" element={<EditTournaments />} />
           <Route path="participants" element={<ManageTeams />} />
+          <Route path="participants/:id" element={<TeamDetails />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
         </Route>

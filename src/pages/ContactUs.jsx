@@ -65,11 +65,11 @@ export default function ContactUs() {
 
         {/* Contact Info */}
         <div className="bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-2xl shadow-[0_30px_100px_rgba(0,0,0,0.25)] p-5 sm:p-6 md:p-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-inherit mb-3">
             Contact Us
           </h1>
 
-          <p className="text-white/75 text-sm sm:text-base leading-relaxed mb-6">
+          <p className="text-inherit/75 text-sm sm:text-base leading-relaxed mb-6">
             Have a question about tournaments, teams, or your account? Send us a
             message and our team will get back to you as soon as possible.
           </p>
@@ -80,27 +80,27 @@ export default function ContactUs() {
             <div className="flex items-start gap-3">
               <Mail className="w-5 h-5 text-brand mt-0.5" />
               <div>
-                <h2 className="text-white font-semibold mb-1">Email Us</h2>
+                <h2 className="text-inherit font-semibold mb-1">Email Us</h2>
 
-                <div className="text-white/75 text-sm sm:text-base space-y-1 break-words">
+                <div className="text-inehrit/75 text-sm sm:text-base space-y-1 break-words">
 
                   <a
                     href="mailto:shahd.kaddoura182@gmail.com?subject=ArenaFlow%20Support"
-                    className="block hover:underline hover:text-white transition"
+                    className="block hover:underline hover:text-inherit transition"
                   >
                     shahd.kaddoura182@gmail.com
                   </a>
 
                   <a
                     href="mailto:rnimer9@gmail.com?subject=ArenaFlow%20Support"
-                    className="block hover:underline hover:text-white transition"
+                    className="block hover:underline hover:text-inherit transition"
                   >
                     rnimer9@gmail.com
                   </a>
 
                   <a
                     href="mailto:hashemrawad85@gmail.com?subject=ArenaFlow%20Support"
-                    className="block hover:underline hover:text-white transition"
+                    className="block hover:underline hover:text-inherit transition"
                   >
                     hashemrawad85@gmail.com
                   </a>
@@ -113,8 +113,8 @@ export default function ContactUs() {
             <div className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-brand mt-0.5" />
               <div>
-                <h2 className="text-white font-semibold mb-1">Location</h2>
-                <p className="text-white/75 text-sm sm:text-base">
+                <h2 className="text-inherit font-semibold mb-1">Location</h2>
+                <p className="text-inherit/75 text-sm sm:text-base">
                   Online platform
                 </p>
               </div>
@@ -124,8 +124,8 @@ export default function ContactUs() {
             <div className="flex items-start gap-3">
               <Clock className="w-5 h-5 text-brand mt-0.5" />
               <div>
-                <h2 className="text-white font-semibold mb-1">Response Time</h2>
-                <p className="text-white/75 text-sm sm:text-base">
+                <h2 className="text-inherit font-semibold mb-1">Response Time</h2>
+                <p className="text-inherit/75 text-sm sm:text-base">
                   We usually respond within 24–48 hours.
                 </p>
               </div>
@@ -139,7 +139,7 @@ export default function ContactUs() {
           onSubmit={handleSubmit}
           className="bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-2xl shadow-[0_30px_100px_rgba(0,0,0,0.25)] p-5 sm:p-6 md:p-8"
         >
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-5">
+          <h2 className="text-xl sm:text-2xl font-bold text-inherit mb-5">
             Send a Message
           </h2>
 
@@ -153,7 +153,7 @@ export default function ContactUs() {
             </p>
           )}
 
-          <label className="block text-sm font-medium text-white mb-2">
+          <label className="block text-sm font-medium text-inherit mb-2">
             Name
           </label>
           <input
@@ -162,10 +162,10 @@ export default function ContactUs() {
             placeholder="Enter your name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-white/50 px-3 py-2.5 mb-4 outline-none"
+            className="w-full rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-inherit/50 px-3 py-2.5 mb-4 outline-none"
           />
 
-          <label className="block text-sm font-medium text-white mb-2">
+          <label className="block text-sm font-medium text-inherit mb-2">
             Email
           </label>
           <input
@@ -174,10 +174,10 @@ export default function ContactUs() {
             placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-white/50 px-3 py-2.5 mb-4 outline-none"
+            className="w-full rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-inherit/50 px-3 py-2.5 mb-4 outline-none"
           />
 
-          <label className="block text-sm font-medium text-white mb-2">
+          <label className="block text-sm font-medium text-inherit mb-2">
             Subject
           </label>
           <select
@@ -206,7 +206,7 @@ export default function ContactUs() {
             </option>
           </select>
 
-          <label className="block text-sm font-medium text-white mb-2">
+          <label className="block text-sm font-medium text-inherit mb-2">
             Message
           </label>
           <textarea
@@ -215,7 +215,7 @@ export default function ContactUs() {
             placeholder="Write your message here"
             value={formData.message}
             onChange={handleChange}
-            className="w-full rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-white/50 px-3 py-2.5 mb-5 outline-none resize-none"
+            className="w-full rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-/50 px-3 py-2.5 mb-5 outline-none resize-none"
           />
 
           <button
