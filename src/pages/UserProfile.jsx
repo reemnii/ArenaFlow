@@ -822,6 +822,10 @@ export default function UserProfile() {
           {currentUser.fullName || currentUser.username}
         </h3>
 
+        <p className="mt-1 text-center text-sm text-white/70">
+          {avatar.subLabel}
+        </p>
+
         <div className="mt-5 grid grid-cols-1 gap-3 min-[480px]:grid-cols-2">
           <div className="rounded-xl border border-white/10 bg-white/5 p-3 text-left">
             <p className="text-xs text-inherit/60">Team</p>
@@ -961,79 +965,32 @@ export default function UserProfile() {
           >
             {isPlayer && (
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4">
-                <div className="min-[480px]:col-span-2">
-                  <label className="mb-2 block text-sm text-inherit/75">
+                <div>
+                  <label className="mb-2 block text-sm text-white/75">
                     Team Name
                   </label>
-
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <div className="relative flex-1">
-                      <select
-                        name="teamName"
-                        value={completeProfileForm.teamName}
-                        onChange={handleCompleteProfileChange}
-                        className={`${themedSelectClass} appearance-none pr-10`}
-                      >
-                        <option value="" className="text-inherit">
-                          Select a team
-                        </option>
-                        {allTeams.map((team) => (
-                          <option
-                            key={team.id || team.teamId || team.name}
-                            value={team.name}
-                            className="text-inherit"
-                          >
-                            {team.name}
-                          </option>
-                        ))}
-                      </select>
-
-                      <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
-                        ▼
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => navigate("/participants")}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
-                    >
-                      <PlusCircle size={16} />
-                      Create Team
-                    </button>
-                  </div>
+                  <input
+                    type="text"
+                    name="teamName"
+                    value={completeProfileForm.teamName}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter team name"
+                  />
                 </div>
 
                 <div>
                   <label className="mb-2 block text-sm text-inherit/75">
                     Position
                   </label>
-
-                  <div className="relative">
-                    <select
-                      name="position"
-                      value={completeProfileForm.position}
-                      onChange={handleCompleteProfileChange}
-                      className={`${themedSelectClass} appearance-none pr-10`}
-                    >
-                      <option value="" className="text-inherit">
-                        Select position
-                      </option>
-                      {PLAYER_POSITIONS.map((item) => (
-                        <option
-                          key={item}
-                          value={item}
-                          className="text-inherit"
-                        >
-                          {item}
-                        </option>
-                      ))}
-                    </select>
-
-                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
-                      ▼
-                    </span>
-                  </div>
+                  <input
+                    type="text"
+                    name="position"
+                    value={completeProfileForm.position}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter position"
+                  />
                 </div>
 
                 <div>
@@ -1046,7 +1003,7 @@ export default function UserProfile() {
                     name="jerseyNumber"
                     value={completeProfileForm.jerseyNumber}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter jersey number"
                   />
                 </div>
@@ -1055,83 +1012,43 @@ export default function UserProfile() {
                   <label className="mb-2 block text-sm text-inherit/75">
                     Gender
                   </label>
-
-                  <div className="relative">
-                    <select
-                      name="gender"
-                      value={completeProfileForm.gender}
-                      onChange={handleCompleteProfileChange}
-                      className={`${themedSelectClass} appearance-none pr-10`}
-                    >
-                      <option value="" className="text-inherit">
-                        Select gender
-                      </option>
-                      <option value="male" className="text-inherit">
-                        Male
-                      </option>
-                      <option value="female" className="text-inherit">
-                        Female
-                      </option>
-                    </select>
-
-                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
-                      ▼
-                    </span>
-                  </div>
+                  <input
+                    type="text"
+                    name="gender"
+                    value={completeProfileForm.gender}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter gender"
+                  />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-inherit/75">Age</label>
+                  <label className="mb-2 block text-sm text-white/75">
+                    Phone
+                  </label>
                   <input
                     type="text"
                     inputMode="numeric"
                     name="age"
                     value={completeProfileForm.age}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
-                    placeholder="Enter age"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter phone number"
                   />
                 </div>
 
-                <div className="min-[480px]:col-span-2">
-                  <label className="mb-2 block text-sm text-inherit/75">
-                    Phone Number
+                <div>
+                  <label className="mb-2 block text-sm text-white/75">
+                    Age
                   </label>
-
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-[140px_1fr]">
-                    <div className="relative">
-                      <select
-                        name="phoneCountryCode"
-                        value={completeProfileForm.phoneCountryCode}
-                        onChange={handleCompleteProfileChange}
-                        className={`${themedSelectClass} appearance-none pr-10`}
-                      >
-                        {COUNTRY_CODES.map((item) => (
-                          <option
-                            key={item.code}
-                            value={item.code}
-                            className="text-inherit"
-                          >
-                            {item.flag} {item.code}
-                          </option>
-                        ))}
-                      </select>
-
-                      <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
-                        ▼
-                      </span>
-                    </div>
-
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      name="phoneNumber"
-                      value={completeProfileForm.phoneNumber}
-                      onChange={handleCompleteProfileChange}
-                      className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
-                      placeholder="Enter phone number"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="age"
+                    value={completeProfileForm.age}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter age"
+                  />
                 </div>
               </div>
             )}
@@ -1147,81 +1064,51 @@ export default function UserProfile() {
                     name="fullName"
                     value={completeProfileForm.fullName}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter full name"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-inherit/75">
-                    Gender
-                  </label>
-
-                  <div className="relative">
-                    <select
-                      name="gender"
-                      value={completeProfileForm.gender}
-                      onChange={handleCompleteProfileChange}
-                      className={`${themedSelectClass} appearance-none pr-10`}
-                    >
-                      <option value="" className="text-inherit">
-                        Select gender
-                      </option>
-                      <option value="male" className="text-inherit">
-                        Male
-                      </option>
-                      <option value="female" className="text-inherit">
-                        Female
-                      </option>
-                    </select>
-
-                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
-                      ▼
-                    </span>
-                  </div>
-                </div>
-
-                <div className="min-[480px]:col-span-2">
-                  <label className="mb-2 block text-sm text-inherit/75">
+                  <label className="mb-2 block text-sm text-white/75">
                     Team Name
                   </label>
+                  <input
+                    type="text"
+                    name="teamName"
+                    value={completeProfileForm.teamName}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter team name"
+                  />
+                </div>
 
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <div className="relative flex-1">
-                      <select
-                        name="teamName"
-                        value={completeProfileForm.teamName}
-                        onChange={handleCompleteProfileChange}
-                        className={`${themedSelectClass} appearance-none pr-10`}
-                      >
-                        <option value="" className="text-inherit">
-                          Select a team
-                        </option>
-                        {allTeams.map((team) => (
-                          <option
-                            key={team.id || team.teamId || team.name}
-                            value={team.name}
-                            className="text-inherit"
-                          >
-                            {team.name}
-                          </option>
-                        ))}
-                      </select>
+                <div>
+                  <label className="mb-2 block text-sm text-white/75">
+                    Gender
+                  </label>
+                  <input
+                    type="text"
+                    name="gender"
+                    value={completeProfileForm.gender}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter gender"
+                  />
+                </div>
 
-                      <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
-                        ▼
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => navigate("/participants")}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
-                    >
-                      <PlusCircle size={16} />
-                      Create Team
-                    </button>
-                  </div>
+                <div>
+                  <label className="mb-2 block text-sm text-white/75">
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    name="phone"
+                    value={completeProfileForm.phone}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter phone number"
+                  />
                 </div>
 
                 <div>
@@ -1234,7 +1121,7 @@ export default function UserProfile() {
                     name="yearsExperience"
                     value={completeProfileForm.yearsExperience}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter years of experience"
                   />
                 </div>
@@ -1248,7 +1135,7 @@ export default function UserProfile() {
                     name="specialization"
                     value={completeProfileForm.specialization}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter specialization"
                   />
                 </div>
