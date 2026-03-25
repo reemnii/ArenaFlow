@@ -3,36 +3,41 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
+  // Form input states
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  // Error message state
   const [error, setError] = useState("");
+  // Toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
-
+    
+    // Clean input values
     const trimmedUsername = username.trim();
     const trimmedEmail = email.trim().toLowerCase();
 
+    // Validate required fields
     if (!trimmedUsername || !trimmedEmail || !password || !role) {
       setError("Please fill in all fields");
       return;
     }
 
+    // Validate email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!emailPattern.test(trimmedEmail)) {
       setError("Please enter a valid email address");
       return;
     }
 
+    // Validate strong password
     const passwordPattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-
     if (!passwordPattern.test(password)) {
       setError(
         "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character"
@@ -43,11 +48,13 @@ export default function Register() {
     let storedUsers = [];
 
     try {
+    // Get users from localStorage
       storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     } catch {
       storedUsers = [];
     }
 
+    // Check for existing email or username
     const emailExists = storedUsers.find(
       (u) => u.email.toLowerCase() === trimmedEmail
     );
@@ -57,6 +64,7 @@ export default function Register() {
       return;
     }
 
+    // Check if username already exists
     const usernameExists = storedUsers.find(
       (u) => u.username.toLowerCase() === trimmedUsername.toLowerCase()
     );
@@ -66,6 +74,7 @@ export default function Register() {
       return;
     }
 
+    // Create new user object
     const newUser = {
       id: Date.now(),
       username: trimmedUsername,
@@ -74,9 +83,11 @@ export default function Register() {
       role,
     };
 
+    // Save user to localStorage
     storedUsers.push(newUser);
     localStorage.setItem("users", JSON.stringify(storedUsers));
 
+    // Clear error and redirect to login
     setError("");
     navigate("/login");
   }
@@ -87,19 +98,20 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm sm:max-w-md bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.25)] p-4 sm:p-5"
       >
-        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-white">
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-inherit">
           Register
         </h2>
 
+        {/* Error message */}
         {error && (
           <p className="text-[#913075] mb-3 text-sm font-semibold" role="alert">
             {error}
           </p>
         )}
-
+        {/* Username input */}
         <label
           htmlFor="register-username"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Username
         </label>
@@ -111,10 +123,10 @@ export default function Register() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-
+        {/* Email input */}
         <label
           htmlFor="register-email"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Email
         </label>
@@ -126,10 +138,10 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-
+        {/* Password input */}
         <label
           htmlFor="register-password"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Password
         </label>
@@ -142,23 +154,27 @@ export default function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          {/* Toggle show/hide password */}
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-white/70 hover:text-white"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-inherit/70 hover:text-inherit"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
 
-        <p className="text-xs text-white/70 mb-3 leading-relaxed">
+        {/* Password hint */}
+        <p className="text-xs text-inherit/70 mb-3 leading-relaxed">
           Use at least 8 characters with uppercase, lowercase, a number, and a special character.
         </p>
 
+        {/* Role selection */}
         <label
           htmlFor="register-role"
-          className="block mb-1.5 text-sm font-medium text-white"
+          className="block mb-1.5 text-sm font-medium text-inherit"
         >
           Role
         </label>
@@ -182,6 +198,7 @@ export default function Register() {
           </option>
         </select>
 
+        {/* Submit button */}
         <button
           type="submit"
           className="w-full bg-brand text-white py-2.5 rounded-lg hover:bg-brand/90 transition"

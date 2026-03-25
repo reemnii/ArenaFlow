@@ -1,16 +1,101 @@
-# React + Vite
+ArenaFlow – Tournament Management Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Project Overview
+ArenaFlow is a responsive and interactive frontend web application built using React, Tailwind CSS, and React Router.
+It allows users to explore tournaments, manage teams, and interact with a complete tournament system using mock data simulation.
 
-Currently, two official plugins are available:
+This project was developed as part of CSC443 – Spring 2026 (Project Phase 1)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+👥 Team Members & Contributions
+- Shahd Qaddoura
+    Contact Us Page
+    Forgot Password Page
+    Login Page
+    Register Page
+    Not Found Page
+    Team Details Page
+    Tournaments Page
+    Co-developed Home Page
+- Rawad Hachem
+    Edit Tournament Page
+    Manage Teams Page
+    Create Tournament Page
+- Reem Nemr
+    User Dashboard
+    Admin Profile
+    Tournament Details Page
+    Terms & Conditions Page
 
-## React Compiler
+Shared Work
+Home Page → Developed collaboratively by Reem and Shahd
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Project Topic & Data Entities
+- Topic: Tournament / Sports Event Management System
+- Main Data Entities:
+    Users (Admin, Player, Coach, Manager)
+    Teams
+    Tournaments
+- Technologies Used
+    React (Functional Components + Hooks)
+    Tailwind CSS (Responsive Design)
+    React Router (Navigation)
+    JavaScript (ES6+)
+    HTML5 & CSS3
+    Git & GitHub
+    Mock Data Simulation
 
-## Expanding the ESLint configuration
+We simulate backend behavior using:
+    Local JavaScript arrays (e.g., users, tournaments, teams)
+    React state (useState)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Example:
+Login checks user credentials from mock data
+Creating a tournament updates local state
+Changes do NOT persist after refresh
+Key Features
+1. uthentication (Login / Register / Forgot Password)
+2. Interactive Home Page
+3. Tournament Listing with Search
+4. Tournament Details View
+5. Team Management System
+6. User Dashboard & Admin Profile
+7. Light/Dark Mode Support
+8. Fully Responsive Design
+9. Accessibility (ARIA labels, semantic HTML)
+10. Navigation
+
+The app uses React Router for seamless navigation between:
+Home
+Tournaments
+Team Details
+Dashboard
+Authentication Pages
+Admin Pages
+
+Setup Instructions
+1. Clone the repository
+    git clone https://github.com/reemnii/ArenaFlow
+    cd your-project
+2. Install dependencies
+    npm install
+3. Run the project
+    npm run dev
+4. Open in browser
+    http://localhost:5173
+
+Deployment
+Deployed Application Link: (add your link here)
+GitHub Repository: https://github.com/reemnii/ArenaFlow
+
+📸 Screenshots / Demo
+![Admin Profile](/demo/image.png)
+![User Profile](/demo/image-2.png)
+![Login Page](/demo/image-1.png)
+![Dashboard](/demo/image-3.png)
+![Register Page](/demo/image-4.png)
+![Contact Us Page](/demo/image-5.png)
+![Tournaments Page](/demo/image-10.png)
+![Tournament Details Page](/demo/image-7.png)
+![Team Details Page](/demo/image-8.png)
+![Home Page](/demo/image-9.png)
+![Create Tournament Page](/demo/image copy.png)

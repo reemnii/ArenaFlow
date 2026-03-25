@@ -13,6 +13,7 @@ import {
   EyeOff,
   LogOut,
   IdCard,
+  PlusCircle,
 } from "lucide-react";
 import { users as defaultUsers } from "../data/users";
 import { men_players } from "../data/men_players";
@@ -23,6 +24,27 @@ import femalePlayerAvatar from "/avatars/volleyball-player.png";
 import malePlayerAvatar from "/avatars/volleyball.png";
 import femaleCoachAvatar from "/avatars/coach.png";
 import maleCoachAvatar from "/avatars/trainer.png";
+import { teams as defaultTeams } from "../data/teams";
+
+const COUNTRY_CODES = [
+  { code: "+961", flag: "🇱🇧", min: 7, max: 8 },
+  { code: "+1", flag: "🇺🇸", min: 10, max: 10 },
+  { code: "+44", flag: "🇬🇧", min: 10, max: 10 },
+  { code: "+33", flag: "🇫🇷", min: 9, max: 9 },
+  { code: "+49", flag: "🇩🇪", min: 10, max: 11 },
+  { code: "+20", flag: "🇪🇬", min: 10, max: 10 },
+  { code: "+966", flag: "🇸🇦", min: 9, max: 9 },
+  { code: "+971", flag: "🇦🇪", min: 9, max: 9 },
+];
+
+const PLAYER_POSITIONS = [
+  "Setter",
+  "Outside Hitter",
+  "Opposite Hitter",
+  "Middle Blocker",
+  "Libero",
+  "Defensive Specialist",
+];
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -31,6 +53,7 @@ export default function UserProfile() {
   const [allUsers, setAllUsers] = useState([]);
   const [playerInfo, setPlayerInfo] = useState(null);
   const [playerTeam, setPlayerTeam] = useState(null);
+  const [allTeams, setAllTeams] = useState([]);
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -49,6 +72,8 @@ export default function UserProfile() {
     jerseyNumber: "",
     gender: "",
     phone: "",
+    phoneCountryCode: "+961",
+    phoneNumber: "",
     age: "",
     yearsExperience: "",
     specialization: "",
@@ -78,6 +103,49 @@ export default function UserProfile() {
     return [...safeMen, ...safeWomen];
   }, []);
 
+  function splitPhone(phoneValue = "") {
+    const cleaned = String(phoneValue).trim();
+    const matchedCountry =
+      COUNTRY_CODES.find((item) => cleaned.startsWith(item.code)) || null;
+
+    if (matchedCountry) {
+      return {
+        phoneCountryCode: matchedCountry.code,
+        phoneNumber: cleaned.slice(matchedCountry.code.length).replace(/\D/g, ""),
+      };
+    }
+
+    return {
+      phoneCountryCode: "+961",
+      phoneNumber: cleaned.replace(/\D/g, ""),
+    };
+  }
+
+  function validatePhone(phoneCountryCode, phoneNumber) {
+    const selectedCountry = COUNTRY_CODES.find(
+      (item) => item.code === phoneCountryCode
+    );
+
+    if (!selectedCountry) {
+      return "Please select a valid country code.";
+    }
+
+    const digitsOnly = phoneNumber.replace(/\D/g, "");
+
+    if (!digitsOnly) {
+      return "Phone number is required.";
+    }
+
+    if (
+      digitsOnly.length < selectedCountry.min ||
+      digitsOnly.length > selectedCountry.max
+    ) {
+      return `Phone number is not valid for ${selectedCountry.country}.`;
+    }
+
+    return "";
+  }
+
   useEffect(() => {
     let storedCurrentUser = null;
     let storedUsers = [];
@@ -89,6 +157,8 @@ export default function UserProfile() {
         JSON.parse(sessionStorage.getItem("currentUser"));
       storedUsers = JSON.parse(localStorage.getItem("users")) || defaultUsers;
       storedTeams = JSON.parse(localStorage.getItem("teams")) || [];
+      storedTeams =
+        JSON.parse(localStorage.getItem("teams")) || defaultTeams;
     } catch (error) {
       storedCurrentUser = null;
       storedUsers = defaultUsers;
@@ -146,6 +216,10 @@ export default function UserProfile() {
 
     setCurrentUser(matchedUser);
     setAllUsers(safeUsers);
+    const phoneParts = splitPhone(matchedUser.phone || "");
+    setCurrentUser(matchedUser);
+    setAllUsers(safeUsers);
+    setAllTeams(safeTeams);
     setPlayerInfo(normalizedRole === "player" ? matchedPlayer : null);
     setPlayerTeam(normalizedRole === "admin" ? null : matchedTeam);
 
@@ -161,6 +235,8 @@ export default function UserProfile() {
       jerseyNumber: matchedUser.jerseyNumber || "",
       gender: matchedUser.gender || "",
       phone: matchedUser.phone || "",
+      phoneCountryCode: phoneParts.phoneCountryCode,
+      phoneNumber: phoneParts.phoneNumber,
       age: matchedUser.age || "",
       yearsExperience: matchedUser.yearsExperience || "",
       specialization: matchedUser.specialization || "",
@@ -177,9 +253,18 @@ export default function UserProfile() {
 
   function handleCompleteProfileChange(e) {
     const { name, value } = e.target;
+
+    let nextValue = value;
+
+    if (
+      ["jerseyNumber", "yearsExperience", "age", "phoneNumber"].includes(name)
+    ) {
+      nextValue = value.replace(/[^\d]/g, "");
+    }
+
     setCompleteProfileForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: nextValue,
     }));
   }
 
@@ -201,6 +286,11 @@ export default function UserProfile() {
 
     if (!trimmedUsername || !trimmedEmail) {
       setProfileError("Please fill in all profile fields.");
+      return;
+    }
+
+    if (trimmedUsername.length < 3) {
+      setProfileError("Username must be at least 3 characters.");
       return;
     }
 
@@ -244,6 +334,7 @@ export default function UserProfile() {
         : user
     );
 
+    
     setCurrentUser(updatedUser);
     setAllUsers(updatedUsers);
 
@@ -272,6 +363,41 @@ export default function UserProfile() {
         !completeProfileForm.jerseyNumber.trim() ||
         !completeProfileForm.gender.trim()
       ) {
+    const fullName = completeProfileForm.fullName.trim();
+    const teamName = completeProfileForm.teamName.trim();
+    const position = completeProfileForm.position.trim();
+    const gender = completeProfileForm.gender.trim().toLowerCase();
+    const specialization = completeProfileForm.specialization.trim();
+    const phoneNumber = completeProfileForm.phoneNumber.trim();
+    const phoneCountryCode = completeProfileForm.phoneCountryCode;
+    const fullPhone = `${phoneCountryCode}${phoneNumber}`;
+
+    const jerseyNumber =
+      completeProfileForm.jerseyNumber === ""
+        ? ""
+        : Number(completeProfileForm.jerseyNumber);
+
+    const age =
+      completeProfileForm.age === "" ? "" : Number(completeProfileForm.age);
+
+    const yearsExperience =
+      completeProfileForm.yearsExperience === ""
+        ? ""
+        : Number(completeProfileForm.yearsExperience);
+
+    if (!["male", "female"].includes(gender)) {
+      setCompleteProfileError("Gender must be either male or female.");
+      return;
+    }
+
+    const phoneError = validatePhone(phoneCountryCode, phoneNumber);
+    if (phoneError) {
+      setCompleteProfileError(phoneError);
+      return;
+    }
+
+    if (userRole === "player") {
+      if (!teamName || !position || completeProfileForm.jerseyNumber === "" || !gender) {
         setCompleteProfileError(
           "Please fill in team name, position, jersey number, and gender."
         );
@@ -285,6 +411,27 @@ export default function UserProfile() {
         !completeProfileForm.teamName.trim() ||
         !completeProfileForm.gender.trim()
       ) {
+
+      if (!PLAYER_POSITIONS.includes(position)) {
+        setCompleteProfileError("Please select a valid player position.");
+        return;
+      }
+
+      if (Number.isNaN(jerseyNumber) || jerseyNumber < 0) {
+        setCompleteProfileError("Jersey number must be a number greater than or equal to 0.");
+        return;
+      }
+
+      if (completeProfileForm.age !== "") {
+        if (Number.isNaN(age) || age <= 0) {
+          setCompleteProfileError("Age must be a valid number greater than 0.");
+          return;
+        }
+      }
+    }
+
+    if (userRole === "coach") {
+      if (!fullName || !teamName || !gender) {
         setCompleteProfileError(
           "Please fill in full name, team name, and gender."
         );
@@ -299,6 +446,62 @@ export default function UserProfile() {
 
     const updatedUsers = allUsers.map((user) =>
       user.id === currentUser.id ? { ...user, ...completeProfileForm } : user
+
+      if (fullName.length < 3) {
+        setCompleteProfileError("Full name must be at least 3 characters.");
+        return;
+      }
+
+      if (completeProfileForm.yearsExperience !== "") {
+        if (Number.isNaN(yearsExperience) || yearsExperience < 0) {
+          setCompleteProfileError(
+            "Years of experience must be a number greater than or equal to 0."
+          );
+          return;
+        }
+      }
+
+      if (specialization && specialization.length < 2) {
+        setCompleteProfileError("Specialization must be at least 2 characters.");
+        return;
+      }
+    }
+
+    const teamExists = allTeams.some(
+      (team) => team.name?.trim().toLowerCase() === teamName.toLowerCase()
+    );
+
+    if (!teamExists) {
+      setCompleteProfileError(
+        "Selected team does not exist. Create it first from Manage Teams."
+      );
+      return;
+    }
+
+    const updatedCompleteProfile = {
+      ...completeProfileForm,
+      fullName,
+      teamName,
+      position,
+      gender,
+      phone: fullPhone,
+      jerseyNumber:
+        completeProfileForm.jerseyNumber === "" ? "" : String(jerseyNumber),
+      age: completeProfileForm.age === "" ? "" : String(age),
+      yearsExperience:
+        completeProfileForm.yearsExperience === ""
+          ? ""
+          : String(yearsExperience),
+      specialization,
+    };
+
+    const updatedUser = {
+      ...currentUser,
+      ...updatedCompleteProfile,
+    };
+
+    const updatedUsers = allUsers.map((user) =>
+      user.id === currentUser.id ? { ...user, ...updatedCompleteProfile } : user
     );
 
     setCurrentUser(updatedUser);
@@ -310,6 +513,13 @@ export default function UserProfile() {
     if (sessionStorage.getItem("currentUser")) {
       sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
     }
+
+    setCompleteProfileForm((prev) => ({
+      ...prev,
+      ...updatedCompleteProfile,
+      phoneCountryCode,
+      phoneNumber,
+    }));
 
     setCompleteProfileMessage("Details updated successfully.");
     setIsEditingCompleteProfile(false);
@@ -363,6 +573,7 @@ export default function UserProfile() {
       user.id === currentUser.id ? { ...user, password: newPassword } : user
     );
 
+    
     setCurrentUser(updatedUser);
     setAllUsers(updatedUsers);
 
@@ -396,6 +607,9 @@ export default function UserProfile() {
   function handleCancelCompleteProfileEdit() {
     setCompleteProfileError("");
     setCompleteProfileMessage("");
+
+    const phoneParts = splitPhone(currentUser?.phone || "");
+
     setCompleteProfileForm({
       fullName: currentUser?.fullName || "",
       teamName: currentUser?.teamName || playerTeam?.name || "",
@@ -403,6 +617,8 @@ export default function UserProfile() {
       jerseyNumber: currentUser?.jerseyNumber || "",
       gender: currentUser?.gender || "",
       phone: currentUser?.phone || "",
+      phoneCountryCode: phoneParts.phoneCountryCode,
+      phoneNumber: phoneParts.phoneNumber,
       age: currentUser?.age || "",
       yearsExperience: currentUser?.yearsExperience || "",
       specialization: currentUser?.specialization || "",
@@ -639,6 +855,7 @@ export default function UserProfile() {
         </h3>
 
         <p className="mt-1 text-center text-sm text-inherit/70">
+        <p className="mt-1 text-center text-sm text-white/70">
           {avatar.subLabel}
         </p>
 
@@ -679,6 +896,53 @@ export default function UserProfile() {
       </div>
     );
   };
+  const renderTeamSelect = () => (
+    
+    <div className="md:col-span-2">
+      <label className="mb-2 block text-sm font-medium text-inherit/85">
+        Team Name
+      </label>
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="relative w-full">
+          <select
+            name="teamName"
+            value={completeProfileForm.teamName}
+            onChange={handleCompleteProfileChange}
+            className={themedSelectClass}
+          >
+            <option value="" className="bg-[#1a1830] text-inherit">
+              Select a team
+            </option>
+            {allTeams.map((team) => (
+              <option
+                key={team.id || team.teamId || team.name}
+                value={team.name}
+                className="bg-[#1a1830] text-inherit"
+              >
+                {team.name}
+              </option>
+            ))}
+          </select>
+
+          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
+            ▼
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate("/participants")}
+          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/8 px-4 py-3 text-sm font-medium text-inherit transition hover:bg-white/12"
+        >
+          <PlusCircle size={16} />
+          Create Team
+        </button>
+      </div>
+    </div>
+  );
+
+  const themedSelectClass =
+  "w-full text-inherit rounded-xl sm:rounded-2xl border border-white/10 px-4 py-3 text-sm sm:text-base outline-none transition-all focus:border-brand/60 focus:bg-[#2a1430] hover:bg-[#2a1430]/20";
 
   const renderDetailsSection = () => {
     return (
@@ -717,6 +981,7 @@ export default function UserProfile() {
 
         {completeProfileMessage && (
           <div className="mb-4 rounded-xl sm:rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">
+          <div className="mb-4 rounded-xl sm:rounded-2xl border border-brand-dark bg-brand px-4 py-3 text-sm text-emerald-200">
             {completeProfileMessage}
           </div>
         )}
@@ -736,6 +1001,7 @@ export default function UserProfile() {
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="mb-2 block text-sm text-inherit/75">
+                  <label className="mb-2 block text-sm text-white/75">
                     Team Name
                   </label>
                   <input
@@ -744,6 +1010,7 @@ export default function UserProfile() {
                     value={completeProfileForm.teamName}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter team name"
                   />
                 </div>
@@ -758,6 +1025,7 @@ export default function UserProfile() {
                     value={completeProfileForm.position}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter position"
                   />
                 </div>
@@ -772,6 +1040,11 @@ export default function UserProfile() {
                     value={completeProfileForm.jerseyNumber}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    inputMode="numeric"
+                    name="jerseyNumber"
+                    value={completeProfileForm.jerseyNumber}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter jersey number"
                   />
                 </div>
@@ -785,27 +1058,28 @@ export default function UserProfile() {
                     name="gender"
                     value={completeProfileForm.gender}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter gender"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-inherit/75">
+                  <label className="mb-2 block text-sm text-white/75">
                     Phone
                   </label>
                   <input
                     type="text"
-                    name="phone"
-                    value={completeProfileForm.phone}
+                    inputMode="numeric"
+                    name="age"
+                    value={completeProfileForm.age}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter phone number"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-inherit/75">
+                  <label className="mb-2 block text-sm text-white/75">
                     Age
                   </label>
                   <input
@@ -813,7 +1087,7 @@ export default function UserProfile() {
                     name="age"
                     value={completeProfileForm.age}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter age"
                   />
                 </div>
@@ -832,12 +1106,14 @@ export default function UserProfile() {
                     value={completeProfileForm.fullName}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter full name"
                   />
                 </div>
 
                 <div>
                   <label className="mb-2 block text-sm text-inherit/75">
+                  <label className="mb-2 block text-sm text-white/75">
                     Team Name
                   </label>
                   <input
@@ -846,12 +1122,14 @@ export default function UserProfile() {
                     value={completeProfileForm.teamName}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter team name"
                   />
                 </div>
 
                 <div>
                   <label className="mb-2 block text-sm text-inherit/75">
+                  <label className="mb-2 block text-sm text-white/75">
                     Gender
                   </label>
                   <input
@@ -860,12 +1138,14 @@ export default function UserProfile() {
                     value={completeProfileForm.gender}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter gender"
                   />
                 </div>
 
                 <div>
                   <label className="mb-2 block text-sm text-inherit/75">
+                  <label className="mb-2 block text-sm text-white/75">
                     Phone
                   </label>
                   <input
@@ -874,6 +1154,7 @@ export default function UserProfile() {
                     value={completeProfileForm.phone}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter phone number"
                   />
                 </div>
@@ -884,10 +1165,18 @@ export default function UserProfile() {
                   </label>
                   <input
                     type="text"
+<<<<<<< HEAD
                     name="yearsExperience"
                     value={completeProfileForm.yearsExperience}
                     onChange={handleCompleteProfileChange}
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
+=======
+                    inputMode="numeric"
+                    name="yearsExperience"
+                    value={completeProfileForm.yearsExperience}
+                    onChange={handleCompleteProfileChange}
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+>>>>>>> reem
                     placeholder="Enter years of experience"
                   />
                 </div>
@@ -901,10 +1190,58 @@ export default function UserProfile() {
                     name="specialization"
                     value={completeProfileForm.specialization}
                     onChange={handleCompleteProfileChange}
+<<<<<<< HEAD
                     className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter specialization"
                   />
                 </div>
+=======
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    placeholder="Enter specialization"
+                  />
+                </div>
+
+                <div className="min-[480px]:col-span-2">
+                  <label className="mb-2 block text-sm text-inherit/75">
+                    Phone Number
+                  </label>
+
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-[140px_1fr]">
+                    <div className="relative">
+                      <select
+                        name="phoneCountryCode"
+                        value={completeProfileForm.phoneCountryCode}
+                        onChange={handleCompleteProfileChange}
+                        className={`${themedSelectClass} appearance-none pr-10`}
+                      >
+                        {COUNTRY_CODES.map((item) => (
+                          <option
+                            key={item.code}
+                            value={item.code}
+                            className="text-inherit"
+                          >
+                            {item.flag} {item.code}
+                          </option>
+                        ))}
+                      </select>
+
+                      <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60">
+                        ▼
+                      </span>
+                    </div>
+
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      name="phoneNumber"
+                      value={completeProfileForm.phoneNumber}
+                      onChange={handleCompleteProfileChange}
+                      className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
+                      placeholder="Enter phone number"
+                    />
+                  </div>
+                </div>
+>>>>>>> reem
               </div>
             )}
 
@@ -935,7 +1272,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Team Name
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium wrap-break-word text-sm sm:text-base">
+>>>>>>> reem
                     {currentUser.teamName || playerTeam?.name || "-"}
                   </p>
                 </div>
@@ -944,7 +1285,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Position
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium wrap-break-word text-sm sm:text-base">
+>>>>>>> reem
                     {currentUser.position || playerInfo?.position || "-"}
                   </p>
                 </div>
@@ -962,7 +1307,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Gender
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium text-sm sm:text-base capitalize">
+>>>>>>> reem
                     {currentUser.gender || "-"}
                   </p>
                 </div>
@@ -971,7 +1320,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Phone
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium break-words text-sm sm:text-base">
+>>>>>>> reem
                     {currentUser.phone || "-"}
                   </p>
                 </div>
@@ -991,7 +1344,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Full Name
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium wrap-break-word text-sm sm:text-base">
+>>>>>>> reem
                     {currentUser.fullName || "-"}
                   </p>
                 </div>
@@ -1000,7 +1357,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Team Name
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium wrap-break-word text-sm sm:text-base">
+>>>>>>> reem
                     {currentUser.teamName || playerTeam?.name || "-"}
                   </p>
                 </div>
@@ -1009,7 +1370,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Gender
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium text-sm sm:text-base capitalize">
+>>>>>>> reem
                     {currentUser.gender || "-"}
                   </p>
                 </div>
@@ -1018,7 +1383,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Phone
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium break-words text-sm sm:text-base">
+>>>>>>> reem
                     {currentUser.phone || "-"}
                   </p>
                 </div>
@@ -1036,7 +1405,11 @@ export default function UserProfile() {
                   <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Specialization
                   </p>
+<<<<<<< HEAD
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
+=======
+                  <p className="font-medium wrap-break-word text-sm sm:text-base">
+>>>>>>> reem
                     {currentUser.specialization || "-"}
                   </p>
                 </div>
@@ -1047,7 +1420,10 @@ export default function UserProfile() {
       </div>
     );
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> reem
   return (
     <div className="min-h-screen px-3 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 text-inherit">
       <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
