@@ -9,6 +9,7 @@ const defaultTournament = {
   startDate: "",
   endDate: "",
   format: "Single Elimination",
+  volleyballType: "Indoor",
   maxTeams: "",
   skillLevel: "Open",
   genderCategory: "Men",
@@ -186,6 +187,7 @@ export default function EditTournament() {
                       name="venue"
                       value={tournament.venue}
                       onChange={handleChange}
+                      placeholder="Gym, court, beach, grass field, or snow venue"
                       className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
                     />
                   </div>
@@ -250,6 +252,27 @@ export default function EditTournament() {
                       <option>Double Elimination</option>
                       <option>Round Robin</option>
                       <option>Group Stage + Knockout</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="volleyballType"
+                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
+                    >
+                      Volleyball Type
+                    </label>
+                    <select
+                      id="volleyballType"
+                      name="volleyballType"
+                      value={tournament.volleyballType}
+                      onChange={handleChange}
+                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                    >
+                      <option>Indoor</option>
+                      <option>Beach</option>
+                      <option>Grass</option>
+                      <option>Snow</option>
                     </select>
                   </div>
 
@@ -485,6 +508,12 @@ export default function EditTournament() {
                 </p>
                 <p>
                   <span className="font-medium text-slate-900 dark:text-white">
+                    Type:
+                  </span>{" "}
+                  {tournament.volleyballType}
+                </p>
+                <p>
+                  <span className="font-medium text-slate-900 dark:text-white">
                     Visibility:
                   </span>{" "}
                   {tournament.visibility}
@@ -504,8 +533,8 @@ export default function EditTournament() {
               <h2 className="text-lg font-semibold mb-3">Access Info</h2>
               <div className="text-sm text-slate-200">
                 {tournament.visibility === "Public"
-                  ? "This tournament is visible to all users and any team can register."
-                  : "This tournament is private and only invited teams can participate."}
+                  ? `This ${tournament.volleyballType.toLowerCase()} tournament is visible to all users and any team can register.`
+                  : `This ${tournament.volleyballType.toLowerCase()} tournament is private and only invited teams can participate.`}
               </div>
             </section>
           </aside>
