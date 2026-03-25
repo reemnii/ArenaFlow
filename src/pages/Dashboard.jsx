@@ -215,7 +215,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 w-full lg:max-w-md">
+            <div className="grid grid-cols-2 gap-4 w-full lg:max-w-md text-[#dab1da] dark:text-white">
               {canManage ? (
                 <Link
                   to="/create"
@@ -228,7 +228,7 @@ export default function Dashboard() {
                       className="group-hover:translate-x-1 transition-transform"
                     />
                   </div>
-                  <h3 className="font-semibold text-sm sm:text-lg">
+                  <h3 className="font-semibold text-sm sm:text-lg ">
                     Create Tournament
                   </h3>
                   <p className="text-xs sm:text-sm text-inherit/75 mt-2">
@@ -238,19 +238,19 @@ export default function Dashboard() {
               ) : (
                 <Link
                   to="/tournaments"
-                  className="group block h-full bg-brand/80 hover:bg-brand transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
+                  className="group block h-full bg-[#5a005f] hover:bg-[#5a005f] transition-all rounded-2xl p-4 sm:p-5 border border-[#47004A] shadow-lg"
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <Trophy size={22} />
+                    <Trophy size={22} className="text-[#f3c8e8]" />
                     <ArrowRight
                       size={18}
-                      className="group-hover:translate-x-1 transition-transform"
+                      className="text-[#f3c8e8] group-hover:translate-x-1 transition-transform"
                     />
                   </div>
-                  <h3 className="font-semibold text-sm sm:text-lg">
+                  <h3 className="font-semibold text-sm sm:text-lg text-[#f3c8e8]">
                     Browse Tournaments
                   </h3>
-                  <p className="text-xs sm:text-sm text-inherit/75 mt-2">
+                  <p className="text-xs sm:text-sm text-[#f3c8e8]/80 mt-2">
                     Explore available tournaments and event details.
                   </p>
                 </Link>
@@ -258,7 +258,7 @@ export default function Dashboard() {
 
               <Link
                 to="/participants"
-                className="group block h-full bg-white/10 hover:bg-white/15 transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
+                className="group block h-full bg-white/10 hover:bg-white/15 text-inherit transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
               >
                 <div className="flex items-center justify-between mb-3">
                   <ClipboardList size={22} />
@@ -438,7 +438,7 @@ export default function Dashboard() {
 
               <Link
                 to="/tournaments"
-                className="text-sm text-inherit hover:text-inherit transition-colors"
+                className="text-sm text-inherit hover:underline transition"
               >
                 View all
               </Link>
@@ -464,10 +464,10 @@ export default function Dashboard() {
                           </span>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-2 text-sm text-[#e7b5db] font-medium mt-1 mb-2">
-                          <span>{getTeamName(tournament.team1Id)}</span>
-                          <Swords size={14} className="text-[#d78ac4]" />
-                          <span>{getTeamName(tournament.team2Id)}</span>
+                        <div className="flex flex-wrap items-center gap-2 text-sm dont-medium mt-1 mb-2 text-inherit]">
+                          <span>{getTeamName(tournament.teamIds?.[0])}</span>
+                          <Swords size={14} className="text-inherit" />
+                          <span>{getTeamName(tournament.teamIds?.[1])}</span>
                         </div>
 
                         <div className="flex flex-wrap gap-4 text-sm text-inherit/70">
@@ -484,7 +484,7 @@ export default function Dashboard() {
 
                       <Link
                         to={`/tournaments/${tournament.id}`}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand/80 hover:bg-brand transition-all text-sm font-medium w-fit"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand text-white hover:bg-brand/90 transition-all text-sm font-medium shadow-[0_6px_20px_rgba(145,48,117,0.4)]"
                       >
                         Details <ArrowRight size={16} />
                       </Link>
@@ -532,7 +532,7 @@ export default function Dashboard() {
             <div className="mt-6 flex justify-center">
               <Link
                 to="/profile"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand/80 hover:bg-brand transition-all text-sm font-medium"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand text-white hover:bg-brand/90 transition-all text-sm font-medium shadow-[0_6px_20px_rgba(145,48,117,0.4)]"
               >
                 <UserCircle2 size={16} />
                 View Profile
@@ -556,7 +556,7 @@ export default function Dashboard() {
               <h2 className="text-2xl font-bold">Men’s Teams</h2>
               <Link
                 to="/participants"
-                className="text-sm text-[#e7b5db] hover:text-inherit transition-colors"
+                className="text-sm text-inherit hover:underline transition"
               >
                 View all
               </Link>
@@ -591,7 +591,7 @@ export default function Dashboard() {
               <h2 className="text-2xl font-bold">Women’s Teams</h2>
               <Link
                 to="/participants"
-                className="text-sm text-[#e7b5db] hover:text-inherit transition-colors"
+                className="text-sm text-inherit hover:underline transition-colors"
               >
                 View all
               </Link>

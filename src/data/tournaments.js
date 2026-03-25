@@ -2,6 +2,7 @@ export const tournaments = [
   {
     id: 1,
     name: "Spring Volleyball Cup",
+    type: "Indoor",
     location: "Beirut",
     date: "2026-05-12",
     status: "upcoming",
@@ -10,10 +11,13 @@ export const tournaments = [
     image: "https://img.olympics.com/images/image/private/t_s_16_9_g_auto/t_s_w1460/f_auto/v1536936974/primary/exvzqcvorticinejmmel",
     maxTeams: 8,
     teamIds: [1, 2],
+    description:
+      "A vibrant spring tournament bringing together top local volleyball teams in Beirut for an exciting and competitive kickoff to the season.",
   },
   {
     id: 2,
     name: "Champions Clash",
+    type: "Indoor",
     location: "Byblos",
     date: "2026-05-18",
     status: "ongoing",
@@ -22,10 +26,13 @@ export const tournaments = [
     image: "https://denverpioneers.com/images/2025/11/1/JT0_3511.jpg",
     maxTeams: 12,
     teamIds: [4, 6],
+    description:
+      "An intense mid-season showdown where elite teams compete for dominance in a high-stakes tournament held in historic Byblos.",
   },
   {
     id: 3,
     name: "National Volleyball Final",
+    type: "Indoor",
     location: "Tripoli",
     date: "2026-06-02",
     status: "upcoming",
@@ -34,29 +41,37 @@ export const tournaments = [
     image: "https://butlersports.com/images/2025/9/8/P1700957.JPG?width=1416&height=797&mode=crop&quality=80&format=jpg",
     maxTeams: 16,
     teamIds: [3, 1],
+    description:
+      "The ultimate national championship where the best teams across the country compete for the prestigious title and grand prize.",
   },
   {
     id: 4,
     name: "Coastal Volleyball Showdown",
+    type: "Beach",
     location: "Jounieh",
     date: "2026-06-10",
     status: "upcoming",
     refustrationstatus: "open",
     prize: "$7,500",
-    image: "https://utahstateaggies.com/images/2025/12/8/Huddle7.jpg?width=1128&height=635&mode=crop&scale=both&format=jpg&quality=80",
+    image: "https://images.seattletimes.com/wp-content/uploads/2024/08/urnpublicidap.org06d1ad8176d2d65a48cc7190529b5486Paris_Olympics_Beach_Volleyball_27459.jpg?d=2040x1360",
     maxTeams: 10,
     teamIds: [5, 4],
+    description:
+      "A dynamic coastal tournament featuring competitive teams battling it out near the seaside in a lively and energetic atmosphere.",
   },
   {
     id: 5,
     name: "Winter Volleyball Championship",
+    type: "Snow",
     location: "Zahle",
     date: "2026-02-15",
     status: "completed",
     refustrationstatus: "open",
     prize: "$8,000",
-    image: "https://cdn.britannica.com/95/190895-050-955A908C/volleyball-match-Italy-Russia-Milan-Volleyball-World.jpg",
+    image: "https://michael-lore.com/wp-content/uploads/2018/02/snow-volleyball.jpg",
     maxTeams: 12,
     teamIds: [2, 3],
+    description:
+      "A competitive winter tournament held in Zahle, showcasing strong performances and concluding with an exciting championship match.",
   },
 ];

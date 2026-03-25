@@ -4,19 +4,25 @@ import { Eye, EyeOff } from "lucide-react";
 import { users as defaultUsers } from "../data/users";
 
 export default function Login() {
+  //stores emai lor username input
   const [identifier, setIdentifier] = useState("");
+  //stores password input
   const [password, setPassword] = useState("");
+  //controls the "stay signed in" checkbox
   const [remember, setRemember] = useState(false);
+  //stores login error message
   const [error, setError] = useState("");
+  //toggles password visibility
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    //check if user is already logged in
     const storedUser =
       JSON.parse(localStorage.getItem("currentUser")) ||
       JSON.parse(sessionStorage.getItem("currentUser"));
-
+    //redirect to dashboard if user is logged in
     if (storedUser) {
       navigate("/dashboard", { replace: true });
     }
@@ -24,9 +30,9 @@ export default function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-
+    //remove extra spaces from email/username input
     const trimmedIdentifier = identifier.trim();
-
+    //validate required fields
     if (!trimmedIdentifier || !password) {
       setError("Please fill in all fields");
       return;
@@ -35,13 +41,15 @@ export default function Login() {
     let savedUsers = [];
 
     try {
+      //Get users saved in localstorage
       savedUsers = JSON.parse(localStorage.getItem("users")) || [];
     } catch {
       savedUsers = [];
     }
-
+    //combine deafult users with saved users
     const allUsers = [...defaultUsers, ...savedUsers];
 
+    //find matching user by email/username and password
     const user = allUsers.find(
       (u) =>
         (u.email.toLowerCase() === trimmedIdentifier.toLowerCase() ||
@@ -49,30 +57,35 @@ export default function Login() {
         u.password === password
     );
 
+    //show erroe if login fails
     if (!user) {
       setError("Invalid email/username or password");
       return;
     }
 
+    //store only safe user data
     const safeUser = {
       id: user.id,
       username: user.username,
       email: user.email,
       role: user.role || "player",
     };
-
+    
+    //save login in localstorage if user wants to stay signed in
     if (remember) {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("currentUser", JSON.stringify(safeUser));
       sessionStorage.removeItem("isLoggedIn");
       sessionStorage.removeItem("currentUser");
     } else {
+      //otherwise keep login only for current session
       sessionStorage.setItem("isLoggedIn", "true");
       sessionStorage.setItem("currentUser", JSON.stringify(safeUser));
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("currentUser");
     }
 
+    //clear error and move to dashboard
     setError("");
     navigate("/dashboard", { replace: true });
   }
@@ -87,6 +100,7 @@ export default function Login() {
           Login
         </h2>
 
+        {/* Shows error message if login fails */}
         {error && (
           <p className="text-brand mb-4 text-sm font-semibold" role="alert">
             {error}
@@ -126,6 +140,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
+          {/* Button to show or hide password */}
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
@@ -136,6 +151,7 @@ export default function Login() {
           </button>
         </div>
 
+         {/* Remember login choice */}
         <label className="flex items-center text-sm text-inherit mb-4 mt-4">
           <input
             type="checkbox"
@@ -146,6 +162,7 @@ export default function Login() {
           Stay signed in
         </label>
 
+        {/* Link to reset password page */}
         <Link
           to="/forgot-password"
           className="text-left text-sm text-inherit mb-4 mt-1 cursor-pointer hover:underline block"
@@ -153,6 +170,7 @@ export default function Login() {
           Forgot Password?
         </Link>
 
+        {/* Submit login form */}
         <button
           type="submit"
           className="w-full bg-brand text-white py-3 rounded hover:bg-brand/90 transition"

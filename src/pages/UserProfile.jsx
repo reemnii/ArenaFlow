@@ -448,7 +448,7 @@ export default function UserProfile() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen px-3 sm:px-6 py-6 sm:py-10 text-white">
+      <div className="min-h-screen px-3 sm:px-6 py-6 sm:py-10 text-inherit">
         <div className="max-w-6xl mx-auto">
           <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-5 sm:p-8 backdrop-blur-[20px]">
             Loading profile...
@@ -511,7 +511,7 @@ export default function UserProfile() {
       {isEditingPassword ? (
         <form onSubmit={handleSavePassword} className="space-y-4 sm:space-y-5">
           <div>
-            <label className="mb-2 block text-sm text-white/75">
+            <label className="mb-2 block text-sm text-inherit/75">
               Current Password
             </label>
             <div className="relative">
@@ -520,13 +520,13 @@ export default function UserProfile() {
                 name="currentPassword"
                 value={passwordForm.currentPassword}
                 onChange={handlePasswordChange}
-                className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-sm sm:text-base text-white outline-none transition-all placeholder:text-white/35 focus:border-brand/60 focus:bg-white/10"
+                className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
                 placeholder="Enter current password"
               />
               <button
                 type="button"
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 transition hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit"
               >
                 {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -534,7 +534,7 @@ export default function UserProfile() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-white/75">
+            <label className="mb-2 block text-sm text-inherit/75">
               New Password
             </label>
             <div className="relative">
@@ -543,13 +543,13 @@ export default function UserProfile() {
                 name="newPassword"
                 value={passwordForm.newPassword}
                 onChange={handlePasswordChange}
-                className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-sm sm:text-base text-white outline-none transition-all placeholder:text-white/35 focus:border-brand/60 focus:bg-white/10"
+                className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
                 placeholder="Enter new password"
               />
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 transition hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit"
               >
                 {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -557,7 +557,7 @@ export default function UserProfile() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-white/75">
+            <label className="mb-2 block text-sm text-inherit/75">
               Confirm New Password
             </label>
             <div className="relative">
@@ -566,20 +566,20 @@ export default function UserProfile() {
                 name="confirmPassword"
                 value={passwordForm.confirmPassword}
                 onChange={handlePasswordChange}
-                className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-sm sm:text-base text-white outline-none transition-all placeholder:text-white/35 focus:border-brand/60 focus:bg-white/10"
+                className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
                 placeholder="Confirm new password"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 transition hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit"
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
 
-          <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+          <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-inherit/70">
             Password must be at least 8 characters and include uppercase,
             lowercase, number, and special character.
           </div>
@@ -605,7 +605,7 @@ export default function UserProfile() {
         </form>
       ) : (
         <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-white/65">
+          <p className="text-sm text-inherit/65">
             Your password is protected. Use the button above to update it.
           </p>
         </div>
@@ -628,7 +628,7 @@ export default function UserProfile() {
           </div>
 
           {avatar.badge && (
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-brand px-3 py-1 text-[11px] font-semibold text-white shadow-md">
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-brand px-3 py-1 text-[11px] font-semibold text-inherit shadow-md">
               {avatar.badge}
             </div>
           )}
@@ -638,20 +638,20 @@ export default function UserProfile() {
           {currentUser.fullName || currentUser.username}
         </h3>
 
-        <p className="mt-1 text-center text-sm text-white/70">
+        <p className="mt-1 text-center text-sm text-inherit/70">
           {avatar.subLabel}
         </p>
 
         <div className="mt-5 grid grid-cols-1 gap-3 min-[480px]:grid-cols-2">
           <div className="rounded-xl border border-white/10 bg-white/5 p-3 text-left">
-            <p className="text-xs text-white/60">Team</p>
+            <p className="text-xs text-inherit/60">Team</p>
             <p className="mt-1 text-sm font-medium wrap-break-word">
               {currentUser.teamName || playerTeam?.name || "-"}
             </p>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-3 text-left">
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-inherit/60">
               {isCoach ? "Specialization" : "Position"}
             </p>
 
@@ -663,14 +663,14 @@ export default function UserProfile() {
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-3 text-left">
-            <p className="text-xs text-white/60">Jersey</p>
+            <p className="text-xs text-inherit/60">Jersey</p>
             <p className="mt-1 text-sm font-medium">
               {currentUser.jerseyNumber || (isCoach ? "COACH" : "-")}
             </p>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-3 text-left">
-            <p className="text-xs text-white/60">Gender</p>
+            <p className="text-xs text-inherit/60">Gender</p>
             <p className="mt-1 text-sm font-medium capitalize wrap-break-word">
               {currentUser.gender || "-"}
             </p>
@@ -692,7 +692,7 @@ export default function UserProfile() {
               <h2 className="text-xl sm:text-2xl font-bold">
                 {isPlayer ? "Player Details" : "Coach Details"}
               </h2>
-              <p className="text-xs sm:text-sm text-white/65">
+              <p className="text-xs sm:text-sm text-inherit/65">
                 {isPlayer
                   ? "Complete and manage your player information"
                   : "Complete and manage your coach information"}
@@ -735,7 +735,7 @@ export default function UserProfile() {
             {isPlayer && (
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Team Name
                   </label>
                   <input
@@ -743,13 +743,13 @@ export default function UserProfile() {
                     name="teamName"
                     value={completeProfileForm.teamName}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter team name"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Position
                   </label>
                   <input
@@ -757,13 +757,13 @@ export default function UserProfile() {
                     name="position"
                     value={completeProfileForm.position}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter position"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Jersey Number
                   </label>
                   <input
@@ -771,13 +771,13 @@ export default function UserProfile() {
                     name="jerseyNumber"
                     value={completeProfileForm.jerseyNumber}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter jersey number"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Gender
                   </label>
                   <input
@@ -785,13 +785,13 @@ export default function UserProfile() {
                     name="gender"
                     value={completeProfileForm.gender}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter gender"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Phone
                   </label>
                   <input
@@ -799,13 +799,13 @@ export default function UserProfile() {
                     name="phone"
                     value={completeProfileForm.phone}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter phone number"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Age
                   </label>
                   <input
@@ -813,7 +813,7 @@ export default function UserProfile() {
                     name="age"
                     value={completeProfileForm.age}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter age"
                   />
                 </div>
@@ -823,7 +823,7 @@ export default function UserProfile() {
             {isCoach && (
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Full Name
                   </label>
                   <input
@@ -831,13 +831,13 @@ export default function UserProfile() {
                     name="fullName"
                     value={completeProfileForm.fullName}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter full name"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Team Name
                   </label>
                   <input
@@ -845,13 +845,13 @@ export default function UserProfile() {
                     name="teamName"
                     value={completeProfileForm.teamName}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter team name"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Gender
                   </label>
                   <input
@@ -859,13 +859,13 @@ export default function UserProfile() {
                     name="gender"
                     value={completeProfileForm.gender}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter gender"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Phone
                   </label>
                   <input
@@ -873,13 +873,13 @@ export default function UserProfile() {
                     name="phone"
                     value={completeProfileForm.phone}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter phone number"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Years of Experience
                   </label>
                   <input
@@ -887,13 +887,13 @@ export default function UserProfile() {
                     name="yearsExperience"
                     value={completeProfileForm.yearsExperience}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter years of experience"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-white/75">
+                  <label className="mb-2 block text-sm text-inherit/75">
                     Specialization
                   </label>
                   <input
@@ -901,7 +901,7 @@ export default function UserProfile() {
                     name="specialization"
                     value={completeProfileForm.specialization}
                     onChange={handleCompleteProfileChange}
-                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                    className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                     placeholder="Enter specialization"
                   />
                 </div>
@@ -932,7 +932,7 @@ export default function UserProfile() {
             {isPlayer && (
               <>
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Team Name
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -941,7 +941,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Position
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -950,7 +950,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Jersey Number
                   </p>
                   <p className="font-medium text-sm sm:text-base">
@@ -959,7 +959,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Gender
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -968,7 +968,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Phone
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -977,7 +977,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Age</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Age</p>
                   <p className="font-medium text-sm sm:text-base">
                     {currentUser.age || "-"}
                   </p>
@@ -988,7 +988,7 @@ export default function UserProfile() {
             {isCoach && (
               <>
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Full Name
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -997,7 +997,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Team Name
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -1006,7 +1006,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Gender
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -1015,7 +1015,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Phone
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -1024,7 +1024,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Years of Experience
                   </p>
                   <p className="font-medium text-sm sm:text-base">
@@ -1033,7 +1033,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Specialization
                   </p>
                   <p className="font-medium text-sm sm:text-base wrap-break-word">
@@ -1049,7 +1049,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="min-h-screen px-3 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 text-white">
+    <div className="min-h-screen px-3 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 text-inherit">
       <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
         <motion.section
           variants={smoothDrop}
@@ -1070,7 +1070,7 @@ export default function UserProfile() {
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="mb-1.5 text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.25em] text-white/60">
+                <p className="mb-1.5 text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.25em] text-inherit/60">
                   User Profile
                 </p>
 
@@ -1078,7 +1078,7 @@ export default function UserProfile() {
                   {currentUser.username}
                 </h1>
 
-                <p className="mt-2 text-sm sm:text-base text-white/75">
+                <p className="mt-2 text-sm sm:text-base text-inherit/75">
                   Manage your account information and update your profile
                   securely.
                 </p>
@@ -1096,7 +1096,7 @@ export default function UserProfile() {
 
             <button
               onClick={handleLogout}
-              className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-white transition-all hover:bg-white/10"
+              className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-inherit transition-all hover:bg-white/10"
             >
               <LogOut size={18} />
               Logout
@@ -1120,7 +1120,7 @@ export default function UserProfile() {
                   <h2 className="text-lg sm:text-xl font-bold">
                     Account Overview
                   </h2>
-                  <p className="text-xs sm:text-sm text-white/65">
+                  <p className="text-xs sm:text-sm text-inherit/65">
                     Your main account details
                   </p>
                 </div>
@@ -1128,7 +1128,7 @@ export default function UserProfile() {
 
               <div className="space-y-3.5 sm:space-y-4">
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-4">
-                  <div className="mb-2 flex items-center gap-2 text-white/60">
+                  <div className="mb-2 flex items-center gap-2 text-inherit/60">
                     <UserCircle2 size={15} />
                     <p className="text-xs sm:text-sm">Username</p>
                   </div>
@@ -1138,7 +1138,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-4">
-                  <div className="mb-2 flex items-center gap-2 text-white/60">
+                  <div className="mb-2 flex items-center gap-2 text-inherit/60">
                     <Mail size={15} />
                     <p className="text-xs sm:text-sm">Email</p>
                   </div>
@@ -1148,7 +1148,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-4">
-                  <div className="mb-2 flex items-center gap-2 text-white/60">
+                  <div className="mb-2 flex items-center gap-2 text-inherit/60">
                     <ShieldCheck size={15} />
                     <p className="text-xs sm:text-sm">Role</p>
                   </div>
@@ -1173,7 +1173,7 @@ export default function UserProfile() {
                     <h2 className="text-xl sm:text-2xl font-bold">
                       Edit Profile
                     </h2>
-                    <p className="text-xs sm:text-sm text-white/65">
+                    <p className="text-xs sm:text-sm text-inherit/65">
                       Update your personal information
                     </p>
                   </div>
@@ -1212,7 +1212,7 @@ export default function UserProfile() {
                   className="space-y-4 sm:space-y-5"
                 >
                   <div>
-                    <label className="mb-2 block text-sm text-white/75">
+                    <label className="mb-2 block text-sm text-inherit/75">
                       Username
                     </label>
                     <input
@@ -1220,13 +1220,13 @@ export default function UserProfile() {
                       name="username"
                       value={profileForm.username}
                       onChange={handleProfileChange}
-                      className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-white outline-none transition-all placeholder:text-white/35 focus:border-brand/60 focus:bg-white/10"
+                      className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
                       placeholder="Enter your username"
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm text-white/75">
+                    <label className="mb-2 block text-sm text-inherit/75">
                       Email
                     </label>
                     <input
@@ -1234,7 +1234,7 @@ export default function UserProfile() {
                       name="email"
                       value={profileForm.email}
                       onChange={handleProfileChange}
-                      className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-white outline-none transition-all placeholder:text-white/35 focus:border-brand/60 focus:bg-white/10"
+                      className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-inherit outline-none transition-all placeholder:text-inherit/35 focus:border-brand/60 focus:bg-white/10"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -1261,7 +1261,7 @@ export default function UserProfile() {
               ) : (
                 <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4">
                   <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                    <p className="mb-1 text-xs sm:text-sm text-white/60">
+                    <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                       Username
                     </p>
                     <p className="font-medium wrap-break-word text-sm sm:text-base">
@@ -1270,7 +1270,7 @@ export default function UserProfile() {
                   </div>
 
                   <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                    <p className="mb-1 text-xs sm:text-sm text-white/60">
+                    <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                       Email
                     </p>
                     <p className="font-medium break-all text-sm sm:text-base">
@@ -1293,7 +1293,7 @@ export default function UserProfile() {
                     <h2 className="text-lg sm:text-xl font-bold">
                       Edit Password
                     </h2>
-                    <p className="text-xs sm:text-sm text-white/65">
+                    <p className="text-xs sm:text-sm text-inherit/65">
                       Keep your account secure
                     </p>
                   </div>
