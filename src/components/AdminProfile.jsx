@@ -327,7 +327,7 @@ export default function AdminProfile({
   if (!currentUser) return null;
 
   return (
-    <div className="min-h-screen px-3 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 text-white">
+    <div className="min-h-screen px-3 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 text-inherit">
       <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
         <motion.section
           variants={smoothDrop}
@@ -348,7 +348,7 @@ export default function AdminProfile({
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="mb-1.5 text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.25em] text-white/60">
+                <p className="mb-1.5 text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.25em] text-inherit/60">
                   Admin Profile
                 </p>
 
@@ -356,7 +356,7 @@ export default function AdminProfile({
                   {currentUser.fullName || currentUser.username}
                 </h1>
 
-                <p className="mt-2 text-sm sm:text-base text-white/75 break-all">
+                <p className="mt-2 text-sm sm:text-base text-inherit/75 break-all">
                   {currentUser.email}
                 </p>
 
@@ -373,7 +373,7 @@ export default function AdminProfile({
 
             <button
               onClick={onLogout}
-              className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-white transition-all hover:bg-white/10"
+              className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-inherit transition-all hover:bg-white/10"
             >
               <LogOut size={18} />
               Logout
@@ -388,7 +388,12 @@ export default function AdminProfile({
           className="grid grid-cols-1 gap-5 sm:gap-6 xl:grid-cols-3"
         >
           <div className="xl:col-span-1 space-y-5 sm:space-y-6">
-            <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
+            <motion.section
+              variants={smoothDrop}
+              initial="hidden"
+              animate="visible"
+              className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
+            >
               <div className="mb-5 flex items-center gap-3">
                 <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-brand/20">
                   <UserCircle2 size={22} className="sm:w-6 sm:h-6" />
@@ -397,7 +402,7 @@ export default function AdminProfile({
                   <h2 className="text-lg sm:text-xl font-bold">
                     Account Overview
                   </h2>
-                  <p className="text-xs sm:text-sm text-white/65">
+                  <p className="text-xs sm:text-sm text-inherit/65">
                     Main admin account details
                   </p>
                 </div>
@@ -405,7 +410,7 @@ export default function AdminProfile({
 
               <div className="space-y-3.5 sm:space-y-4">
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Username
                   </p>
                   <p className="font-medium break-words text-sm sm:text-base">
@@ -414,27 +419,32 @@ export default function AdminProfile({
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Email</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Email</p>
                   <p className="font-medium break-all text-sm sm:text-base">
                     {currentUser.email}
                   </p>
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Role</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Role</p>
                   <p className="font-medium text-sm sm:text-base">Admin</p>
                 </div>
               </div>
-            </div>
+            </motion.section>
 
-            <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
+            <motion.section
+              variants={smoothDrop}
+              initial="hidden"
+              animate="visible"
+              className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
+            >
               <div className="mb-5 flex items-center gap-3 min-w-0">
                 <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-brand/20">
                   <Edit3 size={20} className="sm:w-5.5 sm:h-5.5" />
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-xl sm:text-2xl font-bold">Quick Actions</h2>
-                  <p className="text-xs sm:text-sm text-white/65">
+                  <p className="text-xs sm:text-sm text-inherit/65">
                     Fast shortcuts for admin tools
                   </p>
                 </div>
@@ -477,16 +487,21 @@ export default function AdminProfile({
                   Tournament Control
                 </button>
               </div>
-            </div>
+            </motion.section>
 
-            <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
+            <motion.section
+              variants={smoothDrop}
+              initial="hidden"
+              animate="visible"
+              className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
+            >
               <div className="mb-5 flex items-center gap-3 min-w-0">
                 <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-brand/20">
                   <Swords size={20} className="sm:w-5.5 sm:h-5.5" />
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-xl sm:text-2xl font-bold">Teams & Matches</h2>
-                  <p className="text-xs sm:text-sm text-white/65">
+                  <p className="text-xs sm:text-sm text-inherit/65">
                     Quick summary of teams and match records
                   </p>
                 </div>
@@ -494,88 +509,118 @@ export default function AdminProfile({
 
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4">
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Teams</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Teams</p>
                   <p className="text-lg font-bold">{totalTeams}</p>
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Matches</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Matches</p>
                   <p className="text-lg font-bold">{totalMatches}</p>
                 </div>
               </div>
-            </div>
+            </motion.section>
           </div>
 
           <div className="xl:col-span-2 space-y-5 sm:space-y-6">
-            <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
-              <div className="mb-5 flex items-center gap-3 min-w-0">
-                <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-brand/20">
-                  <CalendarDays size={20} className="sm:w-5.5 sm:h-5.5" />
+            <motion.section
+              variants={smoothDrop}
+              initial="hidden"
+              animate="visible"
+              className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
+            >
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-brand/20">
+                    <CalendarDays size={20} className="sm:w-5.5 sm:h-5.5" />
+                  </div>
+
+                  <div className="min-w-0">
+                    <h2 className="text-xl sm:text-2xl font-bold">System Stats</h2>
+                    <p className="text-xs sm:text-sm text-inherit/65">
+                      Quick overview of the platform
+                    </p>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <h2 className="text-xl sm:text-2xl font-bold">System Stats</h2>
-                  <p className="text-xs sm:text-sm text-white/65">
-                    Quick overview of the platform
-                  </p>
-                </div>
+
+                <Link
+                  to="/dashboard"
+                  className="inline-flex items-center rounded-xl border border-white/10 bg-brand/20 px-3 py-2 text-sm font-medium text-inherit transition-all hover:bg-brand/40 whitespace-nowrap"
+                >
+                  View all
+                </Link>
               </div>
 
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Admins</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Admins</p>
                   <p className="font-bold text-lg">{totalAdmins}</p>
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Players</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Players</p>
                   <p className="font-bold text-lg">{totalPlayers}</p>
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Coaches</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Coaches</p>
                   <p className="font-bold text-lg">{totalCoaches}</p>
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Teams</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Teams</p>
                   <p className="font-bold text-lg">{totalTeams}</p>
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">Tournaments</p>
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">Tournaments</p>
                   <p className="font-bold text-lg">{totalTournaments}</p>
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                  <p className="mb-1 text-xs sm:text-sm text-white/60">
+                  <p className="mb-1 text-xs sm:text-sm text-inherit/60">
                     Active Tournaments
                   </p>
                   <p className="font-bold text-lg">{activeTournaments}</p>
                 </div>
               </div>
-            </div>
+            </motion.section>
 
             {profileMessage && (
-              <div className="rounded-xl sm:rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">
+              <motion.section
+                variants={smoothDrop}
+                initial="hidden"
+                animate="visible"
+                className="rounded-xl sm:rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200"
+              >
                 {profileMessage}
-              </div>
+              </motion.section>
             )}
 
             {profileError && (
-              <div className="rounded-xl sm:rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+              <motion.section
+                variants={smoothDrop}
+                initial="hidden"
+                animate="visible"
+                className="rounded-xl sm:rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-200"
+              >
                 {profileError}
-              </div>
+              </motion.section>
             )}
 
             {isEditingProfile && (
-              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
+              <motion.section
+                variants={smoothDrop}
+                initial="hidden"
+                animate="visible"
+                className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
+              >
                 <div className="mb-5 flex items-center gap-3">
                   <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-brand/20">
                     <UserCircle2 size={20} />
                   </div>
                   <div>
                     <h2 className="text-xl sm:text-2xl font-bold">Edit Profile</h2>
-                    <p className="text-xs sm:text-sm text-white/65">
+                    <p className="text-xs sm:text-sm text-inherit/65">
                       Update your admin account information
                     </p>
                   </div>
@@ -584,7 +629,7 @@ export default function AdminProfile({
                 <form onSubmit={handleSaveProfile} className="space-y-4 sm:space-y-5">
                   <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className="mb-2 block text-sm text-white/75">
+                      <label className="mb-2 block text-sm text-inherit/75">
                         Username
                       </label>
                       <input
@@ -592,13 +637,13 @@ export default function AdminProfile({
                         name="username"
                         value={profileForm.username}
                         onChange={handleProfileChange}
-                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                         placeholder="Enter username"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm text-white/75">
+                      <label className="mb-2 block text-sm text-inherit/75">
                         Email
                       </label>
                       <input
@@ -606,7 +651,7 @@ export default function AdminProfile({
                         name="email"
                         value={profileForm.email}
                         onChange={handleProfileChange}
-                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                         placeholder="Enter email"
                       />
                     </div>
@@ -631,23 +676,38 @@ export default function AdminProfile({
                     </button>
                   </div>
                 </form>
-              </div>
+              </motion.section>
             )}
 
             {passwordMessage && (
-              <div className="rounded-xl sm:rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">
+              <motion.section
+                variants={smoothDrop}
+                initial="hidden"
+                animate="visible"
+                className="rounded-xl sm:rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200"
+              >
                 {passwordMessage}
-              </div>
+              </motion.section>
             )}
 
             {passwordError && (
-              <div className="rounded-xl sm:rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+              <motion.section
+                variants={smoothDrop}
+                initial="hidden"
+                animate="visible"
+                className="rounded-xl sm:rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-200"
+              >
                 {passwordError}
-              </div>
+              </motion.section>
             )}
 
             {isEditingPassword ? (
-              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
+              <motion.section
+                variants={smoothDrop}
+                initial="hidden"
+                animate="visible"
+                className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
+              >
                 <div className="mb-5 flex items-center gap-3">
                   <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl border border-white/10 bg-brand/20">
                     <Lock size={20} />
@@ -656,7 +716,7 @@ export default function AdminProfile({
                     <h2 className="text-xl sm:text-2xl font-bold">
                       Change Password
                     </h2>
-                    <p className="text-xs sm:text-sm text-white/65">
+                    <p className="text-xs sm:text-sm text-inherit/65">
                       Keep your admin account secure
                     </p>
                   </div>
@@ -664,7 +724,7 @@ export default function AdminProfile({
 
                 <form onSubmit={handleSavePassword} className="space-y-4 sm:space-y-5">
                   <div>
-                    <label className="mb-2 block text-sm text-white/75">
+                    <label className="mb-2 block text-sm text-inherit/75">
                       Current Password
                     </label>
                     <div className="relative">
@@ -673,21 +733,25 @@ export default function AdminProfile({
                         name="currentPassword"
                         value={passwordForm.currentPassword}
                         onChange={handlePasswordChange}
-                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                         placeholder="Enter current password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowCurrentPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/65 hover:text-white"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
                       >
-                        {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        {showCurrentPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
                       </button>
                     </div>
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm text-white/75">
+                    <label className="mb-2 block text-sm text-inherit/75">
                       New Password
                     </label>
                     <div className="relative">
@@ -696,21 +760,25 @@ export default function AdminProfile({
                         name="newPassword"
                         value={passwordForm.newPassword}
                         onChange={handlePasswordChange}
-                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                         placeholder="Enter new password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowNewPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/65 hover:text-white"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
                       >
-                        {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        {showNewPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
                       </button>
                     </div>
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm text-white/75">
+                    <label className="mb-2 block text-sm text-inherit/75">
                       Confirm New Password
                     </label>
                     <div className="relative">
@@ -719,15 +787,19 @@ export default function AdminProfile({
                         name="confirmPassword"
                         value={passwordForm.confirmPassword}
                         onChange={handlePasswordChange}
-                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-white outline-none focus:border-brand/60 focus:bg-white/10"
+                        className="w-full rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-3 pr-12 text-inherit outline-none focus:border-brand/60 focus:bg-white/10"
                         placeholder="Confirm new password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/65 hover:text-white"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
                       >
-                        {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        {showConfirmPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -751,9 +823,14 @@ export default function AdminProfile({
                     </button>
                   </div>
                 </form>
-              </div>
+              </motion.section>
             ) : (
-              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
+              <motion.section
+                variants={smoothDrop}
+                initial="hidden"
+                animate="visible"
+                className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
+              >
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-brand/20">
@@ -763,7 +840,7 @@ export default function AdminProfile({
                       <h2 className="text-lg sm:text-xl font-bold">
                         Password Settings
                       </h2>
-                      <p className="text-xs sm:text-sm text-white/65">
+                      <p className="text-xs sm:text-sm text-inherit/65">
                         Keep your admin account secure
                       </p>
                     </div>
@@ -771,7 +848,7 @@ export default function AdminProfile({
 
                   <button
                     onClick={openPasswordEdit}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all border-white/10 bg-brand/20 hover:bg-brand/50"
                   >
                     <Lock size={16} />
                     Change Password
@@ -779,14 +856,17 @@ export default function AdminProfile({
                 </div>
 
                 <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="text-sm text-white/65">
+                  <p className="text-sm text-inherit/65">
                     Your password is protected. Use the button above to update it.
                   </p>
                 </div>
-              </div>
+              </motion.section>
             )}
 
-            <div
+            <motion.section
+              variants={smoothDrop}
+              initial="hidden"
+              animate="visible"
               id="admin-users"
               className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
             >
@@ -796,7 +876,7 @@ export default function AdminProfile({
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-xl sm:text-2xl font-bold">User Management</h2>
-                  <p className="text-xs sm:text-sm text-white/65">
+                  <p className="text-xs sm:text-sm text-inherit/65">
                     Preview of registered users
                   </p>
                 </div>
@@ -814,7 +894,7 @@ export default function AdminProfile({
                           <p className="font-medium text-sm sm:text-base break-words">
                             {user.fullName || user.username}
                           </p>
-                          <p className="text-xs sm:text-sm text-white/60 break-all">
+                          <p className="text-xs sm:text-sm text-inherit/60 break-all">
                             {user.email || "-"}
                           </p>
                         </div>
@@ -827,13 +907,16 @@ export default function AdminProfile({
                   ))}
                 </div>
               ) : (
-                <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+                <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-inherit/70">
                   No users found.
                 </div>
               )}
-            </div>
+            </motion.section>
 
-            <div
+            <motion.section
+              variants={smoothDrop}
+              initial="hidden"
+              animate="visible"
               id="admin-tournaments"
               className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]"
             >
@@ -847,7 +930,7 @@ export default function AdminProfile({
                     <h2 className="text-xl sm:text-2xl font-bold">
                       Tournament Control
                     </h2>
-                    <p className="text-xs sm:text-sm text-white/65">
+                    <p className="text-xs sm:text-sm text-inherit/65">
                       Recent tournaments from your system
                     </p>
                   </div>
@@ -856,7 +939,7 @@ export default function AdminProfile({
                 {safeTournaments.length > 4 && (
                   <Link
                     to="/tournaments"
-                    className="inline-flex w-fit items-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-[#e7b5db] transition-all hover:bg-white/10 hover:text-white"
+                    className="inline-flex w-fit items-center rounded-xl border border-white/10 bg-brand/20 px-3 py-2 text-sm font-medium text-inherit transition-all hover:bg-brand/40"
                   >
                     View all
                   </Link>
@@ -875,7 +958,7 @@ export default function AdminProfile({
                           <p className="font-medium text-base sm:text-lg break-words">
                             {tournament.name || tournament.title || "Tournament"}
                           </p>
-                          <p className="mt-1 text-sm text-white/60 break-words">
+                          <p className="mt-1 text-sm text-inherit/60 break-words">
                             {tournament.location ||
                               tournament.season ||
                               tournament.category ||
@@ -891,11 +974,11 @@ export default function AdminProfile({
                   ))}
                 </div>
               ) : (
-                <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+                <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-inherit/70">
                   No tournaments available.
                 </div>
               )}
-            </div>
+            </motion.section>
           </div>
         </motion.section>
       </div>

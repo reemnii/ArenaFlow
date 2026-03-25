@@ -34,7 +34,7 @@ function App() {
           <Route path="create" element={<CreateTournaments />} />
           <Route path="edit/:id" element={<EditTournaments />} />
           <Route path="participants" element={<ManageTeams />} />
-          <Route path="participants/:id" element={<TeamDetails />} />
+          <Route path="teams/:id" element={<TeamDetails />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
         </Route>
