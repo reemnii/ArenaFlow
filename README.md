@@ -75,7 +75,7 @@ Admin Pages
 Setup Instructions
 1. Clone the repository
     git clone https://github.com/reemnii/ArenaFlow
-    cd your-project
+    cd arenaflow
 2. Install dependencies
     npm install
 3. Run the project
@@ -84,7 +84,7 @@ Setup Instructions
     http://localhost:5173
 
 Deployment
-Deployed Application Link: (add your link here)
+Deployed Application Link: https://arena-flow-coral.vercel.app/
 GitHub Repository: https://github.com/reemnii/ArenaFlow
 
 📸 Screenshots / Demo

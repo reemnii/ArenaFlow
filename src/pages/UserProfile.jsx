@@ -344,6 +344,15 @@ export default function UserProfile() {
         );
         return;
       }
+    }
+
+    const updatedUser = {
+      ...currentUser,
+      ...completeProfileForm,
+    };
+
+    const updatedUsers = allUsers.map((user) =>
+      user.id === currentUser.id ? { ...user, ...completeProfileForm } : user
 
       if (fullName.length < 3) {
         setCompleteProfileError("Full name must be at least 3 characters.");
@@ -463,6 +472,7 @@ export default function UserProfile() {
     const updatedUsers = allUsers.map((user) =>
       user.id === currentUser.id ? { ...user, password: newPassword } : user
     );
+
     
     setCurrentUser(updatedUser);
     setAllUsers(updatedUsers);
