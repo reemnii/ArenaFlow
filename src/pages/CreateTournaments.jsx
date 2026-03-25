@@ -9,6 +9,7 @@ const defaultTournament = {
   startDate: "",
   endDate: "",
   format: "Single Elimination",
+  volleyballType: "Indoor",
   maxTeams: "",
   skillLevel: "Open",
   genderCategory: "Men",
@@ -168,7 +169,7 @@ export default function CreateTournament() {
                       name="venue"
                       value={tournament.venue}
                       onChange={handleChange}
-                      placeholder="Main indoor court"
+                      placeholder="Gym, court, beach, grass field, or snow venue"
                       className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
                     />
                   </div>
@@ -235,6 +236,27 @@ export default function CreateTournament() {
                       <option>Double Elimination</option>
                       <option>Round Robin</option>
                       <option>Group Stage + Knockout</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="volleyballType"
+                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
+                    >
+                      Volleyball Type
+                    </label>
+                    <select
+                      id="volleyballType"
+                      name="volleyballType"
+                      value={tournament.volleyballType}
+                      onChange={handleChange}
+                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                    >
+                      <option>Indoor</option>
+                      <option>Beach</option>
+                      <option>Grass</option>
+                      <option>Snow</option>
                     </select>
                   </div>
 
@@ -470,7 +492,7 @@ export default function CreateTournament() {
               </h2>
               <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
                 <li>• Choose a clear format before teams register.</li>
-                <li>• Add full venue details so players can find the court easily.</li>
+                <li>• Match the venue to the volleyball type you selected.</li>
                 <li>• Mention roster limits and eligibility rules.</li>
                 <li>• Keep match settings consistent across the tournament.</li>
               </ul>
@@ -482,6 +504,10 @@ export default function CreateTournament() {
                 <p>
                   <span className="text-white font-medium">Status:</span>{" "}
                   {tournament.status || "Draft"}
+                </p>
+                <p>
+                  <span className="text-white font-medium">Type:</span>{" "}
+                  {tournament.volleyballType}
                 </p>
                 <p>
                   <span className="text-white font-medium">Visibility:</span>{" "}
@@ -497,8 +523,8 @@ export default function CreateTournament() {
 
               <div className="mt-4 rounded-xl bg-white/10 p-4 text-sm text-slate-200">
                 {tournament.visibility === "Public"
-                  ? "Once published, any team will be able to view the tournament page, register, and follow matches and stats."
-                  : "Once published, only invited teams will be able to access registration and participate in the tournament."}
+                  ? `This ${tournament.volleyballType.toLowerCase()} tournament will be visible to all teams once published.`
+                  : `This ${tournament.volleyballType.toLowerCase()} tournament will only be accessible to invited teams.`}
               </div>
             </section>
           </aside>
