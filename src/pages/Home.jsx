@@ -289,7 +289,7 @@ const glassCard =
   "rounded-[1.4rem] sm:rounded-[1.6rem] border border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(18,10,35,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.28)]";
 
 const outlineBtn =
-  "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+  "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
 
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -472,14 +472,14 @@ export default function Home() {
                   <button
                     onClick={goPrev}
                     aria-label="Previous slide"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-black/20 text-white transition hover:bg-white/10 sm:h-9 sm:w-9"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full cursor-pointer border border-white/15 bg-black/20 text-white transition hover:bg-white/10 sm:h-9 sm:w-9"
                   >
                     <ChevronLeft size={18} />
                   </button>
                   <button
                     onClick={goNext}
                     aria-label="Next slide"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-black/20 text-white transition hover:bg-white/10 sm:h-9 sm:w-9"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full cursor-pointer border border-white/15 bg-black/20 text-white transition hover:bg-white/10 sm:h-9 sm:w-9"
                   >
                     <ChevronRight size={18} />
                   </button>
@@ -737,7 +737,7 @@ export default function Home() {
                       )
                     }
                     aria-label="Previous month"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/60 dark:border-white/10 dark:bg-white/8 sm:h-9 sm:w-9"
+                    className="inline-flex h-8 w-8 items-center cursor-pointer justify-center rounded-full border border-white/20 bg-white/60 dark:border-white/10 dark:bg-white/8 hover:dark:border-white/15  hover:dark:bg-white/10 sm:h-9 sm:w-9"
                   >
                     <ChevronLeft size={18} />
                   </button>
@@ -753,7 +753,7 @@ export default function Home() {
                       )
                     }
                     aria-label="Next month"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/60 dark:border-white/10 dark:bg-white/8 sm:h-9 sm:w-9"
+                    className="inline-flex h-8 w-8 items-center justify-center cursor-pointer rounded-full border border-white/20 bg-white/60 dark:border-white/10 dark:bg-white/8 hover:dark:border-white/15  hover:dark:bg-white/10 sm:h-9 sm:w-9"
                   >
                     <ChevronRight size={18} />
                   </button>
@@ -793,7 +793,7 @@ export default function Home() {
                               setSelectedTournament(null);
                             }
                           }}
-                          className={`relative min-h-[54px] rounded-xl p-1.5 text-left transition-all duration-200 sm:min-h-[62px] sm:rounded-2xl sm:p-2 ${
+                          className={`relative min-h-13.5 cursor-pointer rounded-xl p-1.5 text-left transition-all duration-200 sm:min-h-[62px] sm:rounded-2xl sm:p-2 ${
                             isSelected
                               ? "border border-[#f0b4df] bg-white/18 ring-2 ring-[#f0b4df] dark:bg-white/10"
                               : "border border-transparent bg-transparent hover:bg-white/8 dark:hover:bg-white/[0.04]"
@@ -828,8 +828,8 @@ export default function Home() {
 
               {selectedTournament && (
                 <div className="mt-4 rounded-[1.1rem] border border-white/20 bg-white/55 p-4 dark:border-white/10 dark:bg-black/20 sm:rounded-[1.25rem]">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
+                  <div className="flex flex-row items-start justify-between gap-5">
+                    <div className="flex flex-col">
                       <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand dark:text-fuchsia-300">
                         Selected Event
                       </p>
@@ -838,13 +838,19 @@ export default function Home() {
                       </h3>
                     </div>
 
-                    <CalendarDays
-                      size={18}
-                      className="text-brand dark:text-fuchsia-300 shrink-0"
-                    />
+                    <div className="scale-70">
+                    <Link
+                      to={`/tournaments/${selectedTournament.id}`}
+                      className={outlineBtn}
+                      aria-label={`Show more about ${selectedTournament.name}`}
+                    >
+                      Show More
+                      <ArrowRight size={16} />
+                    </Link>
+                  </div>
                   </div>
 
-                  <div className="mt-4 space-y-2 text-sm text-slate-600 dark:text-white/68">
+                  <div className=" flex flex-row gap-8 mt-4 text-sm text-slate-600 dark:text-white/68">
                     <div className="flex items-center gap-2">
                       <Clock3
                         size={15}
@@ -860,25 +866,6 @@ export default function Home() {
                       />
                       <span>{selectedTournament.location}</span>
                     </div>
-
-                    <div className="flex items-center gap-2">
-                      <Users
-                        size={15}
-                        className="text-brand dark:text-fuchsia-300 shrink-0"
-                      />
-                      <span>{selectedTournament.teams} Teams</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4">
-                    <Link
-                      to={`/tournaments/${selectedTournament.id}`}
-                      className={outlineBtn}
-                      aria-label={`Show more about ${selectedTournament.name}`}
-                    >
-                      Show More
-                      <ArrowRight size={16} />
-                    </Link>
                   </div>
                 </div>
               )}
@@ -1037,7 +1024,7 @@ export default function Home() {
                     aria-label={item.q}
                     aria-expanded={isOpen}
                     aria-controls={`faq-panel-${index}`}
-                    className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left sm:px-5"
+                    className="flex w-full items-center justify-between cursor-pointer gap-4 px-4 py-4 text-left sm:px-5"
                   >
                     <span className="pr-2 text-sm font-bold sm:text-base">{item.q}</span>
                     <ChevronDown
