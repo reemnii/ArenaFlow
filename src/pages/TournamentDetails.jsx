@@ -39,7 +39,7 @@ const INNER_CARD =
 
 // Soft button / surface style used for lighter actions
 const SOFT_BUTTON =
-  "border border-black/10 bg-white/80 shadow-sm ring-1 ring-black/5 dark:border-white/10 dark:bg-white/10 dark:ring-white/5 dark:shadow-none";
+  "border border-black/10 bg-white/80 shadow-sm ring-1 ring-black/5 dark:border-white/10 dark:bg-white/10 dark:ring-white/5 dark:shadow-none cursor-pointer";
 
 export default function TournamentDetails() {
   // Read the tournament ID from the route
@@ -283,7 +283,7 @@ export default function TournamentDetails() {
             <Link
               to="/tournaments"
               aria-label="Go back to tournaments"
-              className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2.5 text-sm font-medium transition hover:bg-brand/90"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2.5 text-sm font-medium cursor-pointer transition hover:bg-brand/90"
             >
               <ArrowLeft size={14} />
               Back to tournaments
@@ -560,14 +560,14 @@ function MobileTournamentDetails({
                   type="button"
                   onClick={() => navigate("/login")}
                   aria-label="Log in to join this tournament"
-                  className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-medium transition hover:bg-brand/90"
+                  className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-medium transition hover:bg-brand/90 cursor-pointer"
                 >
                   Login to Join
                 </button>
               ) : (
                 <div
                   aria-label="Tournament registration is closed"
-                  className={`w-full rounded-xl px-4 py-3 text-center text-sm font-medium text-inherit/50 ${INNER_CARD}`}
+                  className={`w-full rounded-xl px-4 py-3 text-center text-sm font-medium text-inherit/50 cursor-pointer ${INNER_CARD}`}
                 >
                   Registration Closed
                 </div>
@@ -596,7 +596,7 @@ function MobileTournamentDetails({
                     type="button"
                     onClick={handleJoin}
                     aria-label={`Join ${tournament.name}`}
-                    className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-medium transition hover:bg-brand/60"
+                    className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-medium transition hover:bg-brand/60 cursor-pointer"
                   >
                     Join Tournament
                   </button>
@@ -605,7 +605,7 @@ function MobileTournamentDetails({
                 {alreadyJoined && (
                   <div
                     aria-label="You have already joined this tournament"
-                    className={`w-full rounded-xl px-4 py-3 text-center text-sm font-medium text-inherit/70 ${INNER_CARD}`}
+                    className={`w-full rounded-xl px-4 py-3 text-center text-sm font-medium text-inherit/70  ${INNER_CARD}`}
                   >
                     Already Joined
                   </div>
@@ -628,7 +628,7 @@ function MobileTournamentDetails({
                     type="button"
                     onClick={handleJoin}
                     aria-label={`Join ${tournament.name}`}
-                    className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-medium transition hover:bg-brand/60"
+                    className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-medium transition hover:bg-brand/60 cursor-pointer"
                   >
                     Join Tournament
                   </button>
@@ -730,7 +730,7 @@ function MobileTournamentDetails({
                   <Link
                     to={`/teams/${team.id}`}
                     aria-label={`View details for ${team.name}`}
-                    className={`inline-flex shrink-0 items-center gap-1 rounded-lg px-2.5 py-1.5 text-[11px] font-medium text-inherit transition hover:bg-black/[0.04] dark:hover:bg-white/15 ${SOFT_BUTTON}`}
+                    className={`inline-flex shrink-0 items-center gap-1 rounded-lg px-2.5 py-1.5 text-[11px] font-medium text-inherit transition hover:bg-black/[0.04] dark:hover:bg-white/15 cursor-pointer ${SOFT_BUTTON}` }
                   >
                     <Eye size={12} />
                     View team details
@@ -1000,7 +1000,7 @@ function DesktopTournamentDetails({
                       type="button"
                       onClick={() => navigate("/login")}
                       aria-label="Log in to join this tournament"
-                      className="w-full rounded-2xl bg-brand px-4 py-3.5 text-sm font-medium transition hover:bg-brand/90"
+                      className="w-full rounded-2xl bg-brand px-4 py-3.5 text-sm font-medium transition hover:bg-brand/90 cursor-pointer"
                     >
                       Login to Join
                     </button>
@@ -1036,7 +1036,7 @@ function DesktopTournamentDetails({
                         type="button"
                         onClick={handleJoin}
                         aria-label={`Join ${tournament.name}`}
-                        className="w-full rounded-2xl bg-brand px-4 py-3.5 text-sm font-medium transition hover:bg-brand/60"
+                        className="w-full rounded-2xl bg-brand px-4 py-3.5 text-sm font-medium transition hover:bg-brand/60 cursor-pointer"
                       >
                         Join Tournament
                       </button>
@@ -1054,7 +1054,7 @@ function DesktopTournamentDetails({
                     {!canJoin && !alreadyJoined && (
                       <div
                         aria-label="Tournament registration is closed"
-                        className={`w-full rounded-2xl px-4 py-3.5 text-center text-sm font-medium text-inherit/50 ${INNER_CARD}`}
+                        className={`w-full rounded-2xl px-4 py-3.5 text-center text-sm font-medium text-inherit/50 cursor-pointer ${INNER_CARD}`}
                       >
                         Registration Closed
                       </div>
@@ -1068,7 +1068,7 @@ function DesktopTournamentDetails({
                         type="button"
                         onClick={handleJoin}
                         aria-label={`Join ${tournament.name}`}
-                        className="w-full rounded-2xl bg-brand px-4 py-3.5 text-sm font-medium transition hover:bg-brand/60"
+                        className="w-full rounded-2xl bg-brand px-4 py-3.5 text-sm font-medium transition hover:bg-brand/60 cursor-pointer"
                       >
                         Join Tournament
                       </button>
@@ -1172,7 +1172,7 @@ function DesktopTournamentDetails({
                     <Link
                       to={`/teams/${team.id}`}
                       aria-label={`View details for ${team.name}`}
-                      className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium text-inherit transition hover:bg-black/[0.04] dark:hover:bg-white/15 ${SOFT_BUTTON}`}
+                      className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium text-inherit transition hover:bg-black/[0.04] dark:hover:bg-white/15 cursor-pointer ${SOFT_BUTTON}`}
                     >
                       <Eye size={13} />
                       View team details

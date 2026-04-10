@@ -156,7 +156,7 @@ export default function Tournaments() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               aria-label="Filter tournaments by status"
-              className={`min-w-[180px] rounded-xl px-4 py-3 outline-none transition-all ${
+              className={`min-w-[180px] rounded-xl px-4 py-3 outline-none transition-all cursor-pointer ${
                 isLight
                   ? "bg-[#ffffff10] text-[#3d0d33] border border-white/20 backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:bg-[#ffffff20]"
       : "bg-brand text-white hover:bg-brand/90 shadow-[0_8px_30px_rgba(145,48,117,0.4)]"

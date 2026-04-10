@@ -710,7 +710,7 @@ export default function UserProfile() {
               <button
                 type="button"
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit cursor-pointer"
               >
                 {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -733,7 +733,7 @@ export default function UserProfile() {
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit cursor-pointer"
               >
                 {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -756,7 +756,7 @@ export default function UserProfile() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/60 transition hover:text-inherit cursor-pointer"
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -771,7 +771,7 @@ export default function UserProfile() {
           <div className="flex flex-col gap-3 sm:flex-row">
             <button
               type="submit"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand cursor-pointer"
             >
               <Save size={16} />
               Update Password
@@ -780,7 +780,7 @@ export default function UserProfile() {
             <button
               type="button"
               onClick={handleCancelPasswordEdit}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
+              className=" cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
             >
               <X size={16} />
               Cancel
@@ -895,7 +895,7 @@ export default function UserProfile() {
         <button
           type="button"
           onClick={() => navigate("/participants")}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/8 px-4 py-3 text-sm font-medium text-inherit transition hover:bg-white/12"
+          className="cursor-pointer inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/8 px-4 py-3 text-sm font-medium text-inherit transition hover:bg-white/12"
         >
           <PlusCircle size={16} />
           Create Team
@@ -934,7 +934,7 @@ export default function UserProfile() {
                 setCompleteProfileMessage("");
                 setIsEditingCompleteProfile(true);
               }}
-              className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand"
+              className=" cursor-pointer w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand"
             >
               <Edit3 size={16} />
               Edit Details
@@ -996,7 +996,7 @@ export default function UserProfile() {
                     <button
                       type="button"
                       onClick={() => navigate("/participants")}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
                     >
                       <PlusCircle size={16} />
                       Create Team
@@ -1216,7 +1216,7 @@ export default function UserProfile() {
                     <button
                       type="button"
                       onClick={() => navigate("/participants")}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
                     >
                       <PlusCircle size={16} />
                       Create Team
@@ -1299,7 +1299,7 @@ export default function UserProfile() {
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 type="submit"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
+                className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
               >
                 <Save size={16} />
                 Save Details
@@ -1308,7 +1308,7 @@ export default function UserProfile() {
               <button
                 type="button"
                 onClick={handleCancelCompleteProfileEdit}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
               >
                 <X size={16} />
                 Cancel
@@ -1483,7 +1483,7 @@ export default function UserProfile() {
 
             <button
               onClick={handleLogout}
-              className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-inherit transition-all hover:bg-white/10"
+              className="cursor-pointer w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-inherit transition-all hover:bg-white/10"
             >
               <LogOut size={18} />
               Logout
@@ -1573,7 +1573,7 @@ export default function UserProfile() {
                       setProfileMessage("");
                       setIsEditingProfile(true);
                     }}
-                    className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand"
+                    className="cursor-pointer w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand"
                   >
                     <Edit3 size={16} />
                     Edit Profile
@@ -1629,7 +1629,7 @@ export default function UserProfile() {
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
                     >
                       <Save size={16} />
                       Save Changes
@@ -1638,7 +1638,7 @@ export default function UserProfile() {
                     <button
                       type="button"
                       onClick={handleCancelProfileEdit}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
                     >
                       <X size={16} />
                       Cancel
@@ -1693,7 +1693,7 @@ export default function UserProfile() {
                       setPasswordMessage("");
                       setIsEditingPassword(true);
                     }}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand"
+                    className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand"
                   >
                     <Lock size={16} />
                     Change Password

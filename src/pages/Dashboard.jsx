@@ -219,7 +219,7 @@ export default function Dashboard() {
               {canManage ? (
                 <Link
                   to="/create"
-                  className="group block h-full bg-brand/80 hover:bg-brand transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
+                  className="cursor-pointer group block h-full bg-brand/80 hover:bg-brand transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <PlusCircle size={22} />
@@ -238,7 +238,7 @@ export default function Dashboard() {
               ) : (
                 <Link
                   to="/tournaments"
-                  className="group block h-full bg-brand/80 hover:bg-brand transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
+                  className="cursor-pointer group block h-full bg-brand/80 hover:bg-brand transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <Trophy size={22} className="text-[#f3c8e8]" />
@@ -258,7 +258,7 @@ export default function Dashboard() {
 
               <Link
                 to="/participants"
-                className="group block h-full bg-white/10 hover:bg-white/15 text-inherit transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
+                className="cursor-pointer group block h-full bg-white/10 hover:bg-white/15 text-inherit transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
               >
                 <div className="flex items-center justify-between mb-3">
                   <ClipboardList size={22} />
@@ -438,7 +438,7 @@ export default function Dashboard() {
 
               <Link
                 to="/tournaments"
-                className="text-sm text-inherit hover:underline transition"
+                className="cursor-pointer text-sm text-inherit hover:underline transition"
               >
                 View all
               </Link>
@@ -484,7 +484,7 @@ export default function Dashboard() {
 
                       <Link
                         to={`/tournaments/${tournament.id}`}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand text-white hover:bg-brand/90 transition-all text-sm font-medium shadow-[0_6px_20px_rgba(145,48,117,0.4)]"
+                        className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand text-white hover:bg-brand/90 transition-all text-sm font-medium shadow-[0_6px_20px_rgba(145,48,117,0.4)]"
                       >
                         Details <ArrowRight size={16} />
                       </Link>
@@ -532,7 +532,7 @@ export default function Dashboard() {
             <div className="mt-6 flex justify-center">
               <Link
                 to="/profile"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand text-white hover:bg-brand/90 transition-all text-sm font-medium shadow-[0_6px_20px_rgba(145,48,117,0.4)]"
+                className="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand text-white hover:bg-brand/90 transition-all text-sm font-medium shadow-[0_6px_20px_rgba(145,48,117,0.4)]"
               >
                 <UserCircle2 size={16} />
                 View Profile
@@ -556,7 +556,7 @@ export default function Dashboard() {
               <h2 className="text-2xl font-bold">Men’s Teams</h2>
               <Link
                 to="/participants"
-                className="text-sm text-inherit hover:underline transition"
+                className="cursor-pointer text-sm text-inherit hover:underline transition"
               >
                 View all
               </Link>
@@ -591,7 +591,7 @@ export default function Dashboard() {
               <h2 className="text-2xl font-bold">Women’s Teams</h2>
               <Link
                 to="/participants"
-                className="text-sm text-inherit hover:underline transition-colors"
+                className="cursor-pointer text-sm text-inherit hover:underline transition-colors"
               >
                 View all
               </Link>

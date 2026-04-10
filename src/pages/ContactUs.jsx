@@ -233,7 +233,7 @@ export default function ContactUs() {
           {/* Submit button */}
           <button
             type="submit"
-            className="w-full bg-brand text-white py-2.5 sm:py-3 rounded-lg hover:bg-brand/90 transition flex items-center justify-center gap-2"
+            className="cursor-pointer w-full bg-brand text-white py-2.5 sm:py-3 rounded-lg hover:bg-brand/90 transition flex items-center justify-center gap-2"
           >
             <Send size={18} />
             Send Message

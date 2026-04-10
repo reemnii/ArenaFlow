@@ -373,7 +373,7 @@ export default function AdminProfile({
 
             <button
               onClick={onLogout}
-              className="w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-inherit transition-all hover:bg-white/10"
+              className="cursor-pointer w-full lg:w-auto inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-medium text-inherit transition-all hover:bg-white/10"
             >
               <LogOut size={18} />
               Logout
@@ -454,7 +454,7 @@ export default function AdminProfile({
                 <button
                   type="button"
                   onClick={openProfileEdit}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
                 >
                   <Edit3 size={16} />
                   Edit Profile
@@ -463,7 +463,7 @@ export default function AdminProfile({
                 <button
                   type="button"
                   onClick={openPasswordEdit}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
                 >
                   <Lock size={16} />
                   Change Password
@@ -472,7 +472,7 @@ export default function AdminProfile({
                 <button
                   type="button"
                   onClick={() => scrollToSection("admin-users")}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
                 >
                   <Users size={16} />
                   User Management
@@ -481,7 +481,7 @@ export default function AdminProfile({
                 <button
                   type="button"
                   onClick={() => scrollToSection("admin-tournaments")}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium transition-all hover:bg-white/10"
                 >
                   <Trophy size={16} />
                   Tournament Control
@@ -660,7 +660,7 @@ export default function AdminProfile({
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
                     >
                       <Save size={16} />
                       Save Changes
@@ -669,7 +669,7 @@ export default function AdminProfile({
                     <button
                       type="button"
                       onClick={handleCancelProfileEdit}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
                     >
                       <X size={16} />
                       Cancel
@@ -739,7 +739,7 @@ export default function AdminProfile({
                       <button
                         type="button"
                         onClick={() => setShowCurrentPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
+                        className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
                       >
                         {showCurrentPassword ? (
                           <EyeOff size={18} />
@@ -766,7 +766,7 @@ export default function AdminProfile({
                       <button
                         type="button"
                         onClick={() => setShowNewPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
+                        className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
                       >
                         {showNewPassword ? (
                           <EyeOff size={18} />
@@ -793,7 +793,7 @@ export default function AdminProfile({
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
+                        className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-inherit/65 hover:text-inherit"
                       >
                         {showConfirmPassword ? (
                           <EyeOff size={18} />
@@ -807,7 +807,7 @@ export default function AdminProfile({
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand/80 px-5 py-3 text-sm font-medium transition-all hover:bg-brand"
                     >
                       <Save size={16} />
                       Save Password
@@ -816,7 +816,7 @@ export default function AdminProfile({
                     <button
                       type="button"
                       onClick={handleCancelPasswordEdit}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
+                      className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium transition-all hover:bg-white/10"
                     >
                       <X size={16} />
                       Cancel
