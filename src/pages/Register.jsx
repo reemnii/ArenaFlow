@@ -7,11 +7,13 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("");
   // Error message state
   const [error, setError] = useState("");
   // Toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ export default function Register() {
     const trimmedEmail = email.trim().toLowerCase();
 
     // Validate required fields
-    if (!trimmedUsername || !trimmedEmail || !password || !role) {
+    if (!trimmedUsername || !trimmedEmail || !password || !confirmPassword || !role) {
       setError("Please fill in all fields");
       return;
     }
@@ -45,10 +47,16 @@ export default function Register() {
       return;
     }
 
+    // Validate password confirmation
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     let storedUsers = [];
 
     try {
-    // Get users from localStorage
+      // Get users from localStorage
       storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     } catch {
       storedUsers = [];
@@ -108,6 +116,7 @@ export default function Register() {
             {error}
           </p>
         )}
+
         {/* Username input */}
         <label
           htmlFor="register-username"
@@ -123,6 +132,7 @@ export default function Register() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+
         {/* Email input */}
         <label
           htmlFor="register-email"
@@ -138,6 +148,7 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+
         {/* Password input */}
         <label
           htmlFor="register-password"
@@ -155,12 +166,11 @@ export default function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          {/* Toggle show/hide password */}
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-inherit/70 hover:text-inherit"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-inherit/70 hover:text-inherit cursor-pointer"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
@@ -170,6 +180,33 @@ export default function Register() {
         <p className="text-xs text-inherit/70 mb-3 leading-relaxed">
           Use at least 8 characters with uppercase, lowercase, a number, and a special character.
         </p>
+
+        {/* Confirm Password input */}
+        <label
+          htmlFor="register-confirm-password"
+          className="block mb-1.5 text-sm font-medium text-inherit"
+        >
+          Confirm Password
+        </label>
+        <div className="relative mb-3">
+          <input
+            id="register-confirm-password"
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Confirm your password"
+            className="w-full border border-white/20 bg-white/10 text-white rounded-lg px-3 py-2.5 outline-none pr-10 placeholder:text-white/50"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-inherit/70 hover:text-inherit cursor-pointer"
+          >
+            {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
 
         {/* Role selection */}
         <label
@@ -201,7 +238,7 @@ export default function Register() {
         {/* Submit button */}
         <button
           type="submit"
-          className="w-full bg-brand text-white py-2.5 rounded-lg hover:bg-brand/90 transition"
+          className="w-full bg-brand text-white py-2.5 rounded-lg hover:bg-brand/90 transition cursor-pointer"
         >
           Register
         </button>

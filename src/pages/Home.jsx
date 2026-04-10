@@ -371,12 +371,6 @@ export default function Home() {
 
   return (
     <div className="relative overflow-x-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[-8%] top-8 h-40 w-40 rounded-full bg-brand/20 blur-3xl sm:h-64 sm:w-64" />
-        <div className="absolute right-[-10%] top-[18%] h-44 w-44 rounded-full bg-brand-dark/20 blur-3xl sm:h-72 sm:w-72" />
-        <div className="absolute bottom-[12%] left-[18%] h-36 w-36 rounded-full bg-accent/15 blur-3xl sm:h-56 sm:w-56" />
-      </div>
-
       <section className="mx-auto max-w-7xl px-3 pb-5 pt-3 sm:px-6 sm:pb-6 sm:pt-4 lg:px-8">
         <div className="grid gap-4 lg:grid-cols-12">
           <div className="lg:col-span-7">

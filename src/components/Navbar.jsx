@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { User, Menu, X, Sun, Moon } from "lucide-react";
 import ButtonOutline from "../layouts/ButtonOutline.jsx";
-import logo from "/logo-removebg-preview.png";
+import logo from "/logo__1_-removebg-preview.png";
 
 export default function Navbar() {
   const [scrollActive, setScrollActive] = useState(false);
@@ -21,7 +21,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔥 THEME LOGIC (important part)
+  // theme logic
   useEffect(() => {
     if (theme === "light") {
       document.documentElement.classList.add("light");
@@ -50,10 +50,10 @@ export default function Navbar() {
   };
 
   const navLinkClass =
-    "relative transition-all hover:text-brand-deep after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-full after:bg-brand-deep after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100";
+    "relative cursor-pointer transition-all hover:text-[#F0ABFC] after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-full after:bg-[#F0ABFC] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100";
 
   const mobileLinkClass =
-    "block py-3 px-4 rounded-lg hover:bg-white/10 hover:text-brand-deep transition-all";
+    "block py-3 px-4 rounded-lg hover:bg-white/10 hover:text-[#F0ABFC] transition-all cursor-pointer";
 
   return (
     <nav
@@ -67,9 +67,9 @@ export default function Navbar() {
         <Link
           to="/"
           onClick={() => setMenuOpen(false)}
-          className="scale-110 transition-transform duration-300 hover:scale-120"
+          className="scale-110 transition-transform duration-300 hover:scale-120 cursor-pointer"
         >
-          <img src={logo} alt="Logo" className="h-20 w-auto" />
+          <img src={logo} alt="Logo" className="h-20 w-auto drop-shadow-[0_0_12px_#11111" />
         </Link>
 
         {/* DESKTOP NAV */}
@@ -86,7 +86,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link to="/participants" className={navLinkClass}>
-              Teams
+              Manage Teams
             </Link>
           </li>
           <li>
@@ -102,7 +102,7 @@ export default function Navbar() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="p-2 rounded-full hover:bg-white/10 transition-all"
+            className="p-2 rounded-full hover:bg-white/10 transition-all cursor-pointer"
           >
             {theme === "dark" ? <Sun size={22} /> : <Moon size={22} />}
           </button>
@@ -110,17 +110,17 @@ export default function Navbar() {
           {/* USER */}
           {isLoggedIn ? (
             <Link
-              to="/dashboard"
-              className="hover:text-brand-deep transition-all"
+              to="/profile"
+              className="hover:text-[#F0ABFC] transition-all cursor-pointer"
             >
-              <User size={28} className="cursor-pointer" />
+              <User size={28} />
             </Link>
           ) : (
             <>
               <Link to="/login" className={navLinkClass}>
                 Sign In
               </Link>
-              <Link to="/register">
+              <Link to="/register" className="cursor-pointer">
                 <ButtonOutline>Sign Up</ButtonOutline>
               </Link>
             </>
@@ -129,7 +129,7 @@ export default function Navbar() {
 
         {/* MOBILE MENU BUTTON */}
         <button
-          className="lg:hidden relative w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
+          className="lg:hidden relative w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -157,34 +157,69 @@ export default function Navbar() {
         <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-xl p-4">
           <ul className="flex flex-col text-main font-medium">
             <li>
-              <button
-                onClick={toggleTheme}
-                className={`${mobileLinkClass} w-full text-left`}
-              >
-                {theme === "dark" ? "Light Mode ☀️" : "Dark Mode 🌙"}
-              </button>
-            </li>
-
-            <li>
-              <Link to="/" className={mobileLinkClass}>
+              <Link to="/" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/tournaments" className={mobileLinkClass}>
+              <Link to="/tournaments" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>
                 Tournaments
               </Link>
             </li>
             <li>
-              <Link to="/participants" className={mobileLinkClass}>
-                Teams
+              <Link to="/participants" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>
+                  Manage Teams
               </Link>
             </li>
             <li>
-              <Link to="/create" className={mobileLinkClass}>
+              <Link to="/create" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>
                 Create Tournament
               </Link>
             </li>
+
+            <div className="lg:hidden flex items-center gap-4 ml-5 mt-2">
+              <li>
+                {isLoggedIn ? (
+                  <Link
+                    to="/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-[#F0ABFC] transition-all cursor-pointer"
+                  >
+                    <User size={22} />
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setMenuOpen(false)}
+                      className={navLinkClass}
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      to="/register"
+                      onClick={() => setMenuOpen(false)}
+                      className="cursor-pointer ml-5"
+                    >
+                      <ButtonOutline>Sign Up</ButtonOutline>
+                    </Link>
+                  </>
+                )}
+              </li>
+
+              <li>
+                <button
+                  onClick={() => {
+                    toggleTheme();
+                    setMenuOpen(false);
+                  }}
+                  aria-label="Toggle theme"
+                  className="p-2 rounded-full hover:bg-white/10 transition-all cursor-pointer"
+                >
+                  {theme === "dark" ? <Sun size={22} /> : <Moon size={22} />}
+                </button>
+              </li>
+            </div>
           </ul>
         </div>
       </div>

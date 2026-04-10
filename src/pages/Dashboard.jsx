@@ -238,7 +238,7 @@ export default function Dashboard() {
               ) : (
                 <Link
                   to="/tournaments"
-                  className="group block h-full bg-[#5a005f] hover:bg-[#5a005f] transition-all rounded-2xl p-4 sm:p-5 border border-[#47004A] shadow-lg"
+                  className="group block h-full bg-brand/80 hover:bg-brand transition-all rounded-2xl p-4 sm:p-5 border border-white/10 shadow-lg"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <Trophy size={22} className="text-[#f3c8e8]" />
