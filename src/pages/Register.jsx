@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
@@ -101,7 +101,14 @@ export default function Register() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen overflow-y-auto px-4 py-5 sm:py-6">
+    <div className="flex flex-col items-center min-h-screen overflow-y-auto px-4 py-5 sm:py-6">
+  
+  <Link
+  to="/"
+  className="flex items-center gap-2 mb-4 mt-2 text-sm text-inherit hover:text-brand transition cursor-pointer w-full max-w-sm sm:max-w-md"
+>
+  ← Go back to Home
+</Link> 
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm sm:max-w-md bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.25)] p-4 sm:p-5"

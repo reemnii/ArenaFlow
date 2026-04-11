@@ -445,7 +445,7 @@ export default function Home() {
 
           <div className="lg:col-span-5">
             <div
-              className={`${glassCard} relative min-h-[320px] overflow-hidden sm:min-h-[420px] lg:min-h-[500px]`}
+              className={`${glassCard} relative h-[320px] overflow-hidden sm:h-[420px] lg:h-[515px]`}
             >
               <AnimatePresence mode="wait">
                 <motion.img
@@ -460,7 +460,6 @@ export default function Home() {
                 />
               </AnimatePresence>
 
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1d2360]/70 via-[#6f2380]/45 to-[#b0185e]/65" />
               <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_30%,transparent_70%,rgba(255,255,255,0.06))]" />
 
               <div className="absolute left-3 right-3 top-3 flex items-center justify-between sm:left-4 sm:right-4 sm:top-4">
@@ -516,7 +515,7 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-6 lg:px-8">
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+       <div className={`${glassCard} p-4 sm:p-6 lg:p-8`}>
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand dark:text-fuchsia-300">
               Quick Access
@@ -525,9 +524,8 @@ export default function Home() {
               Move faster through the platform
             </h2>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {quickActions.map((item, index) => {
             const Icon = item.icon;
 
@@ -572,6 +570,7 @@ export default function Home() {
             );
           })}
         </div>
+      </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-6 lg:px-8">
