@@ -22,6 +22,27 @@ const defaultTournament = {
   status: "Published",
 };
 
+const glassCard =
+  "rounded-[1.4rem] sm:rounded-[1.6rem] border border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(18,10,35,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.28)]";
+
+const inputClass =
+  "w-full rounded-xl border border-white/20 dark:border-white/10 bg-white/60 dark:bg-black/20 text-slate-900 dark:text-white px-4 py-3 outline-none placeholder:text-slate-400 dark:placeholder:text-white/35 focus:ring-2 focus:ring-[#f0b4df] focus:border-[#f0b4df] transition";
+
+const labelClass =
+  "block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2";
+
+const sectionTitleClass =
+  "text-xl font-black text-slate-900 dark:text-white mb-4";
+
+const outlineBtn =
+  "inline-flex items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+
+const primaryBtn =
+  "inline-flex items-center justify-center rounded-full bg-brand dark:bg-fuchsia-300 px-6 py-3 text-sm font-bold text-white dark:text-slate-900 transition-all duration-300 hover:opacity-90";
+
+const dangerBtn =
+  "inline-flex items-center justify-center rounded-full border border-red-300/70 dark:border-red-800 px-6 py-3 text-sm font-bold text-red-600 dark:text-red-400 transition-all duration-300 hover:bg-red-50 dark:hover:bg-red-950/30";
+
 export default function EditTournament() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -87,15 +108,15 @@ export default function EditTournament() {
 
   if (notFound) {
     return (
-      <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-10 px-4">
-        <div className="mx-auto max-w-3xl bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
+      <main className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10">
+        <div className={`mx-auto max-w-3xl p-8 ${glassCard}`}>
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand dark:text-fuchsia-300">
+            Edit Tournament
+          </p>
+          <h1 className="mt-2 text-2xl font-black text-slate-900 dark:text-white">
             Tournament Not Found
           </h1>
-          <p
-            role="alert"
-            className="text-slate-600 dark:text-slate-300"
-          >
+          <p role="alert" className="mt-3 text-slate-600 dark:text-white/68">
             No tournament was found for this edit page.
           </p>
         </div>
@@ -105,19 +126,23 @@ export default function EditTournament() {
 
   return (
     <main
-      className="min-h-screen bg-slate-50 dark:bg-slate-950 py-10 px-4"
+      className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10"
       aria-labelledby="edit-tournament-title"
     >
       <div className="mx-auto max-w-6xl">
         <header className="mb-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand dark:text-fuchsia-300">
+            Tournament Management
+          </p>
           <h1
             id="edit-tournament-title"
-            className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white"
+            className="mt-2 text-3xl font-black text-slate-900 dark:text-white md:text-4xl"
           >
             Edit Tournament
           </h1>
-          <p className="mt-2 text-slate-600 dark:text-slate-300">
-            Edit the tournament details below.
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-white/68 sm:text-base">
+            Edit the tournament details below and keep your event information up
+            to date.
           </p>
         </header>
 
@@ -125,26 +150,21 @@ export default function EditTournament() {
           <p
             role="status"
             aria-live="polite"
-            className="mb-6 rounded-xl border border-green-300 bg-green-50 px-4 py-3 text-green-800 dark:border-green-800 dark:bg-green-950/40 dark:text-green-300"
+            className="mb-6 rounded-[1.1rem] border border-[#f0b4df] bg-white/70 px-4 py-3 text-sm font-semibold text-[#6B124B] backdrop-blur-md dark:bg-white/10 dark:text-fuchsia-200"
           >
             {statusMessage}
           </p>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 md:p-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <div className={`lg:col-span-2 p-6 md:p-8 ${glassCard}`}>
             <form className="space-y-8" onSubmit={handleUpdate}>
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Basic Information
-                </legend>
+                <legend className={sectionTitleClass}>Basic Information</legend>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="md:col-span-2">
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="name" className={labelClass}>
                       Tournament Name
                     </label>
                     <input
@@ -153,15 +173,12 @@ export default function EditTournament() {
                       name="name"
                       value={tournament.name}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="location"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="location" className={labelClass}>
                       Location
                     </label>
                     <input
@@ -170,15 +187,12 @@ export default function EditTournament() {
                       name="location"
                       value={tournament.location}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="venue"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="venue" className={labelClass}>
                       Venue
                     </label>
                     <input
@@ -188,15 +202,12 @@ export default function EditTournament() {
                       value={tournament.venue}
                       onChange={handleChange}
                       placeholder="Gym, court, beach, grass field, or snow venue"
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="startDate"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="startDate" className={labelClass}>
                       Start Date
                     </label>
                     <input
@@ -205,15 +216,12 @@ export default function EditTournament() {
                       name="startDate"
                       value={tournament.startDate}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="endDate"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="endDate" className={labelClass}>
                       End Date
                     </label>
                     <input
@@ -222,23 +230,18 @@ export default function EditTournament() {
                       name="endDate"
                       value={tournament.endDate}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Tournament Settings
-                </legend>
+                <legend className={sectionTitleClass}>Tournament Settings</legend>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label
-                      htmlFor="format"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="format" className={labelClass}>
                       Tournament Format
                     </label>
                     <select
@@ -246,7 +249,7 @@ export default function EditTournament() {
                       name="format"
                       value={tournament.format}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Single Elimination</option>
                       <option>Double Elimination</option>
@@ -256,10 +259,7 @@ export default function EditTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="volleyballType"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="volleyballType" className={labelClass}>
                       Volleyball Type
                     </label>
                     <select
@@ -267,7 +267,7 @@ export default function EditTournament() {
                       name="volleyballType"
                       value={tournament.volleyballType}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Indoor</option>
                       <option>Beach</option>
@@ -277,10 +277,7 @@ export default function EditTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="maxTeams"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="maxTeams" className={labelClass}>
                       Max Teams
                     </label>
                     <input
@@ -289,15 +286,12 @@ export default function EditTournament() {
                       name="maxTeams"
                       value={tournament.maxTeams}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="skillLevel"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="skillLevel" className={labelClass}>
                       Skill Level
                     </label>
                     <select
@@ -305,7 +299,7 @@ export default function EditTournament() {
                       name="skillLevel"
                       value={tournament.skillLevel}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Open</option>
                       <option>Beginner</option>
@@ -316,10 +310,7 @@ export default function EditTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="genderCategory"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="genderCategory" className={labelClass}>
                       Gender Category
                     </label>
                     <select
@@ -327,7 +318,7 @@ export default function EditTournament() {
                       name="genderCategory"
                       value={tournament.genderCategory}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Men</option>
                       <option>Women</option>
@@ -336,10 +327,7 @@ export default function EditTournament() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label
-                      htmlFor="visibility"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="visibility" className={labelClass}>
                       Tournament Visibility
                     </label>
                     <select
@@ -348,14 +336,14 @@ export default function EditTournament() {
                       value={tournament.visibility}
                       onChange={handleChange}
                       aria-describedby="visibility-help"
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option value="Public">Public</option>
                       <option value="Private">Private</option>
                     </select>
                     <p
                       id="visibility-help"
-                      className="mt-2 text-sm text-slate-500 dark:text-slate-400"
+                      className="mt-2 text-sm text-slate-500 dark:text-white/50"
                     >
                       {tournament.visibility === "Public"
                         ? "Anyone can view and join this tournament."
@@ -366,16 +354,11 @@ export default function EditTournament() {
               </fieldset>
 
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Match Rules
-                </legend>
+                <legend className={sectionTitleClass}>Match Rules</legend>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   <div>
-                    <label
-                      htmlFor="bestOf"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="bestOf" className={labelClass}>
                       Best Of
                     </label>
                     <select
@@ -383,7 +366,7 @@ export default function EditTournament() {
                       name="bestOf"
                       value={tournament.bestOf}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>3 Sets</option>
                       <option>5 Sets</option>
@@ -391,10 +374,7 @@ export default function EditTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="pointsPerSet"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="pointsPerSet" className={labelClass}>
                       Points Per Set
                     </label>
                     <input
@@ -403,15 +383,12 @@ export default function EditTournament() {
                       name="pointsPerSet"
                       value={tournament.pointsPerSet}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="finalSetPoints"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="finalSetPoints" className={labelClass}>
                       Final Set Points
                     </label>
                     <input
@@ -420,23 +397,18 @@ export default function EditTournament() {
                       name="finalSetPoints"
                       value={tournament.finalSetPoints}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Description & Rules
-                </legend>
+                <legend className={sectionTitleClass}>Description & Rules</legend>
 
                 <div className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="description"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="description" className={labelClass}>
                       Tournament Description
                     </label>
                     <textarea
@@ -445,15 +417,12 @@ export default function EditTournament() {
                       name="description"
                       value={tournament.description}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="additionalRules"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="additionalRules" className={labelClass}>
                       Additional Rules
                     </label>
                     <textarea
@@ -462,20 +431,17 @@ export default function EditTournament() {
                       name="additionalRules"
                       value={tournament.additionalRules}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
               <section
-                className="flex flex-col sm:flex-row gap-3 pt-2"
+                className="flex flex-col gap-3 pt-2 sm:flex-row"
                 aria-label="Tournament actions"
               >
-                <button
-                  type="submit"
-                  className="rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-medium hover:bg-slate-800 dark:hover:bg-slate-200 transition"
-                >
+                <button type="submit" className={primaryBtn}>
                   Update Tournament
                 </button>
 
@@ -483,9 +449,17 @@ export default function EditTournament() {
                   type="button"
                   onClick={handleDelete}
                   aria-label={`Delete ${tournament.name || "this tournament"}`}
-                  className="rounded-xl border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 px-6 py-3 font-medium hover:bg-red-50 dark:hover:bg-red-950/30 transition"
+                  className={dangerBtn}
                 >
                   Delete Tournament
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("/tournaments")}
+                  className={outlineBtn}
+                >
+                  Back to Tournaments
                 </button>
               </section>
             </form>
@@ -495,43 +469,49 @@ export default function EditTournament() {
             className="space-y-6"
             aria-label="Tournament preview and access information"
           >
-            <section className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+            <section className={`${glassCard} p-6`}>
+              <h2 className="mb-3 text-lg font-black text-slate-900 dark:text-white">
                 Current Preview
               </h2>
-              <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <div className="space-y-2 text-sm leading-7 text-slate-600 dark:text-white/68">
                 <p>
-                  <span className="font-medium text-slate-900 dark:text-white">
+                  <span className="font-semibold text-slate-900 dark:text-white">
                     Name:
                   </span>{" "}
                   {tournament.name || "Untitled Tournament"}
                 </p>
                 <p>
-                  <span className="font-medium text-slate-900 dark:text-white">
+                  <span className="font-semibold text-slate-900 dark:text-white">
                     Type:
                   </span>{" "}
                   {tournament.volleyballType}
                 </p>
                 <p>
-                  <span className="font-medium text-slate-900 dark:text-white">
+                  <span className="font-semibold text-slate-900 dark:text-white">
                     Visibility:
                   </span>{" "}
                   {tournament.visibility}
                 </p>
                 <p>
-                  <span className="font-medium text-slate-900 dark:text-white">
+                  <span className="font-semibold text-slate-900 dark:text-white">
                     Registration:
                   </span>{" "}
                   {tournament.visibility === "Public"
                     ? "Open to everyone"
                     : "Invite only"}
                 </p>
+                <p>
+                  <span className="font-semibold text-slate-900 dark:text-white">
+                    Status:
+                  </span>{" "}
+                  {tournament.status}
+                </p>
               </div>
             </section>
 
-            <section className="bg-slate-900 dark:bg-slate-800 text-white rounded-2xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-3">Access Info</h2>
-              <div className="text-sm text-slate-200">
+            <section className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(135deg,#341248,#4d1e61,#1b1025)] p-6 text-white shadow-[0_18px_45px_rgba(18,10,35,0.22)]">
+              <h2 className="mb-3 text-lg font-black">Access Info</h2>
+              <div className="text-sm leading-7 text-white/85">
                 {tournament.visibility === "Public"
                   ? `This ${tournament.volleyballType.toLowerCase()} tournament is visible to all users and any team can register.`
                   : `This ${tournament.volleyballType.toLowerCase()} tournament is private and only invited teams can participate.`}
