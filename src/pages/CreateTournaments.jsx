@@ -21,6 +21,24 @@ const defaultTournament = {
   additionalRules: "",
 };
 
+const glassCard =
+  "rounded-[1.4rem] sm:rounded-[1.6rem] border border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(18,10,35,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.28)]";
+
+const inputClass =
+  "w-full rounded-xl border border-white/20 dark:border-white/10 bg-white/60 dark:bg-black/20 text-slate-900 dark:text-white px-4 py-3 outline-none placeholder:text-slate-400 dark:placeholder:text-white/35 focus:ring-2 focus:ring-[#f0b4df] focus:border-[#f0b4df] transition";
+
+const labelClass =
+  "block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2";
+
+const sectionTitleClass =
+  "text-xl font-black text-slate-900 dark:text-white mb-4";
+
+const outlineBtn =
+  "inline-flex items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+
+const primaryBtn =
+  "inline-flex items-center justify-center rounded-full bg-brand dark:bg-fuchsia-300 px-6 py-3 text-sm font-bold text-white dark:text-slate-900 transition-all duration-300 hover:opacity-90";
+
 export default function CreateTournament() {
   const [tournament, setTournament] = useState(defaultTournament);
   const [statusMessage, setStatusMessage] = useState("");
@@ -82,18 +100,21 @@ export default function CreateTournament() {
 
   return (
     <main
-      className="min-h-screen bg-slate-50 dark:bg-slate-950 py-10 px-4"
+      className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10"
       aria-labelledby="create-tournament-title"
     >
       <div className="mx-auto max-w-6xl">
         <header className="mb-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand dark:text-fuchsia-300">
+            Tournament Setup
+          </p>
           <h1
             id="create-tournament-title"
-            className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white"
+            className="mt-2 text-3xl font-black text-slate-900 dark:text-white md:text-4xl"
           >
             Create Tournament
           </h1>
-          <p className="mt-2 text-slate-600 dark:text-slate-300">
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-white/68 sm:text-base">
             Set up a volleyball tournament, manage teams, and publish all the
             key details in one place.
           </p>
@@ -103,26 +124,21 @@ export default function CreateTournament() {
           <p
             role="status"
             aria-live="polite"
-            className="mb-6 rounded-xl border border-green-300 bg-green-50 px-4 py-3 text-green-800 dark:border-green-800 dark:bg-green-950/40 dark:text-green-300"
+            className="mb-6 rounded-[1.1rem] border border-[#f0b4df] bg-white/70 px-4 py-3 text-sm font-semibold text-[#6B124B] backdrop-blur-md dark:bg-white/10 dark:text-fuchsia-200"
           >
             {statusMessage}
           </p>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 md:p-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <div className={`lg:col-span-2 p-6 md:p-8 ${glassCard}`}>
             <form className="space-y-8" onSubmit={handleSubmit}>
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Basic Information
-                </legend>
+                <legend className={sectionTitleClass}>Basic Information</legend>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="md:col-span-2">
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="name" className={labelClass}>
                       Tournament Name
                     </label>
                     <input
@@ -133,15 +149,12 @@ export default function CreateTournament() {
                       onChange={handleChange}
                       placeholder="e.g. Beirut Summer Volleyball Cup"
                       required
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="location"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="location" className={labelClass}>
                       Location
                     </label>
                     <input
@@ -152,15 +165,12 @@ export default function CreateTournament() {
                       onChange={handleChange}
                       placeholder="Beirut, Lebanon"
                       required
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="venue"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="venue" className={labelClass}>
                       Venue
                     </label>
                     <input
@@ -170,15 +180,12 @@ export default function CreateTournament() {
                       value={tournament.venue}
                       onChange={handleChange}
                       placeholder="Gym, court, beach, grass field, or snow venue"
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="startDate"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="startDate" className={labelClass}>
                       Start Date
                     </label>
                     <input
@@ -188,15 +195,12 @@ export default function CreateTournament() {
                       value={tournament.startDate}
                       onChange={handleChange}
                       required
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="endDate"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="endDate" className={labelClass}>
                       End Date
                     </label>
                     <input
@@ -206,23 +210,18 @@ export default function CreateTournament() {
                       value={tournament.endDate}
                       onChange={handleChange}
                       required
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Tournament Settings
-                </legend>
+                <legend className={sectionTitleClass}>Tournament Settings</legend>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label
-                      htmlFor="format"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="format" className={labelClass}>
                       Tournament Format
                     </label>
                     <select
@@ -230,7 +229,7 @@ export default function CreateTournament() {
                       name="format"
                       value={tournament.format}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Single Elimination</option>
                       <option>Double Elimination</option>
@@ -240,10 +239,7 @@ export default function CreateTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="volleyballType"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="volleyballType" className={labelClass}>
                       Volleyball Type
                     </label>
                     <select
@@ -251,7 +247,7 @@ export default function CreateTournament() {
                       name="volleyballType"
                       value={tournament.volleyballType}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Indoor</option>
                       <option>Beach</option>
@@ -261,10 +257,7 @@ export default function CreateTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="maxTeams"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="maxTeams" className={labelClass}>
                       Max Teams
                     </label>
                     <input
@@ -275,15 +268,12 @@ export default function CreateTournament() {
                       onChange={handleChange}
                       placeholder="16"
                       min="1"
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="skillLevel"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="skillLevel" className={labelClass}>
                       Skill Level
                     </label>
                     <select
@@ -291,7 +281,7 @@ export default function CreateTournament() {
                       name="skillLevel"
                       value={tournament.skillLevel}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Open</option>
                       <option>Beginner</option>
@@ -302,10 +292,7 @@ export default function CreateTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="genderCategory"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="genderCategory" className={labelClass}>
                       Gender Category
                     </label>
                     <select
@@ -313,7 +300,7 @@ export default function CreateTournament() {
                       name="genderCategory"
                       value={tournament.genderCategory}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>Men</option>
                       <option>Women</option>
@@ -322,10 +309,7 @@ export default function CreateTournament() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label
-                      htmlFor="visibility"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="visibility" className={labelClass}>
                       Tournament Visibility
                     </label>
                     <select
@@ -334,14 +318,14 @@ export default function CreateTournament() {
                       value={tournament.visibility}
                       onChange={handleChange}
                       aria-describedby="visibility-help"
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option value="Public">Public</option>
                       <option value="Private">Private</option>
                     </select>
                     <p
                       id="visibility-help"
-                      className="mt-2 text-sm text-slate-500 dark:text-slate-400"
+                      className="mt-2 text-sm text-slate-500 dark:text-white/50"
                     >
                       {tournament.visibility === "Public"
                         ? "Anyone can view and join this tournament."
@@ -352,16 +336,11 @@ export default function CreateTournament() {
               </fieldset>
 
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Match Rules
-                </legend>
+                <legend className={sectionTitleClass}>Match Rules</legend>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   <div>
-                    <label
-                      htmlFor="bestOf"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="bestOf" className={labelClass}>
                       Best Of
                     </label>
                     <select
@@ -369,7 +348,7 @@ export default function CreateTournament() {
                       name="bestOf"
                       value={tournament.bestOf}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     >
                       <option>3 Sets</option>
                       <option>5 Sets</option>
@@ -377,10 +356,7 @@ export default function CreateTournament() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="pointsPerSet"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="pointsPerSet" className={labelClass}>
                       Points Per Set
                     </label>
                     <input
@@ -391,15 +367,12 @@ export default function CreateTournament() {
                       onChange={handleChange}
                       placeholder="25"
                       min="1"
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="finalSetPoints"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="finalSetPoints" className={labelClass}>
                       Final Set Points
                     </label>
                     <input
@@ -410,23 +383,18 @@ export default function CreateTournament() {
                       onChange={handleChange}
                       placeholder="15"
                       min="1"
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
               <fieldset>
-                <legend className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                  Description & Rules
-                </legend>
+                <legend className={sectionTitleClass}>Description & Rules</legend>
 
                 <div className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="description"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="description" className={labelClass}>
                       Tournament Description
                     </label>
                     <textarea
@@ -436,15 +404,12 @@ export default function CreateTournament() {
                       value={tournament.description}
                       onChange={handleChange}
                       placeholder="Write a short description about the tournament, eligibility, and what teams should expect..."
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="additionalRules"
-                      className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-                    >
+                    <label htmlFor="additionalRules" className={labelClass}>
                       Additional Rules
                     </label>
                     <textarea
@@ -454,27 +419,24 @@ export default function CreateTournament() {
                       value={tournament.additionalRules}
                       onChange={handleChange}
                       placeholder="Add registration rules, lineup requirements, tie-break rules, etc."
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-400"
+                      className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
               <section
-                className="flex flex-col sm:flex-row gap-3 pt-2"
+                className="flex flex-col gap-3 pt-2 sm:flex-row"
                 aria-label="Tournament creation actions"
               >
-                <button
-                  type="submit"
-                  className="rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-medium hover:bg-slate-800 dark:hover:bg-slate-200 transition"
-                >
+                <button type="submit" className={primaryBtn}>
                   Create Tournament
                 </button>
 
                 <button
                   type="button"
                   onClick={handleSaveDraft}
-                  className="rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-6 py-3 font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                  className={outlineBtn}
                 >
                   Save as Draft
                 </button>
@@ -486,11 +448,11 @@ export default function CreateTournament() {
             className="space-y-6"
             aria-label="Tournament creation help and preview"
           >
-            <section className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+            <section className={`${glassCard} p-6`}>
+              <h2 className="mb-3 text-lg font-black text-slate-900 dark:text-white">
                 Quick Tips
               </h2>
-              <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <ul className="space-y-3 text-sm leading-7 text-slate-600 dark:text-white/68">
                 <li>• Choose a clear format before teams register.</li>
                 <li>• Match the venue to the volleyball type you selected.</li>
                 <li>• Mention roster limits and eligibility rules.</li>
@@ -498,30 +460,31 @@ export default function CreateTournament() {
               </ul>
             </section>
 
-            <section className="bg-slate-900 dark:bg-slate-800 text-white rounded-2xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-3">Preview</h2>
-              <div className="space-y-2 text-sm text-slate-200">
+            <section className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(135deg,#341248,#4d1e61,#1b1025)] p-6 text-white shadow-[0_18px_45px_rgba(18,10,35,0.22)]">
+              <h2 className="mb-3 text-lg font-black">Preview</h2>
+
+              <div className="space-y-2 text-sm text-white/85">
                 <p>
-                  <span className="text-white font-medium">Status:</span>{" "}
+                  <span className="font-semibold text-white">Status:</span>{" "}
                   {tournament.status || "Draft"}
                 </p>
                 <p>
-                  <span className="text-white font-medium">Type:</span>{" "}
+                  <span className="font-semibold text-white">Type:</span>{" "}
                   {tournament.volleyballType}
                 </p>
                 <p>
-                  <span className="text-white font-medium">Visibility:</span>{" "}
+                  <span className="font-semibold text-white">Visibility:</span>{" "}
                   {tournament.visibility}
                 </p>
                 <p>
-                  <span className="text-white font-medium">Registration:</span>{" "}
+                  <span className="font-semibold text-white">Registration:</span>{" "}
                   {tournament.visibility === "Public"
                     ? "Open to everyone"
                     : "Invite only"}
                 </p>
               </div>
 
-              <div className="mt-4 rounded-xl bg-white/10 p-4 text-sm text-slate-200">
+              <div className="mt-4 rounded-[1rem] border border-white/15 bg-white/10 p-4 text-sm leading-6 text-white/85 backdrop-blur-md">
                 {tournament.visibility === "Public"
                   ? `This ${tournament.volleyballType.toLowerCase()} tournament will be visible to all teams once published.`
                   : `This ${tournament.volleyballType.toLowerCase()} tournament will only be accessible to invited teams.`}
