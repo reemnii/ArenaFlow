@@ -289,7 +289,7 @@ const glassCard =
   "rounded-[1.4rem] sm:rounded-[1.6rem] border border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(18,10,35,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.28)]";
 
 const outlineBtn =
-  "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+  "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-brand-deep dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
 
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -300,37 +300,25 @@ export default function Home() {
   const [selectedTournament, setSelectedTournament] = useState(
     fallbackTournaments[0]
   );
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.classList.contains("dark")
+  );
 
   useEffect(() => {
-    const saved = localStorage.getItem("tournaments");
-    if (!saved) return;
+  const html = document.documentElement;
 
-    try {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        const normalized = parsed.map((item, index) => ({
-          id: item.id || index + 1,
-          name: item.name || "Untitled Tournament",
-          location: item.location || item.city || "Location TBA",
-          date: item.date || "2026-04-12",
-          teams:
-            item.teamsCount ||
-            item.numberOfTeams ||
-            item.teams?.length ||
-            item.teams ||
-            0,
-          status: item.status || "Upcoming",
-          level: item.level || "Open Division",
-          type: item.type || "Indoor",
-        }));
+  const updateTheme = () => {
+    setIsDarkMode(html.classList.contains("dark"));
+  };
 
-        setFeaturedTournaments(normalized);
-        setSelectedTournament(normalized[0]);
-      }
-    } catch (error) {
-      console.error("Failed to load tournaments:", error);
-    }
-  }, []);
+  const observer = new MutationObserver(updateTheme);
+  observer.observe(html, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+
+  return () => observer.disconnect();
+}, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -401,7 +389,7 @@ export default function Home() {
                     {currentSlide.title}
                   </h1>
 
-                  <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-700 dark:text-white/72 sm:mt-4 sm:text-base sm:leading-7">
+                  <p className="mt-3 max-w-2xl text-sm leading-6 text-brand-deep dark:text-white/72 transition-colors duration-300 sm:mt-4 sm:text-base sm:leading-7">
                     {currentSlide.description}
                   </p>
 
@@ -502,11 +490,11 @@ export default function Home() {
                   key={slide.id}
                   onClick={() => setActiveSlide(index)}
                   aria-label={`Go to slide ${index + 1}`}
-                  className={`h-2.5 rounded-full transition ${
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
                     activeSlide === index
-                      ? "w-8 bg-brand dark:bg-fuchsia-300"
-                      : "w-2.5 bg-slate-300 dark:bg-white/25"
-                  }`}
+                    ? "w-8 bg-brand dark:bg-fuchsia-300"
+                    : "w-2.5 bg-brand/30 dark:bg-white/25"
+                }`}
                 />
               ))}
             </div>
@@ -554,10 +542,10 @@ export default function Home() {
                   </div>
 
                   <div className="absolute inset-x-3 bottom-3 rounded-[1.2rem] border border-white/15 bg-white/15 p-4 transition-all duration-300 group-hover:bg-white/18 group-hover:shadow-[0_10px_28px_rgba(0,0,0,0.18)] dark:bg-white/10 sm:inset-x-4 sm:bottom-4 sm:rounded-[1.35rem]">
-                    <h3 className="text-lg font-black text-white sm:text-xl">
+                    <h3 className="text-lg font-black text-[#6B124B] dark:text-white sm:text-xl">
                       {item.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-6 text-white/88">
+                    <p className="mt-2 text-sm leading-6 text-[#6B124B] dark:text-white">
                       {item.description}
                     </p>
                     <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-fuchsia-100">
@@ -952,7 +940,7 @@ export default function Home() {
               <h2 className="mt-2 text-2xl font-black sm:text-3xl">
                 Built for better volleyball event management
               </h2>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600 dark:text-white/68 sm:text-base">
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-[#6B124B] dark:text-white/68 sm:text-base">
                 ArenaFlow is designed to make volleyball tournament management
                 clearer and more organized for organizers, clubs, teams, and
                 participants. From event setup and registration to schedules and
@@ -986,7 +974,7 @@ export default function Home() {
                 ].map((item) => (
                   <div
                     key={item}
-                    className="rounded-[1rem] border border-white/20 bg-white/55 p-4 text-sm text-slate-700 dark:border-white/10 dark:bg-black/20 dark:text-white/72 sm:rounded-[1.2rem]"
+                    className="rounded-[1rem] border border-white/20 bg-white/55 p-4 text-sm text-[#6B124B] dark:border-white/10 dark:bg-black/20 dark:text-white/70 sm:rounded-[1.2rem]"
                   >
                     {item}
                   </div>
@@ -1044,7 +1032,7 @@ export default function Home() {
                         transition={{ duration: 0.25 }}
                         className="overflow-hidden"
                       >
-                        <div className="px-4 pb-4 pt-0 text-sm leading-7 text-slate-600 dark:px-5 dark:text-white/68">
+                        <div className="px-4 pb-4 pt-0 text-sm leading-7 text-slate-600 dark:px-5 dark:text-white/70">
                           {item.a}
                         </div>
                       </motion.div>

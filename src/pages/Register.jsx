@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { apiFetch } from "../utils/api";
 
 export default function Register() {
@@ -78,9 +78,10 @@ export default function Register() {
     <div className="flex min-h-screen flex-col items-center overflow-y-auto px-4 py-5 sm:py-6">
       <Link
         to="/"
-        className="mb-4 mt-2 w-full max-w-sm text-sm text-inherit transition hover:text-brand sm:max-w-md"
+        className="mb-4 mt-2 flex w-full max-w-sm items-center gap-2 text-sm text-inherit transition hover:text-brand sm:max-w-md"
       >
-        ← Go back to Home
+        <ArrowLeft size={14} />
+        Go back to Home
       </Link>
 
       <form

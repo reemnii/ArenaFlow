@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant light (&:where(.light, .light *));
+
 @theme {
   --color-brand: #913075;
   --color-brand2: #47004A;
@@ -47,13 +49,96 @@
 
   @media (min-width: 768px) {
     html.light body {
-      background:
-        radial-gradient(circle at 15% 85%, #fb5ffc 0%, transparent 50%),
-        radial-gradient(circle at 85% 15%, rgba(251, 95, 252, 0.5) 0%, transparent 50%),
-        radial-gradient(circle at 45% 60%, rgba(243, 206, 255, 0.8) 0%, transparent 50%),
-        radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.4) 0%, transparent 10%),
-        linear-gradient(100deg, #dab1da 0%, #ffd6ff 55%, #f3ceff 100%);
+      background:#f6ddfe
     }
+  }
+}
+
+@layer utilities {
+  html.light .bg-white\/5 {
+    background-color: rgba(145, 48, 117, 0.12);
+  }
+
+  html.light .bg-white\/10 {
+    background-color: rgba(107, 18, 75, 0.1);
+  }
+
+  html.light .border-white\/10 {
+    border-color: rgba(145, 48, 117, 0.24);
+  }
+
+  html.light .border-white\/20 {
+    border-color: rgba(107, 18, 75, 0.28);
+  }
+
+  html.light .bg-brand,
+  html.light .bg-brand\/80 {
+    color: white;
+  }
+
+  html.light .bg-slate-50 {
+    background-color: transparent;
+  }
+
+  html.light .bg-white {
+    background-color: rgba(145, 48, 117, 0.12);
+  }
+
+  html.light .bg-slate-900 {
+    background-color: #6B124B;
+  }
+
+  html.light .border-slate-200,
+  html.light .border-slate-300 {
+    border-color: rgba(107, 18, 75, 0.28);
+  }
+
+  html.light .text-slate-900,
+  html.light .text-slate-800,
+  html.light .text-slate-700 {
+    color: #6B124B;
+  }
+
+  html.light .text-slate-600,
+  html.light .text-slate-500 {
+    color: rgba(107, 18, 75, 0.72);
+  }
+
+  html.light .text-slate-400,
+  html.light .text-slate-300 {
+    color: rgba(107, 18, 75, 0.58);
+  }
+
+  html.light .text-slate-200 {
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  html.light input:not([type="checkbox"]):not([type="radio"]),
+  html.light select,
+  html.light textarea {
+    border-color: rgba(107, 18, 75, 0.32);
+    background-color: rgba(107, 18, 75, 0.1);
+    color: #6B124B;
+  }
+
+  html.light input::placeholder,
+  html.light textarea::placeholder {
+    color: rgba(107, 18, 75, 0.5);
+  }
+
+  html.light input:focus,
+  html.light select:focus,
+  html.light textarea:focus {
+    border-color: rgba(145, 48, 117, 0.72);
+    --tw-ring-color: rgba(145, 48, 117, 0.35);
+  }
+
+  html.light .hover\:bg-slate-800:hover {
+    background-color: #913075;
+  }
+
+  html.light .hover\:bg-slate-100:hover {
+    background-color: rgba(107, 18, 75, 0.12);
   }
 }
 
