@@ -606,11 +606,14 @@ export default function UserProfile() {
   }
 
   function handleLogout() {
+    // remove auth data
+    localStorage.removeItem("token");
     localStorage.removeItem("currentUser");
+    sessionStorage.removeItem("token");
     sessionStorage.removeItem("currentUser");
-    localStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("isLoggedIn");
-    navigate("/login", { replace: true });
+
+    // redirect to login
+    window.location.href = "/login";
   }
 
   const smoothDrop = {
