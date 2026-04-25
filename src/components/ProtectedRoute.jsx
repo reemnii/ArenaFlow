@@ -1,22 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { getStoredAuth } from "../utils/auth";
 
 export default function ProtectedRoute() {
-  let localUser = null;
-  let sessionUser = null;
+  const { isAuthenticated } = getStoredAuth();
 
-  try {
-    localUser = JSON.parse(localStorage.getItem("currentUser"));
-  } catch {
-    localUser = null;
-  }
-
-  try {
-    sessionUser = JSON.parse(sessionStorage.getItem("currentUser"));
-  } catch {
-    sessionUser = null;
-  }
-
-  const currentUser = localUser || sessionUser;
-
-  return currentUser ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 }

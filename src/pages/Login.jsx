@@ -1,90 +1,64 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, ArrowLeft} from "lucide-react";
-import { users as defaultUsers } from "../data/users";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { apiFetch } from "../utils/api";
+import { getStoredAuth, setStoredAuth } from "../utils/auth";
 
 export default function Login() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser =
-      JSON.parse(localStorage.getItem("currentUser")) ||
-      JSON.parse(sessionStorage.getItem("currentUser"));
-
-    if (storedUser) {
+    if (getStoredAuth().isAuthenticated) {
       navigate("/dashboard", { replace: true });
     }
   }, [navigate]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-    const trimmedIdentifier = identifier.trim();
-
-    if (!trimmedIdentifier || !password) {
-      setError("Please fill in all fields");
+    if (!identifier.trim() || !password) {
+      setError("Please fill in all fields.");
       return;
     }
 
-    let savedUsers = [];
+    setIsSubmitting(true);
+    setError("");
 
     try {
-      savedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    } catch {
-      savedUsers = [];
+      const data = await apiFetch("/api/auth/login", {
+        method: "POST",
+        body: {
+          identifier: identifier.trim(),
+          password,
+        },
+      });
+
+      setStoredAuth({
+        token: data.token,
+        user: data.user,
+        remember,
+      });
+
+      navigate("/dashboard", { replace: true });
+    } catch (requestError) {
+      setError(requestError.message || "Unable to sign in.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const allUsers = [...defaultUsers, ...savedUsers];
-
-    const user = allUsers.find(
-      (u) =>
-        (u.email.toLowerCase() === trimmedIdentifier.toLowerCase() ||
-          u.username.toLowerCase() === trimmedIdentifier.toLowerCase()) &&
-        u.password === password
-    );
-
-    if (!user) {
-      setError("Invalid email/username or password");
-      return;
-    }
-
-    const safeUser = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role || "player",
-    };
-
-    if (remember) {
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("currentUser", JSON.stringify(safeUser));
-      sessionStorage.removeItem("isLoggedIn");
-      sessionStorage.removeItem("currentUser");
-    } else {
-      sessionStorage.setItem("isLoggedIn", "true");
-      sessionStorage.setItem("currentUser", JSON.stringify(safeUser));
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("currentUser");
-    }
-
-    setError("");
-    navigate("/dashboard", { replace: true });
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen px-4">
-
-      {/* Go Back */}
-      <div className="w-full max-w-md sm:max-w-lg mb-4">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4">
+      <div className="mb-4 w-full max-w-md sm:max-w-lg">
         <Link
           to="/"
-          className="flex items-center gap-2 text-sm text-inherit hover:text-brand transition cursor-pointer"
+          className="flex items-center gap-2 text-sm text-inherit transition hover:text-brand"
         >
           <ArrowLeft size={14} />
           Go back to Home
@@ -93,37 +67,36 @@ export default function Login() {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-[20px] shadow-[0_40px_120px_rgba(0,0,0,0.3)] p-6 sm:p-8 md:p-10 w-full max-w-md sm:max-w-lg"
+        className="w-full max-w-md rounded-[20px] border border-white/10 bg-white/5 p-6 shadow-[0_40px_120px_rgba(0,0,0,0.3)] backdrop-blur-[20px] sm:max-w-lg sm:p-8 md:p-10"
       >
-        <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center text-inherit">
+        <h2 className="mb-6 text-center text-xl font-bold text-inherit sm:text-2xl">
           Login
         </h2>
 
         {error && (
-          <p className="text-brand mb-4 text-sm font-semibold" role="alert">
+          <p className="mb-4 text-sm font-semibold text-brand" role="alert">
             {error}
           </p>
         )}
 
         <label
           htmlFor="identifier"
-          className="block mb-2 text-sm font-medium text-inherit"
+          className="mb-2 block text-sm font-medium text-inherit"
         >
-          Email / Username
+          Email or Username
         </label>
-
         <input
           id="identifier"
           type="text"
           placeholder="Enter your email or username"
-          className="w-full border border-white/20 bg-white/10 text-white rounded p-3 mb-4 outline-none placeholder:text-white/50"
+          className="mb-4 w-full rounded p-3 text-white outline-none border border-white/20 bg-white/10 placeholder:text-white/50"
           value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
+          onChange={(event) => setIdentifier(event.target.value)}
         />
 
         <label
           htmlFor="login-password"
-          className="block mb-2 text-sm font-medium text-inherit"
+          className="mb-2 block text-sm font-medium text-inherit"
         >
           Password
         </label>
@@ -133,52 +106,48 @@ export default function Login() {
             id="login-password"
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
-            className="w-full border border-white/20 bg-white/10 text-white rounded p-3 outline-none pr-10 placeholder:text-white/50"
+            className="w-full rounded p-3 pr-10 text-white outline-none border border-white/20 bg-white/10 placeholder:text-white/50"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
           />
-
           <button
             type="button"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={() => setShowPassword((value) => !value)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-inherit/70 hover:text-inherit cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-inherit/70 hover:text-inherit"
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
 
-        <label className="flex items-center text-sm text-inherit mb-4 mt-4">
+        <label className="mb-4 mt-4 flex items-center text-sm text-inherit">
           <input
             type="checkbox"
             className="mr-2"
             checked={remember}
-            onChange={(e) => setRemember(e.target.checked)}
+            onChange={(event) => setRemember(event.target.checked)}
           />
           Stay signed in
         </label>
 
         <Link
           to="/forgot-password"
-          className="text-left text-sm text-inherit mb-4 mt-1 cursor-pointer hover:underline block"
+          className="mb-4 mt-1 block text-left text-sm text-inherit hover:underline"
         >
           Forgot Password?
         </Link>
 
         <button
           type="submit"
-          className="w-full bg-brand text-white py-3 rounded hover:bg-brand/90 transition cursor-pointer"
+          disabled={isSubmitting}
+          className="w-full rounded bg-brand py-3 text-white transition hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Login
+          {isSubmitting ? "Logging in..." : "Login"}
         </button>
 
-        {/* 🔥 Sign Up Section */}
-        <p className="text-left text-sm text-inherit mt-4">
-          Don’t have an account?{" "}
-          <Link
-            to="/register"
-            className="text-brand hover:underline cursor-pointer"
-          >
+        <p className="mt-4 text-left text-sm text-inherit">
+          Don&apos;t have an account?{" "}
+          <Link to="/register" className="text-brand hover:underline">
             Sign up
           </Link>
         </p>

@@ -1,133 +1,111 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import { apiFetch } from "../utils/api";
 
 export default function Register() {
-  // Form input states
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("");
-  // Error message state
+  const [role, setRole] = useState("player");
   const [error, setError] = useState("");
-  // Toggle password visibility
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    
-    // Clean input values
+  async function handleSubmit(event) {
+    event.preventDefault();
+
     const trimmedUsername = username.trim();
     const trimmedEmail = email.trim().toLowerCase();
-
-    // Validate required fields
-    if (!trimmedUsername || !trimmedEmail || !password || !confirmPassword || !role) {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    // Validate email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(trimmedEmail)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
-    // Validate strong password
     const passwordPattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
+    if (!trimmedUsername || !trimmedEmail || !password || !confirmPassword) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (!emailPattern.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     if (!passwordPattern.test(password)) {
       setError(
-        "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character"
+        "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character."
       );
       return;
     }
 
-    // Validate password confirmation
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords do not match.");
       return;
     }
 
-    let storedUsers = [];
+    setIsSubmitting(true);
+    setError("");
+    setSuccessMessage("");
 
     try {
-      // Get users from localStorage
-      storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    } catch {
-      storedUsers = [];
+      await apiFetch("/api/auth/register", {
+        method: "POST",
+        body: {
+          username: trimmedUsername,
+          email: trimmedEmail,
+          password,
+          role,
+        },
+      });
+
+      setSuccessMessage("Account created successfully. Redirecting to login...");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 900);
+    } catch (requestError) {
+      setError(requestError.message || "Unable to register.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    // Check for existing email or username
-    const emailExists = storedUsers.find(
-      (u) => u.email.toLowerCase() === trimmedEmail
-    );
-
-    if (emailExists) {
-      setError("Email already registered");
-      return;
-    }
-
-    // Check if username already exists
-    const usernameExists = storedUsers.find(
-      (u) => u.username.toLowerCase() === trimmedUsername.toLowerCase()
-    );
-
-    if (usernameExists) {
-      setError("Username already taken");
-      return;
-    }
-
-    // Create new user object
-    const newUser = {
-      id: Date.now(),
-      username: trimmedUsername,
-      email: trimmedEmail,
-      password,
-      role,
-    };
-
-    // Save user to localStorage
-    storedUsers.push(newUser);
-    localStorage.setItem("users", JSON.stringify(storedUsers));
-
-    // Clear error and redirect to login
-    setError("");
-    navigate("/login");
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen overflow-y-auto px-4 py-5 sm:py-6">
-  
-  <Link
-  to="/"
-  className="flex items-center gap-2 mb-4 mt-2 text-sm text-inherit hover:text-brand transition cursor-pointer w-full max-w-sm sm:max-w-md"
->
-  ← Go back to Home
-</Link> 
+    <div className="flex min-h-screen flex-col items-center overflow-y-auto px-4 py-5 sm:py-6">
+      <Link
+        to="/"
+        className="mb-4 mt-2 w-full max-w-sm text-sm text-inherit transition hover:text-brand sm:max-w-md"
+      >
+        ← Go back to Home
+      </Link>
+
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm sm:max-w-md bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.25)] p-4 sm:p-5"
+        className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_30px_80px_rgba(0,0,0,0.25)] backdrop-blur-[20px] sm:max-w-md sm:p-5"
       >
-        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-inherit">
+        <h2 className="mb-4 text-center text-lg font-bold text-inherit sm:text-xl">
           Register
         </h2>
 
-        {/* Error message */}
         {error && (
-          <p className="text-[#913075] mb-3 text-sm font-semibold" role="alert">
+          <p className="mb-3 text-sm font-semibold text-[#913075]" role="alert">
             {error}
           </p>
         )}
 
-        {/* Username input */}
+        {successMessage && (
+          <p className="mb-3 text-sm font-semibold text-emerald-300" role="status">
+            {successMessage}
+          </p>
+        )}
+
         <label
           htmlFor="register-username"
-          className="block mb-1.5 text-sm font-medium text-inherit"
+          className="mb-1.5 block text-sm font-medium text-inherit"
         >
           Username
         </label>
@@ -135,15 +113,14 @@ export default function Register() {
           id="register-username"
           type="text"
           placeholder="Enter your username"
-          className="w-full border border-white/20 bg-white/10 text-white rounded-lg px-3 py-2.5 mb-3 outline-none placeholder:text-white/50"
+          className="mb-3 w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-white outline-none placeholder:text-white/50"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(event) => setUsername(event.target.value)}
         />
 
-        {/* Email input */}
         <label
           htmlFor="register-email"
-          className="block mb-1.5 text-sm font-medium text-inherit"
+          className="mb-1.5 block text-sm font-medium text-inherit"
         >
           Email
         </label>
@@ -151,15 +128,14 @@ export default function Register() {
           id="register-email"
           type="email"
           placeholder="Enter your email"
-          className="w-full border border-white/20 bg-white/10 text-white rounded-lg px-3 py-2.5 mb-3 outline-none placeholder:text-white/50"
+          className="mb-3 w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-white outline-none placeholder:text-white/50"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(event) => setEmail(event.target.value)}
         />
 
-        {/* Password input */}
         <label
           htmlFor="register-password"
-          className="block mb-1.5 text-sm font-medium text-inherit"
+          className="mb-1.5 block text-sm font-medium text-inherit"
         >
           Password
         </label>
@@ -168,30 +144,28 @@ export default function Register() {
             id="register-password"
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
-            className="w-full border border-white/20 bg-white/10 text-white rounded-lg px-3 py-2.5 outline-none pr-10 placeholder:text-white/50"
+            className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 pr-10 text-white outline-none placeholder:text-white/50"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
           />
-
           <button
             type="button"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={() => setShowPassword((value) => !value)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-inherit/70 hover:text-inherit cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-inherit/70 hover:text-inherit"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
 
-        {/* Password hint */}
-        <p className="text-xs text-inherit/70 mb-3 leading-relaxed">
-          Use at least 8 characters with uppercase, lowercase, a number, and a special character.
+        <p className="mb-3 text-xs leading-relaxed text-inherit/70">
+          Use at least 8 characters with uppercase, lowercase, a number, and a
+          special character.
         </p>
 
-        {/* Confirm Password input */}
         <label
           htmlFor="register-confirm-password"
-          className="block mb-1.5 text-sm font-medium text-inherit"
+          className="mb-1.5 block text-sm font-medium text-inherit"
         >
           Confirm Password
         </label>
@@ -200,37 +174,34 @@ export default function Register() {
             id="register-confirm-password"
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm your password"
-            className="w-full border border-white/20 bg-white/10 text-white rounded-lg px-3 py-2.5 outline-none pr-10 placeholder:text-white/50"
+            className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 pr-10 text-white outline-none placeholder:text-white/50"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(event) => setConfirmPassword(event.target.value)}
           />
-
           <button
             type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-inherit/70 hover:text-inherit cursor-pointer"
+            onClick={() => setShowConfirmPassword((value) => !value)}
+            aria-label={
+              showConfirmPassword ? "Hide confirm password" : "Show confirm password"
+            }
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-inherit/70 hover:text-inherit"
           >
             {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
 
-        {/* Role selection */}
         <label
           htmlFor="register-role"
-          className="block mb-1.5 text-sm font-medium text-inherit"
+          className="mb-1.5 block text-sm font-medium text-inherit"
         >
           Role
         </label>
         <select
           id="register-role"
-          className="w-full border border-white/20 bg-white/10 text-white rounded-lg px-3 py-2.5 mb-4 outline-none appearance-none"
+          className="mb-4 w-full appearance-none rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-white outline-none"
           value={role}
-          onChange={(e) => setRole(e.target.value)}
+          onChange={(event) => setRole(event.target.value)}
         >
-          <option value="" disabled className="bg-[#2a1430] text-white">
-            Choose your role
-          </option>
           <option value="player" className="bg-[#2a1430] text-white">
             Player
           </option>
@@ -242,12 +213,12 @@ export default function Register() {
           </option>
         </select>
 
-        {/* Submit button */}
         <button
           type="submit"
-          className="w-full bg-brand text-white py-2.5 rounded-lg hover:bg-brand/90 transition cursor-pointer"
+          disabled={isSubmitting}
+          className="w-full rounded-lg bg-brand py-2.5 text-white transition hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Register
+          {isSubmitting ? "Creating account..." : "Register"}
         </button>
       </form>
     </div>
