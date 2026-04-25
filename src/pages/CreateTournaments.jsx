@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createTournament } from "../services/api";
 
 const defaultTournament = {
-  id: "",
   name: "",
   location: "",
   venue: "",
@@ -34,7 +34,7 @@ const sectionTitleClass =
   "text-xl font-black text-slate-900 dark:text-white mb-4";
 
 const outlineBtn =
-  "inline-flex items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+  "inline-flex items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12";
 
 const primaryBtn =
   "inline-flex items-center justify-center rounded-full bg-brand dark:bg-fuchsia-300 px-6 py-3 text-sm font-bold text-white dark:text-slate-900 transition-all duration-300 hover:opacity-90";
@@ -42,455 +42,183 @@ const primaryBtn =
 export default function CreateTournament() {
   const [tournament, setTournament] = useState(defaultTournament);
   const [statusMessage, setStatusMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setTournament((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const savedTournaments =
-      JSON.parse(localStorage.getItem("tournaments")) || [];
-
-    const newTournament = {
+  const buildPayload = (status) => {
+    return {
       ...tournament,
-      id: Date.now().toString(),
-      status: "Published",
+      maxTeams: Number(tournament.maxTeams) || 0,
+      pointsPerSet: Number(tournament.pointsPerSet) || 25,
+      finalSetPoints: Number(tournament.finalSetPoints) || 15,
+      status,
     };
-
-    const updatedTournaments = [...savedTournaments, newTournament];
-
-    localStorage.setItem("tournaments", JSON.stringify(updatedTournaments));
-    localStorage.setItem("selectedTournamentId", newTournament.id);
-
-    setStatusMessage("Tournament created successfully.");
-
-    setTimeout(() => {
-      navigate(`/edit/${newTournament.id}`);
-    }, 600);
   };
 
-  const handleSaveDraft = () => {
-    const savedTournaments =
-      JSON.parse(localStorage.getItem("tournaments")) || [];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatusMessage("");
+    setErrorMessage("");
 
-    const draftTournament = {
-      ...tournament,
-      id: Date.now().toString(),
-      status: "Draft",
-    };
+    try {
+      const res = await createTournament(buildPayload("Published"));
 
-    const updatedTournaments = [...savedTournaments, draftTournament];
+      const id = res._id || res.id;
 
-    localStorage.setItem("tournaments", JSON.stringify(updatedTournaments));
-    localStorage.setItem("selectedTournamentId", draftTournament.id);
+      setStatusMessage("Tournament created successfully.");
+      setTournament(defaultTournament);
 
-    setStatusMessage("Tournament draft saved.");
+      if (id) {
+        setTimeout(() => {
+          navigate(`/edit/${id}`);
+        }, 600);
+      }
+    } catch (err) {
+      setErrorMessage(err.message || "Failed to create tournament.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    setTimeout(() => {
-      navigate(`/edit/${draftTournament.id}`);
-    }, 600);
+  const handleSaveDraft = async () => {
+    setLoading(true);
+    setStatusMessage("");
+    setErrorMessage("");
+
+    try {
+      const res = await createTournament(buildPayload("Draft"));
+
+      const id = res._id || res.id;
+
+      setStatusMessage("Draft saved.");
+      setTournament(defaultTournament);
+
+      if (id) {
+        setTimeout(() => {
+          navigate(`/edit/${id}`);
+        }, 600);
+      }
+    } catch (err) {
+      setErrorMessage(err.message || "Failed to save draft.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <main
-      className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10"
-      aria-labelledby="create-tournament-title"
-    >
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10">
       <div className="mx-auto max-w-6xl">
-        <header className="mb-8">
-          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand dark:text-fuchsia-300">
-            Tournament Setup
-          </p>
-          <h1
-            id="create-tournament-title"
-            className="mt-2 text-3xl font-black text-slate-900 dark:text-white md:text-4xl"
-          >
-            Create Tournament
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-white/68 sm:text-base">
-            Set up a volleyball tournament, manage teams, and publish all the
-            key details in one place.
-          </p>
-        </header>
+        <h1 className="text-3xl font-black mb-6">Create Tournament</h1>
 
-        {statusMessage && (
-          <p
-            role="status"
-            aria-live="polite"
-            className="mb-6 rounded-[1.1rem] border border-[#f0b4df] bg-white/70 px-4 py-3 text-sm font-semibold text-[#6B124B] backdrop-blur-md dark:bg-white/10 dark:text-fuchsia-200"
-          >
-            {statusMessage}
-          </p>
-        )}
+        {statusMessage && <p className="mb-4 text-green-600">{statusMessage}</p>}
+        {errorMessage && <p className="mb-4 text-red-600">{errorMessage}</p>}
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className={`lg:col-span-2 p-6 md:p-8 ${glassCard}`}>
-            <form className="space-y-8" onSubmit={handleSubmit}>
-              <fieldset>
-                <legend className={sectionTitleClass}>Basic Information</legend>
+        <div className={`p-6 ${glassCard}`}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label className={labelClass}>Tournament Name</label>
+              <input
+                name="name"
+                value={tournament.name}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div className="md:col-span-2">
-                    <label htmlFor="name" className={labelClass}>
-                      Tournament Name
-                    </label>
-                    <input
-                      id="name"
-                      type="text"
-                      name="name"
-                      value={tournament.name}
-                      onChange={handleChange}
-                      placeholder="e.g. Beirut Summer Volleyball Cup"
-                      required
-                      className={inputClass}
-                    />
-                  </div>
+            <div>
+              <label className={labelClass}>Location</label>
+              <input
+                name="location"
+                value={tournament.location}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
 
-                  <div>
-                    <label htmlFor="location" className={labelClass}>
-                      Location
-                    </label>
-                    <input
-                      id="location"
-                      type="text"
-                      name="location"
-                      value={tournament.location}
-                      onChange={handleChange}
-                      placeholder="Beirut, Lebanon"
-                      required
-                      className={inputClass}
-                    />
-                  </div>
+            <div>
+              <label className={labelClass}>Venue</label>
+              <input
+                name="venue"
+                value={tournament.venue}
+                onChange={handleChange}
+                className={inputClass}
+              />
+            </div>
 
-                  <div>
-                    <label htmlFor="venue" className={labelClass}>
-                      Venue
-                    </label>
-                    <input
-                      id="venue"
-                      type="text"
-                      name="venue"
-                      value={tournament.venue}
-                      onChange={handleChange}
-                      placeholder="Gym, court, beach, grass field, or snow venue"
-                      className={inputClass}
-                    />
-                  </div>
+            <div>
+              <label className={labelClass}>Start Date</label>
+              <input
+                type="date"
+                name="startDate"
+                value={tournament.startDate}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
 
-                  <div>
-                    <label htmlFor="startDate" className={labelClass}>
-                      Start Date
-                    </label>
-                    <input
-                      id="startDate"
-                      type="date"
-                      name="startDate"
-                      value={tournament.startDate}
-                      onChange={handleChange}
-                      required
-                      className={inputClass}
-                    />
-                  </div>
+            <div>
+              <label className={labelClass}>End Date</label>
+              <input
+                type="date"
+                name="endDate"
+                value={tournament.endDate}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
 
-                  <div>
-                    <label htmlFor="endDate" className={labelClass}>
-                      End Date
-                    </label>
-                    <input
-                      id="endDate"
-                      type="date"
-                      name="endDate"
-                      value={tournament.endDate}
-                      onChange={handleChange}
-                      required
-                      className={inputClass}
-                    />
-                  </div>
-                </div>
-              </fieldset>
+            <div>
+              <label className={labelClass}>Max Teams</label>
+              <input
+                type="number"
+                name="maxTeams"
+                value={tournament.maxTeams}
+                onChange={handleChange}
+                className={inputClass}
+              />
+            </div>
 
-              <fieldset>
-                <legend className={sectionTitleClass}>Tournament Settings</legend>
+            <div>
+              <label className={labelClass}>Description</label>
+              <textarea
+                name="description"
+                value={tournament.description}
+                onChange={handleChange}
+                className={inputClass}
+              />
+            </div>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div>
-                    <label htmlFor="format" className={labelClass}>
-                      Tournament Format
-                    </label>
-                    <select
-                      id="format"
-                      name="format"
-                      value={tournament.format}
-                      onChange={handleChange}
-                      className={inputClass}
-                    >
-                      <option>Single Elimination</option>
-                      <option>Double Elimination</option>
-                      <option>Round Robin</option>
-                      <option>Group Stage + Knockout</option>
-                    </select>
-                  </div>
+            <div className="flex gap-4">
+              <button type="submit" className={primaryBtn} disabled={loading}>
+                {loading ? "Creating..." : "Create"}
+              </button>
 
-                  <div>
-                    <label htmlFor="volleyballType" className={labelClass}>
-                      Volleyball Type
-                    </label>
-                    <select
-                      id="volleyballType"
-                      name="volleyballType"
-                      value={tournament.volleyballType}
-                      onChange={handleChange}
-                      className={inputClass}
-                    >
-                      <option>Indoor</option>
-                      <option>Beach</option>
-                      <option>Grass</option>
-                      <option>Snow</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="maxTeams" className={labelClass}>
-                      Max Teams
-                    </label>
-                    <input
-                      id="maxTeams"
-                      type="number"
-                      name="maxTeams"
-                      value={tournament.maxTeams}
-                      onChange={handleChange}
-                      placeholder="16"
-                      min="1"
-                      className={inputClass}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="skillLevel" className={labelClass}>
-                      Skill Level
-                    </label>
-                    <select
-                      id="skillLevel"
-                      name="skillLevel"
-                      value={tournament.skillLevel}
-                      onChange={handleChange}
-                      className={inputClass}
-                    >
-                      <option>Open</option>
-                      <option>Beginner</option>
-                      <option>Intermediate</option>
-                      <option>Advanced</option>
-                      <option>University</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="genderCategory" className={labelClass}>
-                      Gender Category
-                    </label>
-                    <select
-                      id="genderCategory"
-                      name="genderCategory"
-                      value={tournament.genderCategory}
-                      onChange={handleChange}
-                      className={inputClass}
-                    >
-                      <option>Men</option>
-                      <option>Women</option>
-                      <option>Mixed</option>
-                    </select>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label htmlFor="visibility" className={labelClass}>
-                      Tournament Visibility
-                    </label>
-                    <select
-                      id="visibility"
-                      name="visibility"
-                      value={tournament.visibility}
-                      onChange={handleChange}
-                      aria-describedby="visibility-help"
-                      className={inputClass}
-                    >
-                      <option value="Public">Public</option>
-                      <option value="Private">Private</option>
-                    </select>
-                    <p
-                      id="visibility-help"
-                      className="mt-2 text-sm text-slate-500 dark:text-white/50"
-                    >
-                      {tournament.visibility === "Public"
-                        ? "Anyone can view and join this tournament."
-                        : "This tournament is invite-only. Only approved teams can join."}
-                    </p>
-                  </div>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend className={sectionTitleClass}>Match Rules</legend>
-
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div>
-                    <label htmlFor="bestOf" className={labelClass}>
-                      Best Of
-                    </label>
-                    <select
-                      id="bestOf"
-                      name="bestOf"
-                      value={tournament.bestOf}
-                      onChange={handleChange}
-                      className={inputClass}
-                    >
-                      <option>3 Sets</option>
-                      <option>5 Sets</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="pointsPerSet" className={labelClass}>
-                      Points Per Set
-                    </label>
-                    <input
-                      id="pointsPerSet"
-                      type="number"
-                      name="pointsPerSet"
-                      value={tournament.pointsPerSet}
-                      onChange={handleChange}
-                      placeholder="25"
-                      min="1"
-                      className={inputClass}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="finalSetPoints" className={labelClass}>
-                      Final Set Points
-                    </label>
-                    <input
-                      id="finalSetPoints"
-                      type="number"
-                      name="finalSetPoints"
-                      value={tournament.finalSetPoints}
-                      onChange={handleChange}
-                      placeholder="15"
-                      min="1"
-                      className={inputClass}
-                    />
-                  </div>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend className={sectionTitleClass}>Description & Rules</legend>
-
-                <div className="space-y-4">
-                  <div>
-                    <label htmlFor="description" className={labelClass}>
-                      Tournament Description
-                    </label>
-                    <textarea
-                      id="description"
-                      rows={5}
-                      name="description"
-                      value={tournament.description}
-                      onChange={handleChange}
-                      placeholder="Write a short description about the tournament, eligibility, and what teams should expect..."
-                      className={inputClass}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="additionalRules" className={labelClass}>
-                      Additional Rules
-                    </label>
-                    <textarea
-                      id="additionalRules"
-                      rows={4}
-                      name="additionalRules"
-                      value={tournament.additionalRules}
-                      onChange={handleChange}
-                      placeholder="Add registration rules, lineup requirements, tie-break rules, etc."
-                      className={inputClass}
-                    />
-                  </div>
-                </div>
-              </fieldset>
-
-              <section
-                className="flex flex-col gap-3 pt-2 sm:flex-row"
-                aria-label="Tournament creation actions"
+              <button
+                type="button"
+                onClick={handleSaveDraft}
+                className={outlineBtn}
+                disabled={loading}
               >
-                <button type="submit" className={primaryBtn}>
-                  Create Tournament
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleSaveDraft}
-                  className={outlineBtn}
-                >
-                  Save as Draft
-                </button>
-              </section>
-            </form>
-          </div>
-
-          <aside
-            className="space-y-6"
-            aria-label="Tournament creation help and preview"
-          >
-            <section className={`${glassCard} p-6`}>
-              <h2 className="mb-3 text-lg font-black text-slate-900 dark:text-white">
-                Quick Tips
-              </h2>
-              <ul className="space-y-3 text-sm leading-7 text-slate-600 dark:text-white/68">
-                <li>• Choose a clear format before teams register.</li>
-                <li>• Match the venue to the volleyball type you selected.</li>
-                <li>• Mention roster limits and eligibility rules.</li>
-                <li>• Keep match settings consistent across the tournament.</li>
-              </ul>
-            </section>
-
-            <section className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(135deg,#341248,#4d1e61,#1b1025)] p-6 text-white shadow-[0_18px_45px_rgba(18,10,35,0.22)]">
-              <h2 className="mb-3 text-lg font-black">Preview</h2>
-
-              <div className="space-y-2 text-sm text-white/85">
-                <p>
-                  <span className="font-semibold text-white">Status:</span>{" "}
-                  {tournament.status || "Draft"}
-                </p>
-                <p>
-                  <span className="font-semibold text-white">Type:</span>{" "}
-                  {tournament.volleyballType}
-                </p>
-                <p>
-                  <span className="font-semibold text-white">Visibility:</span>{" "}
-                  {tournament.visibility}
-                </p>
-                <p>
-                  <span className="font-semibold text-white">Registration:</span>{" "}
-                  {tournament.visibility === "Public"
-                    ? "Open to everyone"
-                    : "Invite only"}
-                </p>
-              </div>
-
-              <div className="mt-4 rounded-[1rem] border border-white/15 bg-white/10 p-4 text-sm leading-6 text-white/85 backdrop-blur-md">
-                {tournament.visibility === "Public"
-                  ? `This ${tournament.volleyballType.toLowerCase()} tournament will be visible to all teams once published.`
-                  : `This ${tournament.volleyballType.toLowerCase()} tournament will only be accessible to invited teams.`}
-              </div>
-            </section>
-          </aside>
+                Save Draft
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </main>
