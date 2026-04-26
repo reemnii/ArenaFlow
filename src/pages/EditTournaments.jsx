@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getTournamentById, updateTournament } from "../services/api";
 
 const defaultTournament = {
-  id: "",
   name: "",
   location: "",
   venue: "",
@@ -19,7 +19,7 @@ const defaultTournament = {
   finalSetPoints: "15",
   description: "",
   additionalRules: "",
-  status: "Published",
+  status: "Draft",
 };
 
 const glassCard =
@@ -35,90 +35,125 @@ const sectionTitleClass =
   "text-xl font-black text-slate-900 dark:text-white mb-4";
 
 const outlineBtn =
-  "inline-flex items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+  "inline-flex items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12";
 
 const primaryBtn =
   "inline-flex items-center justify-center rounded-full bg-brand dark:bg-fuchsia-300 px-6 py-3 text-sm font-bold text-white dark:text-slate-900 transition-all duration-300 hover:opacity-90";
 
-const dangerBtn =
-  "inline-flex items-center justify-center rounded-full border border-red-300/70 dark:border-red-800 px-6 py-3 text-sm font-bold text-red-600 dark:text-red-400 transition-all duration-300 hover:bg-red-50 dark:hover:bg-red-950/30";
+const formatDateForInput = (dateValue) => {
+  if (!dateValue) return "";
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) return "";
+
+  return date.toISOString().split("T")[0];
+};
 
 export default function EditTournament() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [tournament, setTournament] = useState(defaultTournament);
-  const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    const savedTournaments =
-      JSON.parse(localStorage.getItem("tournaments")) || [];
+    const fetchTournament = async () => {
+      setLoading(true);
+      setStatusMessage("");
+      setErrorMessage("");
 
-    const foundTournament = savedTournaments.find(
-      (t) => String(t.id) === String(id)
-    );
+      try {
+        const data = await getTournamentById(id);
 
-    if (foundTournament) {
-      setTournament({
-        ...defaultTournament,
-        ...foundTournament,
-      });
-      localStorage.setItem("selectedTournamentId", foundTournament.id);
-    } else {
-      setNotFound(true);
-    }
+        setTournament({
+          name: data.name || "",
+          location: data.location || "",
+          venue: data.venue || "",
+          startDate: formatDateForInput(data.startDate),
+          endDate: formatDateForInput(data.endDate),
+          format: data.format || "Single Elimination",
+          volleyballType: data.volleyballType || "Indoor",
+          maxTeams: data.maxTeams || "",
+          skillLevel: data.skillLevel || "Open",
+          genderCategory: data.genderCategory || "Men",
+          visibility: data.visibility || "Public",
+          bestOf: data.bestOf || "3 Sets",
+          pointsPerSet: data.pointsPerSet || "25",
+          finalSetPoints: data.finalSetPoints || "15",
+          description: data.description || "",
+          additionalRules: data.additionalRules || "",
+          status: data.status || "Draft",
+        });
+      } catch (err) {
+        setErrorMessage(err.message || "Failed to load tournament.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTournament();
   }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setTournament((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleUpdate = (e) => {
+  const buildPayload = (status) => {
+    return {
+      ...tournament,
+      maxTeams: Number(tournament.maxTeams) || 0,
+      pointsPerSet: Number(tournament.pointsPerSet) || 25,
+      finalSetPoints: Number(tournament.finalSetPoints) || 15,
+      status,
+    };
+  };
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const savedTournaments =
-      JSON.parse(localStorage.getItem("tournaments")) || [];
+    setSaving(true);
+    setStatusMessage("");
+    setErrorMessage("");
 
-    const updatedTournaments = savedTournaments.map((t) =>
-      String(t.id) === String(id) ? { ...tournament, id } : t
-    );
-
-    localStorage.setItem("tournaments", JSON.stringify(updatedTournaments));
-    localStorage.setItem("selectedTournamentId", id);
-    setStatusMessage("Tournament updated successfully.");
+    try {
+      await updateTournament(id, buildPayload("Published"));
+      setStatusMessage("Tournament updated successfully.");
+    } catch (err) {
+      setErrorMessage(err.message || "Failed to update tournament.");
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleDelete = () => {
-    const savedTournaments =
-      JSON.parse(localStorage.getItem("tournaments")) || [];
+  const handleSaveDraft = async () => {
+    setSaving(true);
+    setStatusMessage("");
+    setErrorMessage("");
 
-    const filteredTournaments = savedTournaments.filter(
-      (t) => String(t.id) !== String(id)
-    );
-
-    localStorage.setItem("tournaments", JSON.stringify(filteredTournaments));
-    localStorage.removeItem("selectedTournamentId");
-    navigate("/tournaments");
+    try {
+      await updateTournament(id, buildPayload("Draft"));
+      setStatusMessage("Draft saved successfully.");
+    } catch (err) {
+      setErrorMessage(err.message || "Failed to save draft.");
+    } finally {
+      setSaving(false);
+    }
   };
 
-  if (notFound) {
+  if (loading) {
     return (
       <main className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10">
-        <div className={`mx-auto max-w-3xl p-8 ${glassCard}`}>
-          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand dark:text-fuchsia-300">
-            Edit Tournament
-          </p>
-          <h1 className="mt-2 text-2xl font-black text-slate-900 dark:text-white">
-            Tournament Not Found
-          </h1>
-          <p role="alert" className="mt-3 text-slate-600 dark:text-white/68">
-            No tournament was found for this edit page.
-          </p>
+        <div className="mx-auto max-w-6xl">
+          <p className="text-slate-700 dark:text-white">Loading tournament...</p>
         </div>
       </main>
     );
@@ -132,34 +167,37 @@ export default function EditTournament() {
       <div className="mx-auto max-w-6xl">
         <header className="mb-8">
           <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand dark:text-fuchsia-300">
-            Tournament Management
+            Tournament Editor
           </p>
+
           <h1
             id="edit-tournament-title"
             className="mt-2 text-3xl font-black text-slate-900 dark:text-white md:text-4xl"
           >
             Edit Tournament
           </h1>
+
           <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-white/68 sm:text-base">
-            Edit the tournament details below and keep your event information up
-            to date.
+            Update tournament details, rules, visibility, and match settings.
           </p>
         </header>
 
         {statusMessage && (
-          <p
-            role="status"
-            aria-live="polite"
-            className="mb-6 rounded-[1.1rem] border border-[#f0b4df] bg-white/70 px-4 py-3 text-sm font-semibold text-[#6B124B] backdrop-blur-md dark:bg-white/10 dark:text-fuchsia-200"
-          >
+          <p className="mb-6 rounded-[1.1rem] border border-[#f0b4df] bg-white/70 px-4 py-3 text-sm font-semibold text-[#6B124B] backdrop-blur-md dark:bg-white/10 dark:text-fuchsia-200">
             {statusMessage}
+          </p>
+        )}
+
+        {errorMessage && (
+          <p className="mb-6 rounded-[1.1rem] border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 backdrop-blur-md dark:border-red-400/30 dark:bg-red-500/10 dark:text-red-200">
+            {errorMessage}
           </p>
         )}
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className={`lg:col-span-2 p-6 md:p-8 ${glassCard}`}>
             <form className="space-y-8" onSubmit={handleUpdate}>
-              <fieldset>
+              <fieldset disabled={saving}>
                 <legend className={sectionTitleClass}>Basic Information</legend>
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -173,6 +211,8 @@ export default function EditTournament() {
                       name="name"
                       value={tournament.name}
                       onChange={handleChange}
+                      placeholder="e.g. Beirut Summer Volleyball Cup"
+                      required
                       className={inputClass}
                     />
                   </div>
@@ -187,6 +227,8 @@ export default function EditTournament() {
                       name="location"
                       value={tournament.location}
                       onChange={handleChange}
+                      placeholder="Beirut, Lebanon"
+                      required
                       className={inputClass}
                     />
                   </div>
@@ -216,6 +258,7 @@ export default function EditTournament() {
                       name="startDate"
                       value={tournament.startDate}
                       onChange={handleChange}
+                      required
                       className={inputClass}
                     />
                   </div>
@@ -230,13 +273,14 @@ export default function EditTournament() {
                       name="endDate"
                       value={tournament.endDate}
                       onChange={handleChange}
+                      required
                       className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
-              <fieldset>
+              <fieldset disabled={saving}>
                 <legend className={sectionTitleClass}>Tournament Settings</legend>
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -286,6 +330,8 @@ export default function EditTournament() {
                       name="maxTeams"
                       value={tournament.maxTeams}
                       onChange={handleChange}
+                      placeholder="16"
+                      min="1"
                       className={inputClass}
                     />
                   </div>
@@ -341,6 +387,7 @@ export default function EditTournament() {
                       <option value="Public">Public</option>
                       <option value="Private">Private</option>
                     </select>
+
                     <p
                       id="visibility-help"
                       className="mt-2 text-sm text-slate-500 dark:text-white/50"
@@ -353,7 +400,7 @@ export default function EditTournament() {
                 </div>
               </fieldset>
 
-              <fieldset>
+              <fieldset disabled={saving}>
                 <legend className={sectionTitleClass}>Match Rules</legend>
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -383,6 +430,8 @@ export default function EditTournament() {
                       name="pointsPerSet"
                       value={tournament.pointsPerSet}
                       onChange={handleChange}
+                      placeholder="25"
+                      min="1"
                       className={inputClass}
                     />
                   </div>
@@ -397,14 +446,18 @@ export default function EditTournament() {
                       name="finalSetPoints"
                       value={tournament.finalSetPoints}
                       onChange={handleChange}
+                      placeholder="15"
+                      min="1"
                       className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
-              <fieldset>
-                <legend className={sectionTitleClass}>Description & Rules</legend>
+              <fieldset disabled={saving}>
+                <legend className={sectionTitleClass}>
+                  Description & Rules
+                </legend>
 
                 <div className="space-y-4">
                   <div>
@@ -417,6 +470,7 @@ export default function EditTournament() {
                       name="description"
                       value={tournament.description}
                       onChange={handleChange}
+                      placeholder="Write a short description about the tournament..."
                       className={inputClass}
                     />
                   </div>
@@ -431,33 +485,32 @@ export default function EditTournament() {
                       name="additionalRules"
                       value={tournament.additionalRules}
                       onChange={handleChange}
+                      placeholder="Add registration rules, lineup requirements, tie-break rules, etc."
                       className={inputClass}
                     />
                   </div>
                 </div>
               </fieldset>
 
-              <section
-                className="flex flex-col gap-3 pt-2 sm:flex-row"
-                aria-label="Tournament actions"
-              >
-                <button type="submit" className={primaryBtn}>
-                  Update Tournament
+              <section className="flex flex-col gap-3 pt-2 sm:flex-row">
+                <button type="submit" className={primaryBtn} disabled={saving}>
+                  {saving ? "Saving..." : "Save Changes"}
                 </button>
 
                 <button
                   type="button"
-                  onClick={handleDelete}
-                  aria-label={`Delete ${tournament.name || "this tournament"}`}
-                  className={dangerBtn}
+                  onClick={handleSaveDraft}
+                  className={outlineBtn}
+                  disabled={saving}
                 >
-                  Delete Tournament
+                  {saving ? "Saving..." : "Save as Draft"}
                 </button>
 
                 <button
                   type="button"
                   onClick={() => navigate("/tournaments")}
                   className={outlineBtn}
+                  disabled={saving}
                 >
                   Back to Tournaments
                 </button>
@@ -465,56 +518,54 @@ export default function EditTournament() {
             </form>
           </div>
 
-          <aside
-            className="space-y-6"
-            aria-label="Tournament preview and access information"
-          >
+          <aside className="space-y-6">
             <section className={`${glassCard} p-6`}>
               <h2 className="mb-3 text-lg font-black text-slate-900 dark:text-white">
-                Current Preview
+                Editing Tips
               </h2>
-              <div className="space-y-2 text-sm leading-7 text-slate-600 dark:text-white/68">
-                <p>
-                  <span className="font-semibold text-slate-900 dark:text-white">
-                    Name:
-                  </span>{" "}
-                  {tournament.name || "Untitled Tournament"}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-900 dark:text-white">
-                    Type:
-                  </span>{" "}
-                  {tournament.volleyballType}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-900 dark:text-white">
-                    Visibility:
-                  </span>{" "}
-                  {tournament.visibility}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-900 dark:text-white">
-                    Registration:
-                  </span>{" "}
-                  {tournament.visibility === "Public"
-                    ? "Open to everyone"
-                    : "Invite only"}
-                </p>
-                <p>
-                  <span className="font-semibold text-slate-900 dark:text-white">
-                    Status:
-                  </span>{" "}
-                  {tournament.status}
-                </p>
-              </div>
+
+              <ul className="space-y-3 text-sm leading-7 text-slate-600 dark:text-white/68">
+                <li>• Review the tournament format before saving.</li>
+                <li>• Make sure start and end dates are correct.</li>
+                <li>• Update rules before teams register.</li>
+                <li>• Keep visibility correct for public/private events.</li>
+              </ul>
             </section>
 
             <section className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(135deg,#341248,#4d1e61,#1b1025)] p-6 text-white shadow-[0_18px_45px_rgba(18,10,35,0.22)]">
-              <h2 className="mb-3 text-lg font-black">Access Info</h2>
-              <div className="text-sm leading-7 text-white/85">
+              <h2 className="mb-3 text-lg font-black">Preview</h2>
+
+              <div className="space-y-2 text-sm text-white/85">
+                <p>
+                  <span className="font-semibold text-white">Status:</span>{" "}
+                  {tournament.status}
+                </p>
+
+                <p>
+                  <span className="font-semibold text-white">Type:</span>{" "}
+                  {tournament.volleyballType}
+                </p>
+
+                <p>
+                  <span className="font-semibold text-white">Visibility:</span>{" "}
+                  {tournament.visibility}
+                </p>
+
+                <p>
+                  <span className="font-semibold text-white">Format:</span>{" "}
+                  {tournament.format}
+                </p>
+
+                <p>
+                  <span className="font-semibold text-white">Teams:</span>{" "}
+                  {tournament.maxTeams || "Not set"}
+                </p>
+              </div>
+
+              <div className="mt-4 rounded-[1rem] border border-white/15 bg-white/10 p-4 text-sm leading-6 text-white/85 backdrop-blur-md">
                 {tournament.visibility === "Public"
-                  ? `This ${tournament.volleyballType.toLowerCase()} tournament is visible to all users and any team can register.`
-                  : `This ${tournament.volleyballType.toLowerCase()} tournament is private and only invited teams can participate.`}
+                  ? `This ${tournament.volleyballType.toLowerCase()} tournament is visible to all teams.`
+                  : `This ${tournament.volleyballType.toLowerCase()} tournament is invite-only.`}
               </div>
             </section>
           </aside>
