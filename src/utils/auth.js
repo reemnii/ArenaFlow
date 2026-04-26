@@ -41,6 +41,14 @@ export function setStoredAuth({ token, user, remember = false }) {
   secondaryStore.removeItem("isLoggedIn");
 }
 
+export function updateStoredUser(user) {
+  [localStorage, sessionStorage].forEach((store) => {
+    if (store.getItem("currentUser")) {
+      store.setItem("currentUser", JSON.stringify(user));
+    }
+  });
+}
+
 export function clearStoredAuth() {
   [localStorage, sessionStorage].forEach((store) => {
     store.removeItem("token");

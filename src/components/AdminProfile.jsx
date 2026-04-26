@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -16,16 +16,15 @@ import {
   CalendarDays,
   Swords,
 } from "lucide-react";
-
-import { teams as teamsData } from "../data/teams";
-import { tournaments as tournamentsFileData } from "../data/tournaments";
-import { matches as matchesFileData } from "../data/matches";
+import { apiFetch } from "../utils/api";
 
 export default function AdminProfile({
   currentUser,
   allUsers,
-  setCurrentUser,
-  setAllUsers,
+  teams,
+  tournaments,
+  matches,
+  onProfileSaved,
   onLogout,
 }) {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -63,52 +62,6 @@ export default function AdminProfile({
     },
   };
 
-  const safeTeams = useMemo(() => {
-    let storedTeams = [];
-    try {
-      storedTeams = JSON.parse(localStorage.getItem("teams")) || [];
-    } catch {
-      storedTeams = [];
-    }
-
-    const fileTeams = Array.isArray(teamsData) ? teamsData : [];
-    return storedTeams.length > 0 ? storedTeams : fileTeams;
-  }, []);
-
-  const safeTournaments = useMemo(() => {
-    let storedTournaments = [];
-    try {
-      storedTournaments =
-        JSON.parse(localStorage.getItem("tournaments")) ||
-        JSON.parse(localStorage.getItem("mockTournaments")) ||
-        JSON.parse(localStorage.getItem("allTournaments")) ||
-        [];
-    } catch {
-      storedTournaments = [];
-    }
-
-    const fileTournaments = Array.isArray(tournamentsFileData)
-      ? tournamentsFileData
-      : [];
-
-    return storedTournaments.length > 0 ? storedTournaments : fileTournaments;
-  }, []);
-
-  const safeMatches = useMemo(() => {
-    let storedMatches = [];
-    try {
-      storedMatches =
-        JSON.parse(localStorage.getItem("matches")) ||
-        JSON.parse(localStorage.getItem("allMatches")) ||
-        [];
-    } catch {
-      storedMatches = [];
-    }
-
-    const fileMatches = Array.isArray(matchesFileData) ? matchesFileData : [];
-    return storedMatches.length > 0 ? storedMatches : fileMatches;
-  }, []);
-
   const totalUsers = allUsers.length;
   const totalAdmins = allUsers.filter(
     (user) => user.role?.trim().toLowerCase() === "admin"
@@ -120,18 +73,18 @@ export default function AdminProfile({
     (user) => user.role?.trim().toLowerCase() === "coach"
   ).length;
 
-  const totalTeams = safeTeams.length;
-  const totalTournaments = safeTournaments.length;
-  const totalMatches = safeMatches.length;
+  const totalTeams = teams.length;
+  const totalTournaments = tournaments.length;
+  const totalMatches = matches.length;
 
-  const activeTournaments = safeTournaments.filter((tournament) =>
+  const activeTournaments = tournaments.filter((tournament) =>
     ["active", "ongoing", "open", "in progress", "upcoming"].includes(
       tournament?.status?.trim().toLowerCase()
     )
   ).length;
 
   const recentUsers = allUsers.slice(0, 6);
-  const recentTournaments = safeTournaments.slice(0, 4);
+  const recentTournaments = tournaments.slice(0, 4);
 
   function handleProfileChange(e) {
     const { name, value } = e.target;
@@ -149,7 +102,7 @@ export default function AdminProfile({
     }));
   }
 
-  function handleSaveProfile(e) {
+  async function handleSaveProfile(e) {
     e.preventDefault();
     setProfileError("");
     setProfileMessage("");
@@ -168,55 +121,19 @@ export default function AdminProfile({
       return;
     }
 
-    const usernameTaken = allUsers.some(
-      (user) =>
-        user.username?.toLowerCase() === trimmedUsername.toLowerCase() &&
-        user.id !== currentUser.id
-    );
-
-    if (usernameTaken) {
-      setProfileError("This username is already taken.");
-      return;
+    try {
+      await onProfileSaved({
+        username: trimmedUsername,
+        email: trimmedEmail,
+      });
+      setProfileMessage("Profile updated successfully.");
+      setIsEditingProfile(false);
+    } catch (requestError) {
+      setProfileError(requestError.message || "Unable to update profile.");
     }
-
-    const emailTaken = allUsers.some(
-      (user) =>
-        user.email?.toLowerCase() === trimmedEmail.toLowerCase() &&
-        user.id !== currentUser.id
-    );
-
-    if (emailTaken) {
-      setProfileError("This email is already being used by another account.");
-      return;
-    }
-
-    const updatedUser = {
-      ...currentUser,
-      username: trimmedUsername,
-      email: trimmedEmail,
-    };
-
-    const updatedUsers = allUsers.map((user) =>
-      user.id === currentUser.id
-        ? { ...user, username: trimmedUsername, email: trimmedEmail }
-        : user
-    );
-
-    setCurrentUser(updatedUser);
-    setAllUsers(updatedUsers);
-
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-    if (sessionStorage.getItem("currentUser")) {
-      sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    }
-
-    setProfileMessage("Profile updated successfully.");
-    setIsEditingProfile(false);
   }
 
-  function handleSavePassword(e) {
+  async function handleSavePassword(e) {
     e.preventDefault();
     setPasswordError("");
     setPasswordMessage("");
@@ -225,11 +142,6 @@ export default function AdminProfile({
 
     if (!currentPassword || !newPassword || !confirmPassword) {
       setPasswordError("Please fill in all password fields.");
-      return;
-    }
-
-    if ((currentUser.password || "") !== currentPassword) {
-      setPasswordError("Current password is incorrect.");
       return;
     }
 
@@ -255,33 +167,28 @@ export default function AdminProfile({
       return;
     }
 
-    const updatedUser = {
-      ...currentUser,
-      password: newPassword,
-    };
+    try {
+      await apiFetch("/api/auth/change-password", {
+        method: "POST",
+        auth: true,
+        body: {
+          currentPassword,
+          newPassword,
+          confirmPassword,
+        },
+      });
 
-    const updatedUsers = allUsers.map((user) =>
-      user.id === currentUser.id ? { ...user, password: newPassword } : user
-    );
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
 
-    setCurrentUser(updatedUser);
-    setAllUsers(updatedUsers);
-
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-    if (sessionStorage.getItem("currentUser")) {
-      sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      setPasswordMessage("Password updated successfully.");
+      setIsEditingPassword(false);
+    } catch (requestError) {
+      setPasswordError(requestError.message || "Unable to update password.");
     }
-
-    setPasswordForm({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-
-    setPasswordMessage("Password updated successfully.");
-    setIsEditingPassword(false);
   }
 
   function handleCancelProfileEdit() {
@@ -936,7 +843,7 @@ export default function AdminProfile({
                   </div>
                 </div>
 
-                {safeTournaments.length > 4 && (
+                {tournaments.length > 4 && (
                   <Link
                     to="/tournaments"
                     className="inline-flex w-fit items-center rounded-xl border border-white/10 bg-brand/20 px-3 py-2 text-sm font-medium text-inherit transition-all hover:bg-brand/40"

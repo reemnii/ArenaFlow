@@ -1,4 +1,12 @@
 export function toTournamentPayload(tournament, status) {
+  const selectedTeamIds = Array.isArray(tournament.selectedTeamIds)
+    ? tournament.selectedTeamIds.filter(Boolean)
+    : [];
+  const registrationMode =
+    tournament.registrationMode === "invite-only"
+      ? "invite_only"
+      : "open";
+
   return {
     name: tournament.name.trim(),
     location: tournament.location.trim(),
@@ -13,6 +21,9 @@ export function toTournamentPayload(tournament, status) {
     skillLevel: tournament.skillLevel,
     genderCategory: tournament.genderCategory,
     visibility: tournament.visibility,
+    registrationMode,
+    invitedTeams: selectedTeamIds,
+    invitedTeamIds: selectedTeamIds,
     bestOf: tournament.bestOf,
     pointsPerSet: Number(tournament.pointsPerSet),
     finalSetPoints: Number(tournament.finalSetPoints),
