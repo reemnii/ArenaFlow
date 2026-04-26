@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   CalendarDays,
+  ChevronDown,
+  ChevronUp,
   ClipboardList,
   Eye,
   Flag,
@@ -66,6 +68,13 @@ export default function CreateTournament() {
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openSections, setOpenSections] = useState({
+    basic: true,
+    settings: false,
+    access: false,
+    rules: false,
+    description: false,
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -155,6 +164,13 @@ export default function CreateTournament() {
     submitTournament("draft");
   }
 
+  function toggleSection(sectionKey) {
+    setOpenSections((previous) => ({
+      ...previous,
+      [sectionKey]: !previous[sectionKey],
+    }));
+  }
+
   return (
     <main className="min-h-screen px-4 py-8 text-inherit sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -216,9 +232,12 @@ export default function CreateTournament() {
           <div className={`p-6 sm:p-8 ${CARD_SHELL}`}>
             <form className="space-y-8" onSubmit={handleSubmit}>
               <FormSection
+                sectionKey="basic"
                 title="Basic Information"
                 icon={MapPin}
                 description="Start with the core event identity and schedule."
+                isOpen={openSections.basic}
+                onToggle={toggleSection}
               >
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <Field label="Tournament Name" htmlFor="name" className="md:col-span-2">
@@ -283,9 +302,12 @@ export default function CreateTournament() {
               </FormSection>
 
               <FormSection
+                sectionKey="settings"
                 title="Tournament Settings"
                 icon={Settings2}
                 description="Choose the structure and audience for the event."
+                isOpen={openSections.settings}
+                onToggle={toggleSection}
               >
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <Field label="Tournament Format" htmlFor="format">
@@ -377,9 +399,12 @@ export default function CreateTournament() {
               </FormSection>
 
               <FormSection
+                sectionKey="access"
                 title="Team Access"
                 icon={Users}
                 description="Decide whether teams apply to join or get invited directly."
+                isOpen={openSections.access}
+                onToggle={toggleSection}
               >
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <Field label="Registration Flow" htmlFor="registrationMode">
@@ -466,9 +491,12 @@ export default function CreateTournament() {
               </FormSection>
 
               <FormSection
+                sectionKey="rules"
                 title="Match Rules"
                 icon={ClipboardList}
                 description="Define how matches should be played across the event."
+                isOpen={openSections.rules}
+                onToggle={toggleSection}
               >
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   <Field label="Best Of" htmlFor="bestOf">
@@ -511,9 +539,12 @@ export default function CreateTournament() {
               </FormSection>
 
               <FormSection
+                sectionKey="description"
                 title="Description & Rules"
                 icon={Flag}
                 description="Add context that players and organizers should know."
+                isOpen={openSections.description}
+                onToggle={toggleSection}
               >
                 <div className="space-y-4">
                   <Field label="Tournament Description" htmlFor="description">
@@ -616,19 +647,44 @@ export default function CreateTournament() {
   );
 }
 
-function FormSection({ title, icon: Icon, description, children }) {
+function FormSection({
+  title,
+  icon: Icon,
+  description,
+  children,
+  sectionKey,
+  isOpen,
+  onToggle,
+}) {
+  const contentId = `create-tournament-section-${sectionKey}`;
+
   return (
     <section className={`p-5 sm:p-6 ${INNER_CARD}`}>
-      <div className="mb-5 flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand/20">
-          <Icon size={17} className="text-inherit/85" />
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand/20">
+            <Icon size={17} className="text-inherit/85" />
+          </div>
+          <div>
+            <h2 className={SECTION_TITLE_CLASS}>{title}</h2>
+            <p className="mt-1 text-sm text-inherit/55">{description}</p>
+          </div>
         </div>
-        <div>
-          <h2 className={SECTION_TITLE_CLASS}>{title}</h2>
-          <p className="mt-1 text-sm text-inherit/55">{description}</p>
-        </div>
+
+        <button
+          type="button"
+          aria-label={`${isOpen ? "Hide" : "Show"} ${title}`}
+          aria-expanded={isOpen}
+          aria-controls={contentId}
+          onClick={() => onToggle(sectionKey)}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-medium text-inherit transition hover:bg-white/[0.14]"
+        >
+          {isOpen ? "Hide" : "Show"}
+          {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        </button>
       </div>
-      {children}
+
+      {isOpen ? <div id={contentId}>{children}</div> : null}
     </section>
   );
 }

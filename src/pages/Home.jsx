@@ -32,7 +32,7 @@ const heroSlides = [
     primaryLabel: "Explore Tournaments",
     primaryLink: "/tournaments",
     secondaryLabel: "Register Team",
-    secondaryLink: "/register",
+    secondaryLink: "/participants",
   },
   {
     id: 2,

@@ -52,6 +52,7 @@ export default function TournamentDetails() {
 
   const [tournament, setTournament] = useState(null);
   const [teams, setTeams] = useState([]);
+  const [tournamentTeams, setTournamentTeams] = useState([]);
   const [matches, setMatches] = useState([]);
   const [scores, setScores] = useState([]);
   const [currentUser, setCurrentUser] = useState(getCurrentUser());
@@ -67,8 +68,15 @@ export default function TournamentDetails() {
       setError("");
 
       try {
-        const [tournamentData, teamsData, matchesData, scoresData] = await Promise.all([
+        const [
+          tournamentData,
+          tournamentTeamsData,
+          teamsData,
+          matchesData,
+          scoresData,
+        ] = await Promise.all([
           apiFetch(`/api/tournaments/${id}`),
+          apiFetch(`/api/tournaments/${id}/teams`),
           apiFetch("/api/teams"),
           apiFetch("/api/matches"),
           apiFetch("/api/scores"),
@@ -77,6 +85,7 @@ export default function TournamentDetails() {
         if (!isMounted) return;
 
         setTournament(normalizeTournament(tournamentData));
+        setTournamentTeams((tournamentTeamsData || []).map(normalizeTeam));
         setTeams((teamsData || []).map(normalizeTeam));
         setMatches((matchesData || []).map(normalizeMatch));
         setScores((scoresData || []).map(normalizeScore));
@@ -100,13 +109,20 @@ export default function TournamentDetails() {
 
   // Basic role checks
   const isAdmin = currentUser?.role === "admin";
-  const isCoach = currentUser?.role === "coach";
-  const canManage = isAdmin || isCoach;
-  const canEditTournament = isAdmin || isCoach;
+  const isOwner =
+    tournament && currentUser
+      ? String(tournament.createdBy) === String(currentUser.id)
+      : false;
+  const canManage = isAdmin || isOwner;
+  const canEditTournament = isAdmin || isOwner;
 
   // Build the related teams list for this tournament
   const relatedTeams = useMemo(() => {
     if (!tournament) return [];
+
+    if (tournamentTeams.length > 0) {
+      return tournamentTeams;
+    }
 
     const embeddedTeams = Array.isArray(tournament.teams)
       ? tournament.teams.map((team) => normalizeTeam(team)).filter(Boolean)
@@ -129,7 +145,7 @@ export default function TournamentDetails() {
     }
 
     return teams.filter((team) => possibleTeamIds.includes(String(team.id)));
-  }, [teams, tournament]);
+  }, [teams, tournament, tournamentTeams]);
 
   // Get related matches from the backend
   const relatedMatches = useMemo(() => {
@@ -196,6 +212,7 @@ export default function TournamentDetails() {
   function getTeamName(teamId) {
     return (
       teams.find((team) => String(team.id) === String(teamId))?.name ||
+      relatedTeams.find((team) => String(team.id) === String(teamId))?.name ||
       "Unknown Team"
     );
   }
@@ -301,29 +318,79 @@ export default function TournamentDetails() {
   const deadline = tournament.registrationDeadline
     ? new Date(tournament.registrationDeadline)
     : null;
+  const tournamentStatus = String(tournament.status || "").toLowerCase();
 
   // Decide whether joining is still allowed
   const canJoin =
-    String(tournament.status || "").toLowerCase() === "upcoming" &&
+    tournament.registrationStatus === "open" &&
+    !["draft", "ongoing", "completed"].includes(tournamentStatus) &&
     (!deadline || now <= deadline);
 
-  // Check whether current user already joined
-  const alreadyJoined = Array.isArray(tournament.participants)
-    ? tournament.participants.some(
-        (participant) => String(participant) === String(currentUser?.id)
-      )
-    : false;
+  const managedTeams = useMemo(() => {
+    if (!currentUser) return [];
 
-  // Registration needs a backend endpoint; avoid pretending the action persisted.
-  const handleJoin = () => {
+    return teams.filter(
+      (team) => team.createdBy && String(team.createdBy) === String(currentUser.id)
+    );
+  }, [currentUser, teams]);
+
+  const joinedTeamIds = useMemo(
+    () => new Set(relatedTeams.map((team) => String(team.id))),
+    [relatedTeams]
+  );
+
+  const joinableTeams = useMemo(() => {
+    return managedTeams.filter((team) => !joinedTeamIds.has(String(team.id)));
+  }, [joinedTeamIds, managedTeams]);
+
+  const alreadyJoined = managedTeams.some((team) =>
+    joinedTeamIds.has(String(team.id))
+  );
+
+  const handleJoin = async () => {
     if (!currentUser) {
       navigate("/login");
       return;
     }
 
-    setJoinMessage(
-      "Tournament registration is not available from the backend yet."
-    );
+    if (!canJoin) {
+      setJoinMessage("Tournament registration is currently closed.");
+      return;
+    }
+
+    if (joinableTeams.length === 0) {
+      setJoinMessage(
+        "You need a team you own that is not already registered for this tournament."
+      );
+      return;
+    }
+
+    const selectedTeam = joinableTeams[0];
+
+    try {
+      const data = await apiFetch(`/api/tournaments/${id}/join`, {
+        method: "POST",
+        auth: true,
+        body: {
+          teamId: selectedTeam.id,
+        },
+      });
+
+      const updatedTournament = normalizeTournament(data.tournament);
+      setTournament(updatedTournament);
+      setTournamentTeams(
+        Array.isArray(data.tournament?.teams)
+          ? data.tournament.teams.map(normalizeTeam).filter(Boolean)
+          : []
+      );
+      setJoinMessage(
+        joinableTeams.length > 1
+          ? `${selectedTeam.name} joined the tournament successfully.`
+          : "Team joined the tournament successfully."
+      );
+    } catch (requestError) {
+      setJoinMessage(requestError.message || "Unable to join tournament.");
+    }
   };
 
   return (

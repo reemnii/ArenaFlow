@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -15,16 +15,20 @@ import {
   IdCard,
   PlusCircle,
 } from "lucide-react";
-import { users as defaultUsers } from "../data/users";
-import { men_players } from "../data/men_players";
-import { women_players } from "../data/women_players";
+import {
+  apiFetch,
+  normalizeMatch,
+  normalizePlayer,
+  normalizeTeam,
+  normalizeTournament,
+} from "../utils/api";
+import { clearStoredAuth, updateStoredUser } from "../utils/auth";
 import AdminProfile from "../components/AdminProfile";
 
 import femalePlayerAvatar from "/avatars/volleyball-player.png";
 import malePlayerAvatar from "/avatars/volleyball.png";
 import femaleCoachAvatar from "/avatars/coach.png";
 import maleCoachAvatar from "/avatars/trainer.png";
-import { teams as defaultTeams } from "../data/teams";
 
 const COUNTRY_CODES = [
   { code: "+961", flag: "🇱🇧", min: 7, max: 8 },
@@ -51,9 +55,12 @@ export default function UserProfile() {
 
   const [currentUser, setCurrentUser] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
+  const [allPlayers, setAllPlayers] = useState([]);
   const [playerInfo, setPlayerInfo] = useState(null);
   const [playerTeam, setPlayerTeam] = useState(null);
   const [allTeams, setAllTeams] = useState([]);
+  const [allTournaments, setAllTournaments] = useState([]);
+  const [allMatches, setAllMatches] = useState([]);
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -95,12 +102,6 @@ export default function UserProfile() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const allPlayers = useMemo(() => {
-    const safeMen = Array.isArray(men_players) ? men_players : [];
-    const safeWomen = Array.isArray(women_players) ? women_players : [];
-    return [...safeMen, ...safeWomen];
-  }, []);
 
   function splitPhone(phoneValue = "") {
     const cleaned = String(phoneValue).trim();
@@ -145,131 +146,118 @@ export default function UserProfile() {
     return "";
   }
 
-  useEffect(() => {
-    let storedCurrentUser = null;
-    let storedUsers = [];
-    let storedTeams = [];
+  function applyUserState(user, teamsData, playersData) {
+    const normalizedRole = user?.role?.trim().toLowerCase() || "";
+    const normalizedProfileName =
+      (user?.fullName || user?.username || "").trim().toLowerCase();
 
-    try {
-      storedCurrentUser =
-        JSON.parse(localStorage.getItem("currentUser")) ||
-        JSON.parse(sessionStorage.getItem("currentUser"));
-      storedUsers = JSON.parse(localStorage.getItem("users")) || defaultUsers;
-      storedTeams =
-        JSON.parse(localStorage.getItem("teams")) || defaultTeams;
-    } catch (error) {
-      storedCurrentUser = null;
-      storedUsers = defaultUsers;
-      storedTeams = [];
-    }
+    const matchedPlayer =
+      normalizedRole === "player"
+        ? playersData.find(
+            (player) =>
+              player.name?.trim().toLowerCase() === normalizedProfileName
+          ) || null
+        : null;
 
-    if (!storedCurrentUser) {
-      navigate("/login", { replace: true });
-      return;
-    }
-
-    const safeUsers = Array.isArray(storedUsers) ? storedUsers : defaultUsers;
-    const safeTeams = Array.isArray(storedTeams) ? storedTeams : [];
-
-    const storedUserId = storedCurrentUser.id;
-    const storedUsername =
-      storedCurrentUser.username?.trim().toLowerCase() || "";
-    const storedEmail = storedCurrentUser.email?.trim().toLowerCase() || "";
-
-    const matchedUser =
-      safeUsers.find((user) => {
-        const sameId = String(user.id) === String(storedUserId);
-        const sameUsername =
-          user.username?.trim().toLowerCase() === storedUsername;
-        const sameEmail = user.email?.trim().toLowerCase() === storedEmail;
-
-        return sameId && (sameUsername || sameEmail);
-      }) ||
-      safeUsers.find((user) => {
-        const sameUsername =
-          user.username?.trim().toLowerCase() === storedUsername;
-        const sameEmail = user.email?.trim().toLowerCase() === storedEmail;
-
-        return sameUsername || sameEmail;
-      }) ||
-      storedCurrentUser;
-
-    const usersForState = safeUsers.some((user) => {
-      const sameId = String(user.id) === String(matchedUser.id);
-      const sameUsername =
-        user.username?.trim().toLowerCase() ===
-        (matchedUser.username?.trim().toLowerCase() || "");
-      const sameEmail =
-        user.email?.trim().toLowerCase() ===
-        (matchedUser.email?.trim().toLowerCase() || "");
-
-      return sameId && (sameUsername || sameEmail);
-    })
-      ? safeUsers
-      : [...safeUsers, matchedUser];
-
-    const normalizedUsername = matchedUser.username?.trim().toLowerCase() || "";
-    const normalizedEmail = matchedUser.email?.trim().toLowerCase() || "";
-    const normalizedRole = matchedUser.role?.trim().toLowerCase() || "";
-    const normalizedPlayerName =
-      matchedUser.playerName?.trim().toLowerCase() || "";
-
-    let matchedPlayer = null;
-    let matchedTeam = null;
-
-    if (normalizedRole === "player") {
-      matchedPlayer =
-        allPlayers.find(
-          (player) =>
-            player.name?.trim().toLowerCase() === normalizedPlayerName ||
-            player.name?.trim().toLowerCase() === normalizedUsername
-        ) || null;
-
-      if (matchedPlayer) {
-        matchedTeam =
-          safeTeams.find(
-            (team) =>
-              String(team.id) === String(matchedPlayer.teamId) ||
-              String(team.teamId) === String(matchedPlayer.teamId)
-          ) || null;
-      }
-    }
-
-    if (normalizedRole === "coach") {
-      matchedTeam =
-        safeTeams.find(
+    const matchedTeamByName = user?.teamName
+      ? teamsData.find(
           (team) =>
-            team.coach?.trim().toLowerCase() === normalizedUsername ||
-            team.coach?.trim().toLowerCase() === normalizedEmail ||
-            team.coachEmail?.trim().toLowerCase() === normalizedEmail
-        ) || null;
-    }
+            team.name?.trim().toLowerCase() === user.teamName.trim().toLowerCase()
+        ) || null
+      : null;
 
-    const phoneParts = splitPhone(matchedUser.phone || "");
-    setCurrentUser(matchedUser);
-    setAllUsers(usersForState);
-    setAllTeams(safeTeams);
-    setPlayerInfo(normalizedRole === "player" ? matchedPlayer : null);
+    const matchedTeamByOwner =
+      normalizedRole === "coach"
+        ? teamsData.find(
+            (team) => String(team.createdBy) === String(user.id)
+          ) || null
+        : null;
+
+    const matchedTeamByPlayer = matchedPlayer
+      ? teamsData.find((team) => String(team.id) === String(matchedPlayer.teamId)) || null
+      : null;
+
+    const matchedTeam = matchedTeamByName || matchedTeamByOwner || matchedTeamByPlayer;
+    const phoneParts = splitPhone(user?.phone || "");
+
+    setCurrentUser(user);
+    setPlayerInfo(matchedPlayer);
     setPlayerTeam(normalizedRole === "admin" ? null : matchedTeam);
 
     setProfileForm({
-      username: matchedUser.username || "",
-      email: matchedUser.email || "",
+      username: user?.username || "",
+      email: user?.email || "",
     });
 
     setCompleteProfileForm({
-      fullName: matchedUser.fullName || "",
-      teamName: matchedUser.teamName || matchedTeam?.name || "",
-      position: matchedUser.position || matchedPlayer?.position || "",
-      jerseyNumber: matchedUser.jerseyNumber || "",
-      gender: matchedUser.gender || "",
+      fullName: user?.fullName || "",
+      teamName: user?.teamName || matchedTeam?.name || "",
+      position: user?.position || matchedPlayer?.position || "",
+      jerseyNumber: user?.jerseyNumber || "",
+      gender: user?.gender || "",
       phoneCountryCode: phoneParts.phoneCountryCode,
       phoneNumber: phoneParts.phoneNumber,
-      age: matchedUser.age || "",
-      yearsExperience: matchedUser.yearsExperience || "",
-      specialization: matchedUser.specialization || "",
+      age: user?.age || "",
+      yearsExperience: user?.yearsExperience || "",
+      specialization: user?.specialization || "",
     });
-  }, [navigate, allPlayers]);
+  }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadProfileData() {
+      try {
+        const meResponse = await apiFetch("/api/users/me", { auth: true });
+        const user = meResponse.user;
+
+        const requests = [
+          apiFetch("/api/teams"),
+          apiFetch("/api/players"),
+        ];
+
+        if (user.role === "admin") {
+          requests.push(
+            apiFetch("/api/users", { auth: true }),
+            apiFetch("/api/tournaments"),
+            apiFetch("/api/matches")
+          );
+        } else {
+          requests.push(
+            Promise.resolve({ users: [] }),
+            Promise.resolve([]),
+            Promise.resolve([])
+          );
+        }
+
+        const [teamsData, playersData, usersResponse, tournamentsData, matchesData] =
+          await Promise.all(requests);
+
+        if (!isMounted) return;
+
+        const normalizedTeams = (teamsData || []).map(normalizeTeam);
+        const normalizedPlayers = (playersData || []).map(normalizePlayer);
+
+        setAllTeams(normalizedTeams);
+        setAllPlayers(normalizedPlayers);
+        setAllUsers(usersResponse?.users || []);
+        setAllTournaments((tournamentsData || []).map(normalizeTournament));
+        setAllMatches((matchesData || []).map(normalizeMatch));
+
+        updateStoredUser(user);
+        applyUserState(user, normalizedTeams, normalizedPlayers);
+      } catch {
+        clearStoredAuth();
+        navigate("/login", { replace: true });
+      }
+    }
+
+    loadProfileData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [navigate]);
 
   function handleProfileChange(e) {
     const { name, value } = e.target;
@@ -304,7 +292,7 @@ export default function UserProfile() {
     }));
   }
 
-  function handleSaveProfile(e) {
+  async function handleSaveProfile(e) {
     e.preventDefault();
     setProfileError("");
     setProfileMessage("");
@@ -328,55 +316,31 @@ export default function UserProfile() {
       return;
     }
 
-    const usernameTaken = allUsers.some(
-      (user) =>
-        user.username?.toLowerCase() === trimmedUsername.toLowerCase() &&
-        user.id !== currentUser.id
-    );
+    try {
+      const response = await apiFetch("/api/users/me", {
+        method: "PUT",
+        auth: true,
+        body: {
+          username: trimmedUsername,
+          email: trimmedEmail,
+        },
+      });
 
-    if (usernameTaken) {
-      setProfileError("This username is already taken.");
-      return;
+      updateStoredUser(response.user);
+      applyUserState(response.user, allTeams, allPlayers);
+      setAllUsers((previous) =>
+        previous.map((user) =>
+          user.id === response.user.id ? response.user : user
+        )
+      );
+      setProfileMessage("Profile updated successfully.");
+      setIsEditingProfile(false);
+    } catch (requestError) {
+      setProfileError(requestError.message || "Unable to update profile.");
     }
-
-    const emailTaken = allUsers.some(
-      (user) =>
-        user.email?.toLowerCase() === trimmedEmail.toLowerCase() &&
-        user.id !== currentUser.id
-    );
-
-    if (emailTaken) {
-      setProfileError("This email is already being used by another account.");
-      return;
-    }
-
-    const updatedUser = {
-      ...currentUser,
-      username: trimmedUsername,
-      email: trimmedEmail,
-    };
-
-    const updatedUsers = allUsers.map((user) =>
-      user.id === currentUser.id
-        ? { ...user, username: trimmedUsername, email: trimmedEmail }
-        : user
-    );
-    
-    setCurrentUser(updatedUser);
-    setAllUsers(updatedUsers);
-
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-    if (sessionStorage.getItem("currentUser")) {
-      sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    }
-
-    setProfileMessage("Profile updated successfully.");
-    setIsEditingProfile(false);
   }
 
-  function handleSaveCompleteProfile(e) {
+  async function handleSaveCompleteProfile(e) {
     e.preventDefault();
     setCompleteProfileError("");
     setCompleteProfileMessage("");
@@ -498,37 +462,34 @@ export default function UserProfile() {
       specialization,
     };
 
-    const updatedUser = {
-      ...currentUser,
-      ...updatedCompleteProfile,
-    };
+    try {
+      const response = await apiFetch("/api/users/me", {
+        method: "PUT",
+        auth: true,
+        body: updatedCompleteProfile,
+      });
 
-    const updatedUsers = allUsers.map((user) =>
-      user.id === currentUser.id ? { ...user, ...updatedCompleteProfile } : user
-    );
-
-    setCurrentUser(updatedUser);
-    setAllUsers(updatedUsers);
-
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-    if (sessionStorage.getItem("currentUser")) {
-      sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      updateStoredUser(response.user);
+      applyUserState(response.user, allTeams, allPlayers);
+      setAllUsers((previous) =>
+        previous.map((user) =>
+          user.id === response.user.id ? response.user : user
+        )
+      );
+      setCompleteProfileForm((prev) => ({
+        ...prev,
+        ...updatedCompleteProfile,
+        phoneCountryCode,
+        phoneNumber,
+      }));
+      setCompleteProfileMessage("Details updated successfully.");
+      setIsEditingCompleteProfile(false);
+    } catch (requestError) {
+      setCompleteProfileError(requestError.message || "Unable to update details.");
     }
-
-    setCompleteProfileForm((prev) => ({
-      ...prev,
-      ...updatedCompleteProfile,
-      phoneCountryCode,
-      phoneNumber,
-    }));
-
-    setCompleteProfileMessage("Details updated successfully.");
-    setIsEditingCompleteProfile(false);
   }
 
-  function handleSavePassword(e) {
+  async function handleSavePassword(e) {
     e.preventDefault();
     setPasswordError("");
     setPasswordMessage("");
@@ -537,11 +498,6 @@ export default function UserProfile() {
 
     if (!currentPassword || !newPassword || !confirmPassword) {
       setPasswordError("Please fill in all password fields.");
-      return;
-    }
-
-    if ((currentUser.password || "") !== currentPassword) {
-      setPasswordError("Current password is incorrect.");
       return;
     }
 
@@ -567,33 +523,28 @@ export default function UserProfile() {
       return;
     }
 
-    const updatedUser = {
-      ...currentUser,
-      password: newPassword,
-    };
+    try {
+      await apiFetch("/api/auth/change-password", {
+        method: "POST",
+        auth: true,
+        body: {
+          currentPassword,
+          newPassword,
+          confirmPassword,
+        },
+      });
 
-    const updatedUsers = allUsers.map((user) =>
-      user.id === currentUser.id ? { ...user, password: newPassword } : user
-    );
-    
-    setCurrentUser(updatedUser);
-    setAllUsers(updatedUsers);
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
 
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-    if (sessionStorage.getItem("currentUser")) {
-      sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      setPasswordMessage("Password updated successfully.");
+      setIsEditingPassword(false);
+    } catch (requestError) {
+      setPasswordError(requestError.message || "Unable to update password.");
     }
-
-    setPasswordForm({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-
-    setPasswordMessage("Password updated successfully.");
-    setIsEditingPassword(false);
   }
 
   function handleCancelProfileEdit() {
@@ -639,13 +590,7 @@ export default function UserProfile() {
   }
 
   function handleLogout() {
-    // remove auth data
-    localStorage.removeItem("token");
-    localStorage.removeItem("currentUser");
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("currentUser");
-
-    // redirect to login
+    clearStoredAuth();
     window.location.href = "/login";
   }
 
@@ -683,8 +628,23 @@ export default function UserProfile() {
       <AdminProfile
         currentUser={currentUser}
         allUsers={allUsers}
-        setCurrentUser={setCurrentUser}
-        setAllUsers={setAllUsers}
+        teams={allTeams}
+        tournaments={allTournaments}
+        matches={allMatches}
+        onProfileSaved={async (payload) => {
+          const response = await apiFetch("/api/users/me", {
+            method: "PUT",
+            auth: true,
+            body: payload,
+          });
+          updateStoredUser(response.user);
+          applyUserState(response.user, allTeams, allPlayers);
+          setAllUsers((previous) =>
+            previous.map((user) =>
+              user.id === response.user.id ? response.user : user
+            )
+          );
+        }}
         onLogout={handleLogout}
       />
     );

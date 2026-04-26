@@ -1,9 +1,11 @@
 import { getAuthToken } from "./auth";
 
-const DEFAULT_API_URL = "https://arenaflow-backend.onrender.com";
+const LOCAL_API_URL = "http://localhost:5000";
+const DEPLOYED_API_URL = "https://arenaflow-backend.onrender.com";
 
 export const API_BASE_URL = (
-  import.meta.env.VITE_API_URL || DEFAULT_API_URL
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? LOCAL_API_URL : DEPLOYED_API_URL)
 ).replace(/\/+$/, "");
 
 async function parseResponse(response) {
@@ -75,6 +77,7 @@ export function normalizeTeam(team) {
   return {
     ...team,
     id: team._id || team.id,
+    createdBy: normalizeId(team.createdBy),
     coach: team.coachName || team.coach || "",
     teamName: team.name,
   };

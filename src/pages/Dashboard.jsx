@@ -117,7 +117,7 @@ export default function Dashboard() {
       title: "Registered Teams",
       value: teams.length,
       icon: Users,
-      subtitle: "Loaded from backend",
+      subtitle: "Current team registrations",
     },
     {
       title: "Scheduled Matches",
