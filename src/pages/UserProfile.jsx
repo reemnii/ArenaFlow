@@ -171,9 +171,42 @@ export default function UserProfile() {
     const safeUsers = Array.isArray(storedUsers) ? storedUsers : defaultUsers;
     const safeTeams = Array.isArray(storedTeams) ? storedTeams : [];
 
+    const storedUserId = storedCurrentUser.id;
+    const storedUsername =
+      storedCurrentUser.username?.trim().toLowerCase() || "";
+    const storedEmail = storedCurrentUser.email?.trim().toLowerCase() || "";
+
     const matchedUser =
-      safeUsers.find((user) => user.id === storedCurrentUser.id) ||
+      safeUsers.find((user) => {
+        const sameId = String(user.id) === String(storedUserId);
+        const sameUsername =
+          user.username?.trim().toLowerCase() === storedUsername;
+        const sameEmail = user.email?.trim().toLowerCase() === storedEmail;
+
+        return sameId && (sameUsername || sameEmail);
+      }) ||
+      safeUsers.find((user) => {
+        const sameUsername =
+          user.username?.trim().toLowerCase() === storedUsername;
+        const sameEmail = user.email?.trim().toLowerCase() === storedEmail;
+
+        return sameUsername || sameEmail;
+      }) ||
       storedCurrentUser;
+
+    const usersForState = safeUsers.some((user) => {
+      const sameId = String(user.id) === String(matchedUser.id);
+      const sameUsername =
+        user.username?.trim().toLowerCase() ===
+        (matchedUser.username?.trim().toLowerCase() || "");
+      const sameEmail =
+        user.email?.trim().toLowerCase() ===
+        (matchedUser.email?.trim().toLowerCase() || "");
+
+      return sameId && (sameUsername || sameEmail);
+    })
+      ? safeUsers
+      : [...safeUsers, matchedUser];
 
     const normalizedUsername = matchedUser.username?.trim().toLowerCase() || "";
     const normalizedEmail = matchedUser.email?.trim().toLowerCase() || "";
@@ -214,7 +247,7 @@ export default function UserProfile() {
 
     const phoneParts = splitPhone(matchedUser.phone || "");
     setCurrentUser(matchedUser);
-    setAllUsers(safeUsers);
+    setAllUsers(usersForState);
     setAllTeams(safeTeams);
     setPlayerInfo(normalizedRole === "player" ? matchedPlayer : null);
     setPlayerTeam(normalizedRole === "admin" ? null : matchedTeam);

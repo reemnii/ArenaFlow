@@ -135,6 +135,20 @@ export default function TournamentDetails() {
     return <div className="min-h-screen px-4 py-10">Loading tournament...</div>;
   }
 
+  function getStatusClass(status) {
+    const s = status?.toLowerCase();
+    if (s === "upcoming") {
+      return "upcoming-status-badge bg-white/80 border border-[#c06ca6]/35 ring-1 ring-[#c06ca6]/20 dark:bg-white/10 dark:text-[#f2d4e8]";
+    }
+    if (s === "ongoing") {
+      return "bg-[#913075]/10 text-[#6f1f57] border border-[#913075]/35 ring-1 ring-[#913075]/15 dark:bg-[#913075]/20 dark:text-inherit";
+    }
+    if (s === "completed") {
+      return "bg-[#47004A]/10 text-[#5b2566] border border-[#7e4a8f]/35 ring-1 ring-[#7e4a8f]/15 dark:bg-[#47004A]/30 dark:text-[#f5ddff]";
+    }
+    return "bg-white/80 text-inherit/80 border border-black/10 ring-1 ring-black/5 dark:bg-white/10 dark:border-white/10 dark:ring-white/5";
+  }
+
   if (!tournament || error) {
     return (
       <div className="min-h-screen px-3 py-4 text-inherit sm:px-6">
@@ -164,7 +178,11 @@ export default function TournamentDetails() {
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1.3fr_0.7fr]">
           <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-[20px]">
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-medium capitalize">
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-medium capitalize ${getStatusClass(
+                  tournament.status
+                )}`}
+              >
                 {tournament.status}
               </span>
               <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-medium">

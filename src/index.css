@@ -16,7 +16,7 @@
     margin: 0;
     min-height: 100vh;
 
-    /* ✅ THIS FIXES LEFT/RIGHT SCROLL */
+    /*  THIS FIXES LEFT/RIGHT SCROLL */
     overflow-x: hidden;
 
     color: white;
@@ -55,6 +55,18 @@
 }
 
 @layer utilities {
+  .home-light-brand-text {
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  html.light .home-light-brand-text {
+    color: #913075;
+  }
+
+  html.light .upcoming-status-badge {
+    color: #913075 !important;
+  }
+
   html.light .bg-white\/5 {
     background-color: rgba(145, 48, 117, 0.12);
   }

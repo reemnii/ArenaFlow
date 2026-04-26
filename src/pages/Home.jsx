@@ -6,7 +6,7 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
+  ChevronDown,  
   MapPin,
   ShieldCheck,
   Trophy,
@@ -289,7 +289,9 @@ const glassCard =
   "rounded-[1.4rem] sm:rounded-[1.6rem] border border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-[0_18px_45px_rgba(18,10,35,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.28)]";
 
 const outlineBtn =
-  "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold text-brand-deep dark:text-white backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+  "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full cursor-pointer border border-[#6B124B]/20 dark:border-white/10 bg-white/55 dark:bg-white/6 px-5 py-3 text-sm font-bold backdrop-blur-md transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/12 hover:border-white/30 dark:hover:border-white/20";
+
+const defaultHeroButton = "text-brand-deep light:text-[#913075] dark:text-white";
 
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -389,14 +391,16 @@ export default function Home() {
                     {currentSlide.title}
                   </h1>
 
-                  <p className="mt-3 max-w-2xl text-sm leading-6 text-brand-deep dark:text-white/72 transition-colors duration-300 sm:mt-4 sm:text-base sm:leading-7">
+                  <p
+                    className="mt-3 max-w-2xl text-sm leading-6 text-brand-deep transition-colors duration-300 light:text-[#913075] dark:text-white/72 sm:mt-4 sm:text-base sm:leading-7"
+                  >
                     {currentSlide.description}
                   </p>
 
                   <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row">
                     <Link
                       to={currentSlide.primaryLink}
-                      className={outlineBtn}
+                      className={`${outlineBtn} ${defaultHeroButton}`}
                       aria-label={currentSlide.primaryLabel}
                     >
                       {currentSlide.primaryLabel}
@@ -405,7 +409,7 @@ export default function Home() {
 
                     <Link
                       to={currentSlide.secondaryLink}
-                      className={outlineBtn}
+                      className={`${outlineBtn} ${defaultHeroButton}`}
                       aria-label={currentSlide.secondaryLabel}
                     >
                       {currentSlide.secondaryLabel}
@@ -940,7 +944,7 @@ export default function Home() {
               <h2 className="mt-2 text-2xl font-black sm:text-3xl">
                 Built for better volleyball event management
               </h2>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-[#6B124B] dark:text-white/68 sm:text-base">
+              <p className="home-light-brand-text mt-4 max-w-3xl text-sm leading-7 sm:text-base">
                 ArenaFlow is designed to make volleyball tournament management
                 clearer and more organized for organizers, clubs, teams, and
                 participants. From event setup and registration to schedules and
