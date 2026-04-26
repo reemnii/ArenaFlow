@@ -255,6 +255,27 @@ export default function TournamentDetails() {
     return "bg-white/80 text-inherit/80 border border-black/10 ring-1 ring-black/5 dark:bg-white/10 dark:border-white/10 dark:ring-white/5";
   }
 
+  const managedTeams = useMemo(() => {
+    if (!currentUser) return [];
+
+    return teams.filter(
+      (team) => team.createdBy && String(team.createdBy) === String(currentUser.id)
+    );
+  }, [currentUser, teams]);
+
+  const joinedTeamIds = useMemo(
+    () => new Set(relatedTeams.map((team) => String(team.id))),
+    [relatedTeams]
+  );
+
+  const joinableTeams = useMemo(() => {
+    return managedTeams.filter((team) => !joinedTeamIds.has(String(team.id)));
+  }, [joinedTeamIds, managedTeams]);
+
+  const alreadyJoined = managedTeams.some((team) =>
+    joinedTeamIds.has(String(team.id))
+  );
+
   if (isLoading) {
     return (
       <div className="min-h-screen px-3 py-4 text-inherit sm:px-6">
@@ -325,27 +346,6 @@ export default function TournamentDetails() {
     tournament.registrationStatus === "open" &&
     !["draft", "ongoing", "completed"].includes(tournamentStatus) &&
     (!deadline || now <= deadline);
-
-  const managedTeams = useMemo(() => {
-    if (!currentUser) return [];
-
-    return teams.filter(
-      (team) => team.createdBy && String(team.createdBy) === String(currentUser.id)
-    );
-  }, [currentUser, teams]);
-
-  const joinedTeamIds = useMemo(
-    () => new Set(relatedTeams.map((team) => String(team.id))),
-    [relatedTeams]
-  );
-
-  const joinableTeams = useMemo(() => {
-    return managedTeams.filter((team) => !joinedTeamIds.has(String(team.id)));
-  }, [joinedTeamIds, managedTeams]);
-
-  const alreadyJoined = managedTeams.some((team) =>
-    joinedTeamIds.has(String(team.id))
-  );
 
   const handleJoin = async () => {
     if (!currentUser) {
