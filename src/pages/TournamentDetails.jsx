@@ -414,7 +414,6 @@ export default function TournamentDetails() {
     </div>
   );
 }
-
 function MobileTournamentDetails({
   tournament,
   relatedTeams,
@@ -1391,3 +1390,4 @@ function MiniNumber({ label, value }) {
     </div>
   );
 }
+

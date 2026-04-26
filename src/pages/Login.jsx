@@ -89,7 +89,7 @@ export default function Login() {
           id="identifier"
           type="text"
           placeholder="Enter your email or username"
-          className="mb-4 w-full rounded p-3 text-white outline-none border border-white/20 bg-white/10 placeholder:text-white/50"
+          className="mb-4 w-full rounded border border-white/20 bg-white/10 p-3 text-white outline-none placeholder:text-white/50"
           value={identifier}
           onChange={(event) => setIdentifier(event.target.value)}
         />
@@ -106,7 +106,7 @@ export default function Login() {
             id="login-password"
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
-            className="w-full rounded p-3 pr-10 text-white outline-none border border-white/20 bg-white/10 placeholder:text-white/50"
+            className="w-full rounded border border-white/20 bg-white/10 p-3 pr-10 text-white outline-none placeholder:text-white/50"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
