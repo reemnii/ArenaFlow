@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { User, Menu, X, Sun, Moon } from "lucide-react";
 import ButtonOutline from "../layouts/ButtonOutline.jsx";
 import logo from "/logo__1_-removebg-preview.png";
+import { getStoredAuth } from "../utils/auth";
 
 export default function Navbar() {
   const [scrollActive, setScrollActive] = useState(false);
@@ -34,15 +35,7 @@ export default function Navbar() {
 
   // user check
   useEffect(() => {
-    let currentUser = null;
-    try {
-      currentUser =
-        JSON.parse(localStorage.getItem("currentUser")) ||
-        JSON.parse(sessionStorage.getItem("currentUser"));
-      setIsLoggedIn(!!currentUser);
-    } catch (error) {
-      setIsLoggedIn(false);
-    }
+    setIsLoggedIn(getStoredAuth().isAuthenticated);
   }, [location]);
 
   const toggleTheme = () => {
